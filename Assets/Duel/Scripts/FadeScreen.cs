@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,23 +15,45 @@ public class FadeScreen : MonoBehaviour
     void Awake()
     {
         Instance = this;
-    }
-
-    public void StartFade(Color to)
-    {
-        FadeFlowAsync(fadeImage.color, to);
-    }
-
-    public void StartFade(Color from, Color to)
-    {
-        FadeFlowAsync(from, to);
-    }
-
-    async void FadeFlowAsync(Color from, Color to)
-    {
+        fadeImage.color = Color.black;
         fadeImage.raycastTarget = true;
+    }
+
+    public void SetColor(Color color)
+    {
+        fadeImage.color = color;
+    }
+
+    public void StartFadeOut(CancellationToken token)
+    {
+        FadeOutAsync(token);
+    }
+
+    public void StartFadeIn(CancellationToken token)
+    {
+        FadeInAsync(token);
+    }
+
+    async void FadeOutAsync(CancellationToken token)
+    {
         fadeAction?.Cancel();
-        fadeAction = FadeAsync(from, to);
+        fadeImage.raycastTarget = true;
+        fadeAction = FadeAsync(1f, token);
+        try
+        {
+            await fadeAction;
+        }
+        catch (OperationCanceledException)
+        {
+            return;
+        }
+        fadeAction = null;
+    }
+
+    async void FadeInAsync(CancellationToken token)
+    {
+        fadeAction?.Cancel();
+        fadeAction = FadeAsync(0f, token);
         try
         {
             await fadeAction;
@@ -43,16 +66,19 @@ public class FadeScreen : MonoBehaviour
         fadeAction = null;
     }
 
-    async Awaitable FadeAsync(Color from, Color to)
+    async Awaitable FadeAsync(float alphaTo, CancellationToken token)
     {
         float elapsed = 0f;
-        fadeImage.color = from;
+        float alphaFrom = fadeImage.color.a;
+        Color color = fadeImage.color;
         while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
-            fadeImage.color = Color.Lerp(from, to, elapsed / duration);
-            await Awaitable.NextFrameAsync(destroyCancellationToken);
+            color.a = Mathf.Lerp(alphaFrom, alphaTo, elapsed / duration);
+            fadeImage.color = color;
+            await Awaitable.NextFrameAsync(token);
         }
-        fadeImage.color = to;
+        color.a = alphaTo;
+        fadeImage.color = color;
     }
 }

@@ -6,6 +6,7 @@ public class TitleScreen : MonoBehaviour
     [SerializeField] Button gameStartButton;
     [SerializeField] Button exitButton;
 
+
     void Awake()
     {
         gameStartButton.onClick.AddListener(OnGameStart);
