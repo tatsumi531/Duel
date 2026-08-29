@@ -18,6 +18,14 @@ public class Character : MonoBehaviour
         Move(-1);
     }
 
+    public void Attack()
+    {
+        Vector3 spawnPosition = transform.position;
+        spawnPosition.x += 2f * (int)Direction;
+        var spawned = Instantiate(slashPrefab, spawnPosition, Quaternion.identity);
+        spawned.transform.localScale = new Vector3((int)Direction, 1f, 1f);
+    }
+
     void Move(int sign)
     {
         float deltaX = sign * (int)direction * moveSpeed * Time.deltaTime;

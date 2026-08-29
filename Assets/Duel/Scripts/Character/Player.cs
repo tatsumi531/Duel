@@ -52,9 +52,7 @@ public class Player : Character
 
         if(mouse.leftButton.IsPressed())
         {
-            Vector3 spawnPosition = transform.position;
-            spawnPosition.x += 2f * (int)Direction;
-            Instantiate(slashPrefab, spawnPosition, Quaternion.identity);
+            Attack();
         }
     }
 }
