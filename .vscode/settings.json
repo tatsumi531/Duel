@@ -67,5 +67,8 @@
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "Duel.slnx"
+    "dotnet.defaultSolution": "Duel.slnx",
+    "[csharp]": {
+        "editor.autoClosingBrackets": "never"
+    }
 }

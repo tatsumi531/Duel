@@ -62,9 +62,44 @@ public class GameState_Boot : GameStateBase
 public class GameState_TitleScreen : GameStateBase
 {
     public GameState_TitleScreen(GameStateMachine machine, GameContext context) : base(machine, context) {}
-    
+
     protected override void OnEnter()
     {
+        Context.TitleScreen.gameObject.SetActive(true);
+        Context.TitleScreen.StartRequested += HandleStartRequested;
+        Context.TitleScreen.ExitRequested += HandleExitRequested;
         FadeScreen.Instance.StartFadeIn(ExitToken);
+    }
+
+    protected override void OnExit()
+    {
+        Context.TitleScreen.StartRequested -= HandleStartRequested;
+        Context.TitleScreen.ExitRequested -= HandleExitRequested;
+        Context.TitleScreen.gameObject.SetActive(false);
+    }
+
+    void HandleStartRequested()
+    {
+        Machine.ChangeState(new GameState_Battle(Machine, Context));
+    }
+
+    void HandleExitRequested()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
+    }
+}
+
+
+public class GameState_Battle : GameStateBase
+{
+    public GameState_Battle(GameStateMachine machine, GameContext context) : base(machine, context) {}
+
+    protected override void OnEnter()
+    {
+        Context.PlayerStateMachine.OnRoundStart();
     }
 }

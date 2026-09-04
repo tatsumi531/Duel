@@ -129,6 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 109446940}
   - component: {fileID: 109446941}
+  - component: {fileID: 109446942}
   - component: {fileID: 109446939}
   - component: {fileID: 109446938}
   - component: {fileID: 109446937}
@@ -302,6 +303,19 @@ MonoBehaviour:
   moveSpeed: 3
   slashPrefab: {fileID: 8345604282044127784, guid: f9eda0464b00b6e4fb0e7ca705a68af2, type: 3}
   direction: 1
+--- !u!114 &109446942
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 109446936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f43d325ed53418048b859532d1fd2e7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerStateMachine
+  character: {fileID: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0

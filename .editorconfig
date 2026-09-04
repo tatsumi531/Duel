@@ -1,0 +1,5 @@
+root = true
+
+[*.cs]
+# if/for/while/foreach/switch/try 等の制御構文(control_blocks)では開く波括弧を改行しない
+csharp_new_line_before_open_brace = accessors, anonymous_methods, anonymous_types, events, indexers, interfaces, lambdas, local_functions, methods, object_collection_array_initializers, properties, types
