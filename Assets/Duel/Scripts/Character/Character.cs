@@ -2,11 +2,26 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
+    [SerializeField]SpriteRenderer sRenderer;
+    public SpriteRenderer SpriteRenderer => sRenderer;
     [SerializeField] float moveSpeed = 3f;
     [SerializeField] protected Slash slashPrefab;
     [SerializeField] Direction direction = Direction.Right;
     public Direction Direction => direction;
 
+    CharacterStateMachine stateMachine;
+
+    void Awake()
+    {
+        stateMachine = GetComponent<CharacterStateMachine>();
+    }
+
+    void OnTriggerEnter2D(Collider2D collider)
+    {
+        if (stateMachine != null && collider.TryGetComponent<Slash>(out _)) {
+            stateMachine.NotifyHit();
+        }
+    }
 
     public void MoveForward()
     {

@@ -36,6 +36,11 @@ public class CharacterState_Idle : CharacterStateBase
 {
     public CharacterState_Idle(CharacterStateMachine machine, CharacterContext context) : base(machine, context) {}
 
+    public override void OnEnter()
+    {
+        Context.Character.SpriteRenderer.color = Color.white;
+    }
+
     public override void OnUpdate()
     {
         if (Context.AttackTriggered) {
@@ -93,6 +98,29 @@ public class CharacterState_Back : CharacterStateBase
         }
 
         Character.MoveBack();
+    }
+}
+
+
+public class CharacterState_Hit : CharacterStateBase
+{
+    const float duration = 0.4f;
+    float elapsed;
+
+    public CharacterState_Hit(CharacterStateMachine machine, CharacterContext context) : base(machine, context) {}
+
+    public override void OnEnter()
+    {
+        elapsed = 0f;
+        Context.Character.SpriteRenderer.color = Color.red;
+    }
+
+    public override void OnUpdate()
+    {
+        elapsed += Time.deltaTime;
+        if (elapsed >= duration) {
+            Machine.ChangeState(new CharacterState_Idle(Machine, Context));
+        }
     }
 }
 

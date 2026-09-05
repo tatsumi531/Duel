@@ -5,7 +5,9 @@ public abstract class CharacterStateMachine : MonoBehaviour
     [SerializeField] protected Character character;
     protected CharacterContext context;
     ICharacterState currentState;
-    public bool isAlive = false;
+
+    public bool HasHit { get; private set; }
+
 
     public abstract void InputAction();
 
@@ -29,7 +31,13 @@ public abstract class CharacterStateMachine : MonoBehaviour
 
     public void OnRoundStart()
     {
-        ChangeState(new CharacterState_Neutral(this, context));
+        ChangeState(new CharacterState_Idle(this, context));
+    }
+
+    public void NotifyHit()
+    {
+        HasHit = true;
+        ChangeState(new CharacterState_Hit(this, context));
     }
 }
 
@@ -44,4 +52,12 @@ public class CharacterContext
     {
         Character = character;
     }
+}
+
+
+public enum MoveIntent
+{
+    None,
+    Forward,
+    Back
 }

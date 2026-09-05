@@ -1,13 +1,5 @@
 using UnityEngine.InputSystem;
 
-public enum MoveIntent
-{
-    None,
-    Forward,
-    Back
-}
-
-
 public class PlayerStateMachine : CharacterStateMachine
 {
     public override void InputAction()

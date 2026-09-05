@@ -104,14 +104,12 @@ public class GameState_Round : GameStateBase
     {
         elapsed = 0f;
         Context.PlayerStateMachine.OnRoundStart();
+        Context.EnemyStateMachine.OnRoundStart();
     }
 
     public override void OnUpdate()
     {
         elapsed += Time.deltaTime;
-        if (!Context.Enemy.isAlive) {
-            Machine.ChangeState(new GameState_Win(Machine, Context));
-        }
     }
 }
 

@@ -11,7 +11,7 @@ public class GameStateMachine : MonoBehaviour
     {
         var titleScreen = FindAnyObjectByType<TitleScreen>();
         var player = FindAnyObjectByType<PlayerStateMachine>();
-        var enemy = FindAnyObjectByType<Enemy>();
+        var enemy = FindAnyObjectByType<EnemyStateMachine>();
         
         context = new GameContext(titleScreen, player, enemy);
         ChangeState(new GameState_Boot(this, context));
