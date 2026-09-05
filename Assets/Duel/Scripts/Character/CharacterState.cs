@@ -102,29 +102,6 @@ public class CharacterState_Back : CharacterStateBase
 }
 
 
-public class CharacterState_Hit : CharacterStateBase
-{
-    const float duration = 0.4f;
-    float elapsed;
-
-    public CharacterState_Hit(CharacterStateMachine machine, CharacterContext context) : base(machine, context) {}
-
-    public override void OnEnter()
-    {
-        elapsed = 0f;
-        Context.Character.SpriteRenderer.color = Color.red;
-    }
-
-    public override void OnUpdate()
-    {
-        elapsed += Time.deltaTime;
-        if (elapsed >= duration) {
-            Machine.ChangeState(new CharacterState_Idle(Machine, Context));
-        }
-    }
-}
-
-
 public class CharacterState_Attack : CharacterStateBase
 {
     const float duration = 0.4f;
@@ -144,5 +121,40 @@ public class CharacterState_Attack : CharacterStateBase
         if (elapsed >= duration) {
             Machine.ChangeState(new CharacterState_Idle(Machine, Context));
         }
+    }
+}
+
+
+public class CharacterState_Hit : CharacterStateBase
+{
+    const float duration = 1f;
+    float elapsed;
+
+    public CharacterState_Hit(CharacterStateMachine machine, CharacterContext context) : base(machine, context) {}
+
+    public override void OnEnter()
+    {
+        elapsed = 0f;
+        Context.Character.SpriteRenderer.color = Color.red;
+    }
+
+    public override void OnUpdate()
+    {
+        elapsed += Time.deltaTime;
+        if (elapsed >= duration) {
+            Machine.ChangeState(new CharacterState_Dead(Machine, Context));
+        }
+    }
+}
+
+
+public class CharacterState_Dead : CharacterStateBase
+{
+    public CharacterState_Dead(CharacterStateMachine machine, CharacterContext context) : base(machine, context) {}
+
+
+    public override void OnEnter()
+    {
+        Context.Character.SpriteRenderer.color = Color.black;
     }
 }

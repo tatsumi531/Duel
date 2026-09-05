@@ -110,6 +110,14 @@ public class GameState_Round : GameStateBase
     public override void OnUpdate()
     {
         elapsed += Time.deltaTime;
+        if (Context.EnemyStateMachine.HasHit) {
+            Machine.ChangeState(new GameState_Win(Machine, Context));
+            return;
+        }
+        if (Context.PlayerStateMachine.HasHit) {
+            Machine.ChangeState(new GameState_Lose(Machine, Context));
+            return;
+        }
     }
 }
 
@@ -117,6 +125,17 @@ public class GameState_Round : GameStateBase
 public class GameState_Win : GameStateBase
 {
     public GameState_Win(GameStateMachine machine, GameContext context) : base(machine, context) {}
+
+    protected override void OnEnter()
+    {
+        
+    }
+}
+
+
+public class GameState_Lose : GameStateBase
+{
+    public GameState_Lose(GameStateMachine machine, GameContext context) : base(machine, context) {}
 
     protected override void OnEnter()
     {
