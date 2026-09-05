@@ -2,13 +2,11 @@ using UnityEngine;
 
 public class Enemy : Character
 {
-    void Start()
+    public bool isAlive = true;
+
+    void OnTriggerEnter2D(Collider2D collider2D)
     {
-        
+        isAlive = false;
     }
 
-    void Update()
-    {
-        
-    }
 }

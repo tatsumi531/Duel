@@ -80,7 +80,7 @@ public class GameState_TitleScreen : GameStateBase
 
     void HandleStartRequested()
     {
-        Machine.ChangeState(new GameState_Battle(Machine, Context));
+        Machine.ChangeState(new GameState_Round(Machine, Context));
     }
 
     void HandleExitRequested()
@@ -94,12 +94,36 @@ public class GameState_TitleScreen : GameStateBase
 }
 
 
-public class GameState_Battle : GameStateBase
+public class GameState_Round : GameStateBase
 {
-    public GameState_Battle(GameStateMachine machine, GameContext context) : base(machine, context) {}
+    float elapsed;
+
+    public GameState_Round(GameStateMachine machine, GameContext context) : base(machine, context) {}
 
     protected override void OnEnter()
     {
+        elapsed = 0f;
         Context.PlayerStateMachine.OnRoundStart();
     }
+
+    public override void OnUpdate()
+    {
+        elapsed += Time.deltaTime;
+        if (!Context.Enemy.isAlive) {
+            Machine.ChangeState(new GameState_Win(Machine, Context));
+        }
+    }
+}
+
+
+public class GameState_Win : GameStateBase
+{
+    public GameState_Win(GameStateMachine machine, GameContext context) : base(machine, context) {}
+
+    protected override void OnEnter()
+    {
+        
+    }
+
+
 }

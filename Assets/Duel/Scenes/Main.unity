@@ -300,7 +300,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c34b47a0a94946543a54e63e0da3eb7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
-  moveSpeed: 3
+  moveSpeed: 4
   slashPrefab: {fileID: 8345604282044127784, guid: f9eda0464b00b6e4fb0e7ca705a68af2, type: 3}
   direction: 1
 --- !u!114 &109446942
@@ -1040,7 +1040,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e5f160e8475fcb498a358f68806b17a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  moveSpeed: 3
+  moveSpeed: 4
   slashPrefab: {fileID: 0}
   direction: -1
 --- !u!4 &1924725132

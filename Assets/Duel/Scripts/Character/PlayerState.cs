@@ -41,14 +41,12 @@ public class PlayerState_Idle : PlayerStateBase
 
     public override void OnUpdate()
     {
-        if (Context.AttackTriggered)
-        {
+        if (Context.AttackTriggered) {
             Machine.ChangeState(new PlayerState_Attack(Machine, Context));
             return;
         }
 
-        switch (Context.MoveIntent)
-        {
+        switch (Context.MoveIntent) {
             case MoveIntent.Forward:
                 Machine.ChangeState(new PlayerState_Forward(Machine, Context));
                 break;
@@ -66,14 +64,12 @@ public class PlayerState_Forward : PlayerStateBase
 
     public override void OnUpdate()
     {
-        if (Context.AttackTriggered)
-        {
+        if (Context.AttackTriggered) {
             Machine.ChangeState(new PlayerState_Attack(Machine, Context));
             return;
         }
 
-        if (Context.MoveIntent != MoveIntent.Forward)
-        {
+        if (Context.MoveIntent != MoveIntent.Forward) {
             Machine.ChangeState(new PlayerState_Idle(Machine, Context));
             return;
         }
@@ -89,14 +85,12 @@ public class PlayerState_Back : PlayerStateBase
 
     public override void OnUpdate()
     {
-        if (Context.AttackTriggered)
-        {
+        if (Context.AttackTriggered) {
             Machine.ChangeState(new PlayerState_Attack(Machine, Context));
             return;
         }
 
-        if (Context.MoveIntent != MoveIntent.Back)
-        {
+        if (Context.MoveIntent != MoveIntent.Back) {
             Machine.ChangeState(new PlayerState_Idle(Machine, Context));
             return;
         }
@@ -122,8 +116,7 @@ public class PlayerState_Attack : PlayerStateBase
     public override void OnUpdate()
     {
         elapsed += Time.deltaTime;
-        if (elapsed >= duration)
-        {
+        if (elapsed >= duration) {
             Machine.ChangeState(new PlayerState_Idle(Machine, Context));
         }
     }
