@@ -4,16 +4,11 @@ public class GameStateMachine : MonoBehaviour
 {
     GameContext context;
     IGameState current;
-    bool isStateChanging;
 
 
     void Start()
     {
-        var titleScreen = FindAnyObjectByType<TitleScreen>();
-        var player = FindAnyObjectByType<PlayerStateMachine>();
-        var enemy = FindAnyObjectByType<EnemyStateMachine>();
-        
-        context = new GameContext(titleScreen, player, enemy);
+        context = new GameContext();
         ChangeState(new GameState_Boot(this, context));
     }
 

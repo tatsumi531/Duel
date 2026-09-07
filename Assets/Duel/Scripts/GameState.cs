@@ -128,7 +128,7 @@ public class GameState_Win : GameStateBase
 
     protected override void OnEnter()
     {
-        
+        Context.ResultScreen.Show(ResultScreen.ShowType.Win, 10f);
     }
 }
 
