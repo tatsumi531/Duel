@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Threading;
 using UnityEngine;
 
@@ -94,6 +95,14 @@ public class GameState_TitleScreen : GameStateBase
 }
 
 
+public class GameState_StartRound : GameStateBase
+{
+    public GameState_StartRound(GameStateMachine machine, GameContext context) : base(machine, context) {}
+
+
+}
+
+
 public class GameState_Round : GameStateBase
 {
     float elapsed;
@@ -124,11 +133,24 @@ public class GameState_Round : GameStateBase
 
 public class GameState_Win : GameStateBase
 {
+    float elapsed = 0f;
+    float displayTime = 3f;
+
+
     public GameState_Win(GameStateMachine machine, GameContext context) : base(machine, context) {}
 
     protected override void OnEnter()
     {
+        elapsed = 0f;
         Context.ResultScreen.Show(ResultScreen.ShowType.Win, 10f);
+    }
+
+    public override void OnUpdate()
+    {
+        elapsed += Time.deltaTime;
+        if (elapsed >= displayTime) {
+            Machine.ChangeState(new GameState_ToNextRound(Machine, Context));
+        }
     }
 }
 
@@ -143,4 +165,24 @@ public class GameState_Lose : GameStateBase
     }
 
 
+}
+
+
+public class GameState_ToNextRound : GameStateBase
+{
+    public GameState_ToNextRound(GameStateMachine machine, GameContext context) : base(machine, context) {}
+
+    protected override void OnEnter()
+    {
+        Machine.StartCoroutine(StateFlow());
+    }
+
+    IEnumerator StateFlow()
+    {
+        FadeScreen.Instance.StartFadeOut(ExitToken);
+        yield return new WaitWhile(() => FadeScreen.Instance.IsFading);
+        FadeScreen.Instance.StartFadeIn(ExitToken);
+        yield return new WaitWhile(() => FadeScreen.Instance.IsFading);
+        Machine.ChangeState(new GameState_StartRound(Machine, Context));
+    }
 }
