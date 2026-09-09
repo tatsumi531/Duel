@@ -81,7 +81,7 @@ public class GameState_TitleScreen : GameStateBase
 
     void HandleStartRequested()
     {
-        Machine.ChangeState(new GameState_Round(Machine, Context));
+        Machine.ChangeState(new GameState_StartRound(Machine, Context));
     }
 
     void HandleExitRequested()
@@ -99,7 +99,21 @@ public class GameState_StartRound : GameStateBase
 {
     public GameState_StartRound(GameStateMachine machine, GameContext context) : base(machine, context) {}
 
+    protected override void OnEnter()
+    {
+        Machine.StartCoroutine(StateFlow());
+    }
 
+    IEnumerator StateFlow()
+    {
+        yield return Context.IntroductionScreen.PlayFlow();
+        Machine.ChangeState(new GameState_Round(Machine, Context));
+    }
+
+    protected override void OnExit()
+    {
+        Context.IntroductionScreen.Initialize();
+    }
 }
 
 
