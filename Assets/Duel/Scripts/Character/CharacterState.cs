@@ -29,17 +29,17 @@ public abstract class CharacterStateBase : ICharacterState
 public class CharacterState_Neutral : CharacterStateBase
 {
     public CharacterState_Neutral(CharacterStateMachine machine, CharacterContext context) : base(machine, context) {}
+
+    public override void OnEnter()
+    {
+        Context.Character.SpriteRenderer.color = Color.white;
+    }
 }
 
 
 public class CharacterState_Idle : CharacterStateBase
 {
     public CharacterState_Idle(CharacterStateMachine machine, CharacterContext context) : base(machine, context) {}
-
-    public override void OnEnter()
-    {
-        Context.Character.SpriteRenderer.color = Color.white;
-    }
 
     public override void OnUpdate()
     {

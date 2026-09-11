@@ -6,6 +6,7 @@ public class GameContext
     public TitleScreen TitleScreen { get; }
     public IntroductionScreen IntroductionScreen { get; }
     public ResultScreen ResultScreen { get; }
+    public BattleField BattleField { get; }
     public PlayerStateMachine PlayerStateMachine { get; }
     public EnemyStateMachine EnemyStateMachine { get; } 
 
@@ -16,6 +17,7 @@ public class GameContext
         TitleScreen = GameObject.FindAnyObjectByType<TitleScreen>();
         IntroductionScreen = GameObject.FindAnyObjectByType<IntroductionScreen>();
         ResultScreen = GameObject.FindAnyObjectByType<ResultScreen>();
+        BattleField = new BattleField();
         PlayerStateMachine = GameObject.FindAnyObjectByType<PlayerStateMachine>();
         EnemyStateMachine = GameObject.FindAnyObjectByType<EnemyStateMachine>();
     }

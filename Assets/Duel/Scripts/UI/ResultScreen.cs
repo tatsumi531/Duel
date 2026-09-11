@@ -25,7 +25,7 @@ public class ResultScreen : MonoBehaviour
 
     static string FormatElapsedTime(float elapsedSeconds)
     {
-        // 1/100秒単位で分解すると分と秒の境の四捨五入ズレを回避できる。
+        // 分と秒の境の四捨五入のズレを回避するために1/100秒単位で分解する。
         long totalCentiseconds = (long)Mathf.Round(elapsedSeconds * 100f);
         long minutes = totalCentiseconds / 6000;
         float seconds = totalCentiseconds % 6000 / 100f;

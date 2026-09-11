@@ -29,15 +29,29 @@ public abstract class CharacterStateMachine : MonoBehaviour
         currentState.OnEnter();
     }
 
-    public void OnRoundStart()
+    public void Initialize(Vector3 initialPosition)
+    {
+        HasHit = false;
+        context.Character.transform.position = initialPosition;
+        ChangeState(new CharacterState_Neutral(this, context));
+    }
+
+    public void ActivateState()
     {
         ChangeState(new CharacterState_Idle(this, context));
     }
 
+    public void DeactivateState()
+    {
+        ChangeState(new CharacterState_Neutral(this, context));
+    }
+
     public void NotifyHit()
     {
-        HasHit = true;
-        ChangeState(new CharacterState_Hit(this, context));
+        if (!HasHit) {
+            HasHit = true;
+            ChangeState(new CharacterState_Hit(this, context));
+        }
     }
 }
 

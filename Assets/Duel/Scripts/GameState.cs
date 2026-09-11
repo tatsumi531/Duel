@@ -16,6 +16,7 @@ public abstract class GameStateBase : IGameState
     protected GameContext Context { get; }
     protected CancellationToken ExitToken => exitCts.Token;
     CancellationTokenSource exitCts;
+    Coroutine runningFlow;
 
 
     protected GameStateBase(GameStateMachine machine, GameContext context)
@@ -35,12 +36,21 @@ public abstract class GameStateBase : IGameState
     {
         exitCts.Cancel();
         exitCts.Dispose();
+        if (runningFlow != null) {
+            Machine.StopCoroutine(runningFlow);
+            runningFlow = null;
+        }
         OnExit();
     }
 
     protected virtual void OnEnter() {}
     public virtual void OnUpdate() {}
     protected virtual void OnExit() {}
+
+    protected void RunFlow(IEnumerator flow)
+    {
+        runningFlow = Machine.StartCoroutine(flow);
+    }
 }
 
 
@@ -81,7 +91,7 @@ public class GameState_TitleScreen : GameStateBase
 
     void HandleStartRequested()
     {
-        Machine.ChangeState(new GameState_StartRound(Machine, Context));
+        Machine.ChangeState(new GameState_InitializeRound(Machine, Context));
     }
 
     void HandleExitRequested()
@@ -95,13 +105,40 @@ public class GameState_TitleScreen : GameStateBase
 }
 
 
-public class GameState_StartRound : GameStateBase
+public class GameState_InitializeRound : GameStateBase
 {
-    public GameState_StartRound(GameStateMachine machine, GameContext context) : base(machine, context) {}
+    readonly float delaySeconds = 1f;
+
+
+    public GameState_InitializeRound(GameStateMachine machine, GameContext context) : base(machine, context) {}
 
     protected override void OnEnter()
     {
-        Machine.StartCoroutine(StateFlow());
+        RunFlow(StateFlow());
+    }
+
+    IEnumerator StateFlow()
+    {
+        FadeScreen.Instance.StartFadeOut(ExitToken);
+        yield return new WaitWhile(() => FadeScreen.Instance.IsFading);
+        Context.GameTimer.ResetRound();
+        Context.PlayerStateMachine.Initialize(Context.BattleField.PlayerInitialPosition);
+        Context.EnemyStateMachine.Initialize(Context.BattleField.EnemyInitialPosition);
+        yield return new WaitForSeconds(delaySeconds);
+        FadeScreen.Instance.StartFadeIn(ExitToken);
+        yield return new WaitWhile(() => FadeScreen.Instance.IsFading);
+        Machine.ChangeState(new GameState_RoundIntroduction(Machine, Context));
+    }
+}
+
+
+public class GameState_RoundIntroduction : GameStateBase
+{
+    public GameState_RoundIntroduction(GameStateMachine machine, GameContext context) : base(machine, context) {}
+
+    protected override void OnEnter()
+    {
+        RunFlow(StateFlow());
     }
 
     IEnumerator StateFlow()
@@ -123,8 +160,8 @@ public class GameState_Round : GameStateBase
 
     protected override void OnEnter()
     {
-        Context.PlayerStateMachine.OnRoundStart();
-        Context.EnemyStateMachine.OnRoundStart();
+        Context.PlayerStateMachine.ActivateState();
+        Context.EnemyStateMachine.ActivateState();
     }
 
     public override void OnUpdate()
@@ -144,24 +181,21 @@ public class GameState_Round : GameStateBase
 
 public class GameState_Win : GameStateBase
 {
-    float elapsed = 0f;
-    float displayTime = 3f;
+    readonly float displayTime = 3f;
 
 
     public GameState_Win(GameStateMachine machine, GameContext context) : base(machine, context) {}
 
     protected override void OnEnter()
     {
-        elapsed = 0f;
-        Context.ResultScreen.Show(ResultScreen.ShowType.Win, Context.GameTimer.RoundElapsed);
+        RunFlow(StateFlow());
     }
 
-    public override void OnUpdate()
+    IEnumerator StateFlow()
     {
-        elapsed += Time.deltaTime;
-        if (elapsed >= displayTime) {
-            Machine.ChangeState(new GameState_ToNextRound(Machine, Context));
-        }
+        Context.ResultScreen.Show(ResultScreen.ShowType.Win, Context.GameTimer.RoundElapsed);
+        yield return new WaitForSeconds(displayTime);
+        Machine.ChangeState(new GameState_InitializeRound(Machine, Context));
     }
 
     protected override void OnExit()
@@ -173,14 +207,23 @@ public class GameState_Win : GameStateBase
 
 public class GameState_Lose : GameStateBase
 {
+    readonly float displayTime = 3f;
+
+
     public GameState_Lose(GameStateMachine machine, GameContext context) : base(machine, context) {}
 
     protected override void OnEnter()
     {
-        
+        RunFlow(StateFlow());
     }
 
-
+    IEnumerator StateFlow()
+    {
+        Context.EnemyStateMachine.DeactivateState();
+        Context.ResultScreen.Show(ResultScreen.ShowType.Lose, Context.GameTimer.RoundElapsed);
+        yield return new WaitForSeconds(displayTime);
+        Machine.ChangeState(new GameState_InitializeRound(Machine, Context));
+    }
 }
 
 
@@ -190,15 +233,13 @@ public class GameState_ToNextRound : GameStateBase
 
     protected override void OnEnter()
     {
-        Machine.StartCoroutine(StateFlow());
+        RunFlow(StateFlow());
     }
 
     IEnumerator StateFlow()
     {
         FadeScreen.Instance.StartFadeOut(ExitToken);
         yield return new WaitWhile(() => FadeScreen.Instance.IsFading);
-        FadeScreen.Instance.StartFadeIn(ExitToken);
-        yield return new WaitWhile(() => FadeScreen.Instance.IsFading);
-        Machine.ChangeState(new GameState_StartRound(Machine, Context));
+        Machine.ChangeState(new GameState_InitializeRound(Machine, Context));
     }
 }
