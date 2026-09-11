@@ -10,10 +10,20 @@ public class Character : MonoBehaviour
     public Direction Direction => direction;
 
     CharacterStateMachine stateMachine;
+    SpriteSliceEffect sliceEffect;
 
     void Awake()
     {
         stateMachine = GetComponent<CharacterStateMachine>();
+        sliceEffect = GetComponent<SpriteSliceEffect>();
+        if (sliceEffect == null) {
+            sliceEffect = gameObject.AddComponent<SpriteSliceEffect>();
+        }
+    }
+
+    public void PlaySliceEffect()
+    {
+        sliceEffect.Play(sRenderer);
     }
 
     void OnTriggerEnter2D(Collider2D collider)

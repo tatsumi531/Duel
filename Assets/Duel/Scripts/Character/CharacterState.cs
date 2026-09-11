@@ -32,6 +32,7 @@ public class CharacterState_Neutral : CharacterStateBase
 
     public override void OnEnter()
     {
+        Context.Character.SpriteRenderer.enabled = true;
         Context.Character.SpriteRenderer.color = Color.white;
     }
 }
@@ -135,7 +136,7 @@ public class CharacterState_Hit : CharacterStateBase
     public override void OnEnter()
     {
         elapsed = 0f;
-        Context.Character.SpriteRenderer.color = Color.red;
+        Context.Character.PlaySliceEffect();
     }
 
     public override void OnUpdate()
@@ -151,10 +152,4 @@ public class CharacterState_Hit : CharacterStateBase
 public class CharacterState_Dead : CharacterStateBase
 {
     public CharacterState_Dead(CharacterStateMachine machine, CharacterContext context) : base(machine, context) {}
-
-
-    public override void OnEnter()
-    {
-        Context.Character.SpriteRenderer.color = Color.black;
-    }
 }
