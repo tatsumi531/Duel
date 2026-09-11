@@ -1046,7 +1046,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   sRenderer: {fileID: 1924725130}
   moveSpeed: 4
-  slashPrefab: {fileID: 0}
+  slashPrefab: {fileID: 8345604282044127784, guid: f9eda0464b00b6e4fb0e7ca705a68af2, type: 3}
   direction: -1
 --- !u!4 &1924725132
 Transform:

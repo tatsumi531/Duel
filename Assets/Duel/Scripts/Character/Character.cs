@@ -36,7 +36,7 @@ public class Character : MonoBehaviour
     public void Attack()
     {
         Vector3 spawnPosition = transform.position;
-        spawnPosition.x += 2f * (int)Direction;
+        spawnPosition.x += 1.5f * (int)Direction;
         var spawned = Instantiate(slashPrefab, spawnPosition, Quaternion.identity);
         spawned.transform.localScale = new Vector3((int)Direction, 1f, 1f);
     }

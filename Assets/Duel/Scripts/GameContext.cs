@@ -8,7 +8,7 @@ public class GameContext
     public ResultScreen ResultScreen { get; }
     public BattleField BattleField { get; }
     public PlayerStateMachine PlayerStateMachine { get; }
-    public EnemyStateMachine EnemyStateMachine { get; } 
+    public CharacterStateMachine EnemyStateMachine { get; }
 
 
     public GameContext()
@@ -19,6 +19,6 @@ public class GameContext
         ResultScreen = GameObject.FindAnyObjectByType<ResultScreen>();
         BattleField = new BattleField();
         PlayerStateMachine = GameObject.FindAnyObjectByType<PlayerStateMachine>();
-        EnemyStateMachine = GameObject.FindAnyObjectByType<EnemyStateMachine>();
+        EnemyStateMachine = GameObject.FindAnyObjectByType<Enemy>()?.GetComponent<CharacterStateMachine>();
     }
 }

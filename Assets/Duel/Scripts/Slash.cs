@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Slash : MonoBehaviour
 {
-    readonly float lifeTime = 0.4f;
+    readonly float lifeTime = 0.1f;
 
 
     IEnumerator Start()
