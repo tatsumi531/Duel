@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class GameContext
 {
+    public GameTimer GameTimer { get; }
     public TitleScreen TitleScreen { get; }
     public IntroductionScreen IntroductionScreen { get; }
     public ResultScreen ResultScreen { get; }
@@ -11,6 +12,7 @@ public class GameContext
 
     public GameContext()
     {
+        GameTimer = new GameTimer();
         TitleScreen = GameObject.FindAnyObjectByType<TitleScreen>();
         IntroductionScreen = GameObject.FindAnyObjectByType<IntroductionScreen>();
         ResultScreen = GameObject.FindAnyObjectByType<ResultScreen>();

@@ -119,20 +119,17 @@ public class GameState_StartRound : GameStateBase
 
 public class GameState_Round : GameStateBase
 {
-    float elapsed;
-
     public GameState_Round(GameStateMachine machine, GameContext context) : base(machine, context) {}
 
     protected override void OnEnter()
     {
-        elapsed = 0f;
         Context.PlayerStateMachine.OnRoundStart();
         Context.EnemyStateMachine.OnRoundStart();
     }
 
     public override void OnUpdate()
     {
-        elapsed += Time.deltaTime;
+        Context.GameTimer.OnUpdate();
         if (Context.EnemyStateMachine.HasHit) {
             Machine.ChangeState(new GameState_Win(Machine, Context));
             return;
@@ -156,7 +153,7 @@ public class GameState_Win : GameStateBase
     protected override void OnEnter()
     {
         elapsed = 0f;
-        Context.ResultScreen.Show(ResultScreen.ShowType.Win, 10f);
+        Context.ResultScreen.Show(ResultScreen.ShowType.Win, Context.GameTimer.RoundElapsed);
     }
 
     public override void OnUpdate()
@@ -165,6 +162,11 @@ public class GameState_Win : GameStateBase
         if (elapsed >= displayTime) {
             Machine.ChangeState(new GameState_ToNextRound(Machine, Context));
         }
+    }
+
+    protected override void OnExit()
+    {
+        Context.ResultScreen.Hide();
     }
 }
 
