@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "EnemyAIProfile", menuName = "Duel/Enemy AI Profile")]
+[CreateAssetMenu(fileName = "EnemyAIProfile", menuName = "Scriptable Objects/Enemy AI Profile")]
 public class EnemyAIProfile : ScriptableObject
 {
     [Header("攻撃の間合い")]

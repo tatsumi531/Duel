@@ -2,35 +2,65 @@ using UnityEngine;
 
 public class EnemyStateMachine : CharacterStateMachine
 {
-    [SerializeField] float attackRange = 2f;
-    [SerializeField] float attackCooldown = 0.6f;
+    [SerializeField] EnemyAIProfile profile;
 
     Player player;
-    float cooldownTimer;
+    float decisionTimer;
+    MoveIntent currentMoveIntent = MoveIntent.None;
 
     public override void InputAction()
     {
-        context.MoveIntent = MoveIntent.None;
         context.AttackTriggered = false;
+
+        if (profile == null) return;
 
         if (player == null) {
             player = FindAnyObjectByType<Player>();
             if (player == null) return;
         }
 
-        if (cooldownTimer > 0f) {
-            cooldownTimer -= Time.deltaTime;
+        decisionTimer -= Time.deltaTime;
+        if (decisionTimer <= 0f) {
+            MakeDecision();
+            decisionTimer = Random.Range(profile.reactionTimeMin, profile.reactionTimeMax);
         }
 
-        float distance = Mathf.Abs(player.transform.position.x - character.transform.position.x);
+        context.MoveIntent = currentMoveIntent;
+    }
 
-        if (distance <= attackRange) {
-            if (cooldownTimer <= 0f) {
+    void MakeDecision()
+    {
+        float distance = Mathf.Abs(player.transform.position.x - character.transform.position.x);
+        float roll = Random.value;
+
+        if (distance <= profile.attackRange) {
+            if (roll < profile.retreatChance) {
+                currentMoveIntent = MoveIntent.Back;
+            } else if (roll < profile.retreatChance + profile.attackChance) {
                 context.AttackTriggered = true;
-                cooldownTimer = attackCooldown;
+                currentMoveIntent = MoveIntent.None;
+            } else {
+                currentMoveIntent = MoveIntent.None;
             }
+            return;
+        }
+
+        // 攻撃圏外では、維持したい間合いを基準に動く。
+        float diff = distance - profile.preferredDistance;
+
+        if (diff > profile.distanceTolerance) {
+            currentMoveIntent = MoveIntent.Forward;
+        } else if (diff < -profile.distanceTolerance) {
+            currentMoveIntent = MoveIntent.Back;
         } else {
-            context.MoveIntent = MoveIntent.Forward;
+            // 基本は間合いを維持しつつ、詰めたり下がったりして揺さぶる動き。
+            if (roll < profile.retreatChance) {
+                currentMoveIntent = MoveIntent.Back;
+            } else if (roll < profile.retreatChance + profile.approachChance) {
+                currentMoveIntent = MoveIntent.Forward;
+            } else {
+                currentMoveIntent = MoveIntent.None;
+            }
         }
     }
 }

@@ -121,7 +121,7 @@ public class GameState_InitializeRound : GameStateBase
     {
         FadeScreen.Instance.StartFadeOut(ExitToken);
         yield return new WaitWhile(() => FadeScreen.Instance.IsFading);
-        Context.GameTimer.ResetRound();
+        Context.RoundTimer.ResetRound();
         Context.PlayerStateMachine.Initialize(Context.BattleField.PlayerInitialPosition);
         Context.EnemyStateMachine.Initialize(Context.BattleField.EnemyInitialPosition);
         yield return new WaitForSeconds(delaySeconds);
@@ -166,7 +166,7 @@ public class GameState_Round : GameStateBase
 
     public override void OnUpdate()
     {
-        Context.GameTimer.OnUpdate();
+        Context.RoundTimer.OnUpdate();
         if (Context.EnemyStateMachine.HasHit) {
             Machine.ChangeState(new GameState_Win(Machine, Context));
             return;
@@ -193,7 +193,7 @@ public class GameState_Win : GameStateBase
 
     IEnumerator StateFlow()
     {
-        Context.ResultScreen.Show(ResultScreen.ShowType.Win, Context.GameTimer.RoundElapsed);
+        Context.ResultScreen.Show(ResultScreen.ShowType.Win, Context.RoundTimer.RoundElapsed);
         yield return new WaitForSeconds(displayTime);
         Machine.ChangeState(new GameState_InitializeRound(Machine, Context));
     }
@@ -220,26 +220,13 @@ public class GameState_Lose : GameStateBase
     IEnumerator StateFlow()
     {
         Context.EnemyStateMachine.DeactivateState();
-        Context.ResultScreen.Show(ResultScreen.ShowType.Lose, Context.GameTimer.RoundElapsed);
+        Context.ResultScreen.Show(ResultScreen.ShowType.Lose, Context.RoundTimer.RoundElapsed);
         yield return new WaitForSeconds(displayTime);
         Machine.ChangeState(new GameState_InitializeRound(Machine, Context));
     }
-}
 
-
-public class GameState_ToNextRound : GameStateBase
-{
-    public GameState_ToNextRound(GameStateMachine machine, GameContext context) : base(machine, context) {}
-
-    protected override void OnEnter()
+    protected override void OnExit()
     {
-        RunFlow(StateFlow());
-    }
-
-    IEnumerator StateFlow()
-    {
-        FadeScreen.Instance.StartFadeOut(ExitToken);
-        yield return new WaitWhile(() => FadeScreen.Instance.IsFading);
-        Machine.ChangeState(new GameState_InitializeRound(Machine, Context));
+        Context.ResultScreen.Hide();
     }
 }

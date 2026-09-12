@@ -301,7 +301,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
   sRenderer: {fileID: 109446939}
-  moveSpeed: 4
+  characterData: {fileID: 11400000, guid: 4bcc3ba5e2ea859449346d609bd2f46d, type: 2}
   slashPrefab: {fileID: 8345604282044127784, guid: f9eda0464b00b6e4fb0e7ca705a68af2, type: 3}
   direction: 1
 --- !u!114 &109446942
@@ -694,6 +694,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 712221adf762e8b4981d39f793bf4760, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameStateMachine
+  gameData: {fileID: 11400000, guid: 0cff7a3d8ef052340813883cb123391b, type: 2}
 --- !u!4 &882222508
 Transform:
   m_ObjectHideFlags: 0
@@ -888,10 +889,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1924725132}
   - component: {fileID: 1924725131}
-  - component: {fileID: 1924725133}
   - component: {fileID: 1924725130}
   - component: {fileID: 1924725129}
   - component: {fileID: 1924725128}
+  - component: {fileID: 1924725133}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -1045,7 +1046,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   sRenderer: {fileID: 1924725130}
-  moveSpeed: 4
+  characterData: {fileID: 11400000, guid: 4bcc3ba5e2ea859449346d609bd2f46d, type: 2}
   slashPrefab: {fileID: 8345604282044127784, guid: f9eda0464b00b6e4fb0e7ca705a68af2, type: 3}
   direction: -1
 --- !u!4 &1924725132
@@ -1072,10 +1073,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1924725127}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a464df5d311c5414484b7b4737b4e4db, type: 3}
+  m_Script: {fileID: 11500000, guid: c43616af837773642aba916d2a06e68b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyStateMachine
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyStateMachine_Reactive
   character: {fileID: 1924725131}
+  profile: {fileID: 11400000, guid: 5b50e6512a63ce4478ef725a973069cd, type: 2}
 --- !u!1001 &80093975417258750
 PrefabInstance:
   m_ObjectHideFlags: 0

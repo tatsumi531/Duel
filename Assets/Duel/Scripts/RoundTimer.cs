@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class GameTimer
+public class RoundTimer
 {
     public float RoundElapsed { get; private set; }
     public float TotalElapsed { get; private set; }

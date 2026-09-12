@@ -2,13 +2,14 @@ using UnityEngine;
 
 public class GameStateMachine : MonoBehaviour
 {
+    [SerializeField] GameData gameData;
     GameContext context;
     IGameState current;
 
 
     void Start()
     {
-        context = new GameContext();
+        context = new GameContext(gameData);
         ChangeState(new GameState_Boot(this, context));
     }
 

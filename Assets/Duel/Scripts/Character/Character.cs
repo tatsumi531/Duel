@@ -4,7 +4,7 @@ public class Character : MonoBehaviour
 {
     [SerializeField]SpriteRenderer sRenderer;
     public SpriteRenderer SpriteRenderer => sRenderer;
-    [SerializeField] float moveSpeed = 3f;
+    [SerializeField] CharacterData characterData;
     [SerializeField] protected Slash slashPrefab;
     [SerializeField] Direction direction = Direction.Right;
     public Direction Direction => direction;
@@ -46,14 +46,14 @@ public class Character : MonoBehaviour
     public void Attack()
     {
         Vector3 spawnPosition = transform.position;
-        spawnPosition.x += 1.5f * (int)Direction;
+        spawnPosition.x += characterData.attackEffectOffset * (int)Direction;
         var spawned = Instantiate(slashPrefab, spawnPosition, Quaternion.identity);
         spawned.transform.localScale = new Vector3((int)Direction, 1f, 1f);
     }
 
     void Move(int sign)
     {
-        float deltaX = sign * (int)direction * moveSpeed * Time.deltaTime;
+        float deltaX = sign * (int)direction * characterData.moveSpeed * Time.deltaTime;
         transform.Translate(deltaX, 0f, 0f);
     }
 }
