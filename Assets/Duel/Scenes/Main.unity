@@ -222,10 +222,10 @@ GameObject:
   - component: {fileID: 109446940}
   - component: {fileID: 109446941}
   - component: {fileID: 109446942}
+  - component: {fileID: 109446943}
   - component: {fileID: 109446939}
   - component: {fileID: 109446938}
   - component: {fileID: 109446937}
-  - component: {fileID: 109446943}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -298,7 +298,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 8, y: 8}
+    oldSize: {x: 10, y: 10}
     newSize: {x: 1, y: 2}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -394,6 +394,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
   sRenderer: {fileID: 109446939}
+  animator: {fileID: 109446943}
   characterData: {fileID: 11400000, guid: 4bcc3ba5e2ea859449346d609bd2f46d, type: 2}
   slashPrefab: {fileID: 8345604282044127784, guid: f9eda0464b00b6e4fb0e7ca705a68af2, type: 3}
   direction: 1
@@ -1883,10 +1884,10 @@ GameObject:
   - component: {fileID: 1924725132}
   - component: {fileID: 1924725131}
   - component: {fileID: 1924725133}
+  - component: {fileID: 1924725134}
   - component: {fileID: 1924725130}
   - component: {fileID: 1924725129}
   - component: {fileID: 1924725128}
-  - component: {fileID: 1924725134}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -1959,7 +1960,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 8, y: 8}
+    oldSize: {x: 10, y: 10}
     newSize: {x: 1, y: 2}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -2040,6 +2041,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   sRenderer: {fileID: 1924725130}
+  animator: {fileID: 1924725134}
   characterData: {fileID: 11400000, guid: 4bcc3ba5e2ea859449346d609bd2f46d, type: 2}
   slashPrefab: {fileID: 8345604282044127784, guid: f9eda0464b00b6e4fb0e7ca705a68af2, type: 3}
   direction: -1

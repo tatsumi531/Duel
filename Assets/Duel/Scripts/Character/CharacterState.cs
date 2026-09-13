@@ -65,6 +65,11 @@ public class CharacterState_Forward : CharacterStateBase
 {
     public CharacterState_Forward(CharacterStateMachine machine, CharacterContext context) : base(machine, context) {}
 
+    public override void OnEnter()
+    {
+        Context.Character.SetMoveIntent(MoveIntent.Forward);
+    }
+
     public override void OnUpdate()
     {
         if (Context.AttackTriggered) {
@@ -79,12 +84,22 @@ public class CharacterState_Forward : CharacterStateBase
 
         Character.MoveForward();
     }
+
+    public override void OnExit()
+    {
+        Context.Character.SetMoveIntent(MoveIntent.None);
+    }
 }
 
 
 public class CharacterState_Back : CharacterStateBase
 {
     public CharacterState_Back(CharacterStateMachine machine, CharacterContext context) : base(machine, context) {}
+
+    public override void OnEnter()
+    {
+        Context.Character.SetMoveIntent(MoveIntent.Back);
+    }
 
     public override void OnUpdate()
     {
@@ -99,6 +114,11 @@ public class CharacterState_Back : CharacterStateBase
         }
 
         Character.MoveBack();
+    }
+
+    public override void OnExit()
+    {
+        Context.Character.SetMoveIntent(MoveIntent.None);
     }
 }
 

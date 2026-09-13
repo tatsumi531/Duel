@@ -71,7 +71,8 @@ public class CharacterContext
 
 public enum MoveIntent
 {
-    None,
-    Forward,
-    Back
+    None = 0,
+    Forward = 1,
+    Back = 2
+    // Animatorのパラメータと連動
 }

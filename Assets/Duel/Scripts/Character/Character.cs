@@ -4,6 +4,8 @@ public class Character : MonoBehaviour
 {
     [SerializeField]SpriteRenderer sRenderer;
     public SpriteRenderer SpriteRenderer => sRenderer;
+    [SerializeField]Animator animator;
+    public Animator Animator => animator;
     [SerializeField] CharacterData characterData;
     [SerializeField] protected Slash slashPrefab;
     [SerializeField] Direction direction = Direction.Right;
@@ -11,6 +13,9 @@ public class Character : MonoBehaviour
 
     CharacterStateMachine stateMachine;
     SpriteSliceEffect sliceEffect;
+
+    readonly int moveIntentHash = Animator.StringToHash("MoveIntent");
+
 
     void Awake()
     {
@@ -31,6 +36,11 @@ public class Character : MonoBehaviour
         if (stateMachine != null && collider.TryGetComponent<Slash>(out _)) {
             stateMachine.NotifyHit();
         }
+    }
+
+    public void SetMoveIntent(MoveIntent intent)
+    {
+        animator.SetInteger(moveIntentHash, (int)intent);
     }
 
     public void MoveForward()
