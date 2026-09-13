@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAIProfile
   attackRange: 3
   reactionTimeMin: 0.05
-  reactionTimeMax: 0.1
+  reactionTimeMax: 0.2
   preferredDistance: 3.5
   distanceTolerance: 0.5
-  attackChance: 0.95
+  attackChance: 0.6
   retreatChance: 0.19999999
   approachChance: 0.3

@@ -47,6 +47,9 @@ TagManager:
   - name: ForeGround
     uniqueID: 1251415977
     locked: 0
+  - name: UI
+    uniqueID: 2754305183
+    locked: 0
   - name: FadeScreen
     uniqueID: 220958889
     locked: 0
