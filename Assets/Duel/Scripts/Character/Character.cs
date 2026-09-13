@@ -63,7 +63,8 @@ public class Character : MonoBehaviour
 
     void Move(int sign)
     {
-        float deltaX = sign * (int)direction * characterData.moveSpeed * Time.deltaTime;
+        float speed = sign > 0 ? characterData.moveForwardSpeed : characterData.moveBackSpeed;
+        float deltaX = sign * (int)direction * speed * Time.deltaTime;
         transform.Translate(deltaX, 0f, 0f);
     }
 }
