@@ -286,7 +286,7 @@ GameObject:
   - component: {fileID: 1434958800550548631}
   - component: {fileID: 3842107927407168983}
   m_Layer: 0
-  m_Name: ResultScreen
+  m_Name: RoundResultScreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

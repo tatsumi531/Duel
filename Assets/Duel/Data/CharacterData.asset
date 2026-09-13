@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: CharacterData
   m_EditorClassIdentifier: Assembly-CSharp::CharacterData
   moveForwardSpeed: 4
-  moveBackSpeed: 3
-  attackEffectOffset: 1.5
+  moveBackSpeed: 3.5
+  attackEffectOffset: 3.5

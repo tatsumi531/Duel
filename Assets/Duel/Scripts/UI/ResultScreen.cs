@@ -1,29 +1,32 @@
 using UnityEngine;
-using UnityEngine.UI;
 
-public class ResultScreen : MonoBehaviour
+public abstract class ResultScreen : MonoBehaviour
 {
-    [SerializeField] Text resultText;
-    [SerializeField] Text elapsedTimeText;
-    [SerializeField] CanvasGroup canvasGroup;
-
-
-    void Start()
+    public enum ShowType
     {
-        Hide();
+        Win,
+        Lose
     }
 
-    public void Show(ShowType showAs, float elapsedSeconds)
+    [SerializeField]CanvasGroup canvasGroup;
+
+
+    protected abstract void SetContent(ShowType showAs, GameContext gameContext);
+
+    public void Show(ShowType showAs, GameContext gameContext)
     {
-        switch (showAs) {
-            case ShowType.Win: resultText.text = "勝利"; break;
-            case ShowType.Lose: resultText.text = "敗北"; break;
-        }
-        elapsedTimeText.text = FormatElapsedTime(elapsedSeconds);
+        SetContent(showAs, gameContext);
         canvasGroup.alpha = 1f;
+        canvasGroup.blocksRaycasts = true;
     }
 
-    static string FormatElapsedTime(float elapsedSeconds)
+    public void Hide()
+    {
+        canvasGroup.alpha = 0f;
+        canvasGroup.blocksRaycasts = false;
+    }
+
+    protected string FormatElapsedTime(float elapsedSeconds)
     {
         // 分と秒の境の四捨五入のズレを回避するために1/100秒単位で分解する。
         long totalCentiseconds = (long)Mathf.Round(elapsedSeconds * 100f);
@@ -31,16 +34,5 @@ public class ResultScreen : MonoBehaviour
         float seconds = totalCentiseconds % 6000 / 100f;
 
         return minutes > 0 ? $"{minutes}:{seconds:00.00}" + "秒" : $"{seconds:0.00}" + "秒";
-    }
-
-    public void Hide()
-    {
-        canvasGroup.alpha = 0f;
-    }
-
-    public enum ShowType
-    {
-        Win,
-        Lose
     }
 }

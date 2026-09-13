@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class RoundCounter
 {
     public int CurrentRound { get; private set; }
@@ -12,7 +10,7 @@ public class RoundCounter
 
     public void ResetRound()
     {
-        CurrentRound = 1;
+        CurrentRound = 0;
     }
 
     public bool ExistNextRound(GameData gameData)

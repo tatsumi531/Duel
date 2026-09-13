@@ -119,9 +119,10 @@ public class GameState_InitializeRound : GameStateBase
 
     IEnumerator StateFlow()
     {
+        Context.RoundTimer.ResetRound();
+        Context.RoundCounter.IncrementRound();
         FadeScreen.Instance.StartFadeOut(ExitToken);
         yield return new WaitWhile(() => FadeScreen.Instance.IsFading);
-        Context.RoundTimer.ResetRound();
         Context.PlayerStateMachine.Initialize(Context.BattleField.PlayerInitialPosition);
         Context.EnemyStateMachine.Initialize(Context.BattleField.EnemyInitialPosition);
         yield return new WaitForSeconds(delaySeconds);
@@ -193,14 +194,14 @@ public class GameState_Win : GameStateBase
 
     IEnumerator StateFlow()
     {
-        Context.ResultScreen.Show(ResultScreen.ShowType.Win, Context.RoundTimer.RoundElapsed);
+        Context.RoundResultScreen.Show(ResultScreen.ShowType.Win, Context);
         yield return new WaitForSeconds(displayTime);
         Machine.ChangeState(new GameState_InitializeRound(Machine, Context));
     }
 
     protected override void OnExit()
     {
-        Context.ResultScreen.Hide();
+        Context.RoundResultScreen.Hide();
     }
 }
 
@@ -220,13 +221,38 @@ public class GameState_Lose : GameStateBase
     IEnumerator StateFlow()
     {
         Context.EnemyStateMachine.DeactivateState();
-        Context.ResultScreen.Show(ResultScreen.ShowType.Lose, Context.RoundTimer.RoundElapsed);
+        Context.RoundResultScreen.Show(ResultScreen.ShowType.Lose, Context);
         yield return new WaitForSeconds(displayTime);
-        Machine.ChangeState(new GameState_InitializeRound(Machine, Context));
+        Machine.ChangeState(new GameState_TotalResult(Machine, Context));
     }
 
     protected override void OnExit()
     {
-        Context.ResultScreen.Hide();
+        Context.RoundResultScreen.Hide();
+    }
+}
+
+public class GameState_TotalResult : GameStateBase
+{
+    public GameState_TotalResult(GameStateMachine machine, GameContext context) : base(machine, context) {}
+
+    protected override void OnEnter()
+    {
+        Context.TotalResultScreen.OnClicked += OnClicked;
+        Context.TotalResultScreen.Show(ResultScreen.ShowType.Win, Context);
+    }
+
+    void OnClicked()
+    {
+        Machine.ChangeState(new GameState_TitleScreen(Machine, Context));
+    }
+
+    protected override void OnExit()
+    {
+        Context.TotalResultScreen.OnClicked -= OnClicked;
+        Context.TotalResultScreen.Hide();
+        Context.RoundTimer.ResetRound();
+        Context.RoundTimer.ResetTotal();
+        Context.RoundCounter.ResetRound();
     }
 }

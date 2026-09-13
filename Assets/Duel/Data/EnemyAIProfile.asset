@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3530dee4870067e4eb802245f404111f, type: 3}
   m_Name: EnemyAIProfile
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAIProfile
-  attackRange: 3
+  attackRange: 4.5
   reactionTimeMin: 0.05
   reactionTimeMax: 0.2
   preferredDistance: 3.5

@@ -7,7 +7,8 @@ public class GameContext
     public RoundCounter RoundCounter { get; }
     public TitleScreen TitleScreen { get; }
     public IntroductionScreen IntroductionScreen { get; }
-    public ResultScreen ResultScreen { get; }
+    public ResultScreen RoundResultScreen { get; }
+    public TotalResultScreen TotalResultScreen { get; }
     public BattleField BattleField { get; }
     public PlayerStateMachine PlayerStateMachine { get; }
     public CharacterStateMachine EnemyStateMachine { get; }
@@ -20,7 +21,8 @@ public class GameContext
         RoundCounter = new RoundCounter();
         TitleScreen = GameObject.FindAnyObjectByType<TitleScreen>();
         IntroductionScreen = GameObject.FindAnyObjectByType<IntroductionScreen>();
-        ResultScreen = GameObject.FindAnyObjectByType<ResultScreen>();
+        RoundResultScreen = GameObject.FindAnyObjectByType<RoundResultScreen>();
+        TotalResultScreen = GameObject.FindAnyObjectByType<TotalResultScreen>();
         BattleField = new BattleField();
         PlayerStateMachine = GameObject.FindAnyObjectByType<PlayerStateMachine>();
         EnemyStateMachine = GameObject.FindAnyObjectByType<Enemy>()?.GetComponent<CharacterStateMachine>();
