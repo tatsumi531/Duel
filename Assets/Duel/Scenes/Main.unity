@@ -222,6 +222,7 @@ GameObject:
   - component: {fileID: 109446940}
   - component: {fileID: 109446941}
   - component: {fileID: 109446942}
+  - component: {fileID: 109446944}
   - component: {fileID: 109446943}
   - component: {fileID: 109446939}
   - component: {fileID: 109446938}
@@ -433,6 +434,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &109446944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 109446936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b84dc4e43c6a6c4cb4a130cad7802e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterAnimationEventReceiver
 --- !u!1 &158433189
 GameObject:
   m_ObjectHideFlags: 0
@@ -1884,6 +1897,7 @@ GameObject:
   - component: {fileID: 1924725132}
   - component: {fileID: 1924725131}
   - component: {fileID: 1924725133}
+  - component: {fileID: 1924725135}
   - component: {fileID: 1924725134}
   - component: {fileID: 1924725130}
   - component: {fileID: 1924725129}
@@ -2096,6 +2110,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1924725135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1924725127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b84dc4e43c6a6c4cb4a130cad7802e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterAnimationEventReceiver
 --- !u!1001 &80093975417258750
 PrefabInstance:
   m_ObjectHideFlags: 0

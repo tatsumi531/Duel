@@ -15,6 +15,7 @@ public class Character : MonoBehaviour
     SpriteSliceEffect sliceEffect;
 
     readonly int moveIntentHash = Animator.StringToHash("MoveIntent");
+    readonly int attackTriggerHash = Animator.StringToHash("AttackTrigger");
 
 
     void Awake()
@@ -41,6 +42,11 @@ public class Character : MonoBehaviour
     public void SetMoveIntent(MoveIntent intent)
     {
         animator.SetInteger(moveIntentHash, (int)intent);
+    }
+
+    public void SetAttackTrigger()
+    {
+        animator.SetTrigger(attackTriggerHash);
     }
 
     public void MoveForward()

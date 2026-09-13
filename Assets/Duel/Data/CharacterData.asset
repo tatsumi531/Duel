@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b594ad5e9355714488acf001b60e5ca6, type: 3}
   m_Name: CharacterData
   m_EditorClassIdentifier: Assembly-CSharp::CharacterData
-  moveSpeed: 4
+  moveForwardSpeed: 4
+  moveBackSpeed: 3
   attackEffectOffset: 1.5

@@ -33,7 +33,7 @@ public class CharacterState_Neutral : CharacterStateBase
     public override void OnEnter()
     {
         Context.Character.SpriteRenderer.enabled = true;
-        Context.Character.SpriteRenderer.color = Color.white;
+        Context.Character.Animator.enabled = true;
     }
 }
 
@@ -125,7 +125,7 @@ public class CharacterState_Back : CharacterStateBase
 
 public class CharacterState_Attack : CharacterStateBase
 {
-    const float duration = 0.4f;
+    const float duration = 0.5f;
     float elapsed;
 
     public CharacterState_Attack(CharacterStateMachine machine, CharacterContext context) : base(machine, context) {}
@@ -133,7 +133,7 @@ public class CharacterState_Attack : CharacterStateBase
     public override void OnEnter()
     {
         elapsed = 0f;
-        Character.Attack();
+        Character.SetAttackTrigger();
     }
 
     public override void OnUpdate()
@@ -157,6 +157,7 @@ public class CharacterState_Hit : CharacterStateBase
     {
         elapsed = 0f;
         Context.Character.PlaySliceEffect();
+        Context.Character.Animator.enabled = false;
     }
 
     public override void OnUpdate()
