@@ -26,6 +26,7 @@ public abstract class CharacterStateMachine : MonoBehaviour
     {
         currentState?.OnExit();
         currentState = nextState;
+        Debug.Log(GetType() + " : OnEnter : " + nextState.GetType());
         currentState.OnEnter();
     }
 

@@ -1,4 +1,3 @@
-using System.Collections;
 using DG.Tweening;
 using UnityEngine;
 
@@ -35,7 +34,7 @@ public class CharacterState_Neutral : CharacterStateBase
     public override void OnEnter()
     {
         Context.Character.SpriteRenderer.enabled = true;
-        Context.Character.Animator.enabled = true;
+        Context.Character.AnimatorController.SetEnabled(true);
     }
 }
 
@@ -69,7 +68,7 @@ public class CharacterState_Forward : CharacterStateBase
 
     public override void OnEnter()
     {
-        Context.Character.SetMoveIntent(MoveIntent.Forward);
+        Context.Character.AnimatorController.SetMoveIntent(MoveIntent.Forward);
     }
 
     public override void OnUpdate()
@@ -89,7 +88,7 @@ public class CharacterState_Forward : CharacterStateBase
 
     public override void OnExit()
     {
-        Context.Character.SetMoveIntent(MoveIntent.None);
+        Context.Character.AnimatorController.SetMoveIntent(MoveIntent.None);
     }
 }
 
@@ -100,7 +99,7 @@ public class CharacterState_Back : CharacterStateBase
 
     public override void OnEnter()
     {
-        Context.Character.SetMoveIntent(MoveIntent.Back);
+        Context.Character.AnimatorController.SetMoveIntent(MoveIntent.Back);
     }
 
     public override void OnUpdate()
@@ -120,7 +119,7 @@ public class CharacterState_Back : CharacterStateBase
 
     public override void OnExit()
     {
-        Context.Character.SetMoveIntent(MoveIntent.None);
+        Context.Character.AnimatorController.SetMoveIntent(MoveIntent.None);
     }
 }
 
@@ -132,7 +131,7 @@ public class CharacterState_Attack : CharacterStateBase
     public override void OnEnter()
     {
         Context.AttackAnimationEnded = false;
-        Character.SetAttackTrigger();
+        Character.AnimatorController.SetAttackTrigger();
     }
 
     public override void OnUpdate()
@@ -153,6 +152,7 @@ public class CharacterState_KnockBack : CharacterStateBase
 
     public override void OnEnter()
     {
+        Context.Character.AnimatorController.SetKnockBackTrigger();
         knockbackTween = Context.Character.transform.DOLocalMoveX(-(int)Context.Character.Direction * 2f, 0.5f).SetRelative().SetEase(Ease.OutQuad);
         knockbackTween.OnComplete(() =>{ Machine.ChangeState(new CharacterState_Idle(Machine, Context));});
         knockbackTween.Play();
@@ -162,6 +162,7 @@ public class CharacterState_KnockBack : CharacterStateBase
     {
         knockbackTween?.Kill();
         knockbackTween = null;
+        Context.Character.AnimatorController.SetRecoveryTrigger();
     }
 }
 
@@ -177,7 +178,7 @@ public class CharacterState_Hit : CharacterStateBase
     {
         elapsed = 0f;
         Context.Character.PlaySliceEffect();
-        Context.Character.Animator.enabled = false;
+        Context.Character.AnimatorController.SetEnabled(false);
     }
 
     public override void OnUpdate()

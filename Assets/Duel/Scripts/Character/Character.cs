@@ -1,4 +1,3 @@
-using DG.Tweening;
 using UnityEngine;
 
 public class Character : MonoBehaviour
@@ -6,7 +5,6 @@ public class Character : MonoBehaviour
     [SerializeField]SpriteRenderer sRenderer;
     public SpriteRenderer SpriteRenderer => sRenderer;
     [SerializeField]Animator animator;
-    public Animator Animator => animator;
     [SerializeField] CharacterData characterData;
     [SerializeField] protected Slash slashPrefab;
     [SerializeField] Direction direction = Direction.Right;
@@ -14,15 +12,14 @@ public class Character : MonoBehaviour
 
     CharacterStateMachine stateMachine;
     SpriteSliceEffect sliceEffect;
-
-    readonly int moveIntentHash = Animator.StringToHash("MoveIntent");
-    readonly int attackTriggerHash = Animator.StringToHash("AttackTrigger");
+    public CharacterAnimatorController AnimatorController { get; private set; }
 
 
     void Awake()
     {
         stateMachine = GetComponent<CharacterStateMachine>();
         sliceEffect = GetComponent<SpriteSliceEffect>();
+        AnimatorController = new CharacterAnimatorController(animator);
         if (sliceEffect == null) {
             sliceEffect = gameObject.AddComponent<SpriteSliceEffect>();
         }
@@ -31,16 +28,6 @@ public class Character : MonoBehaviour
     public void PlaySliceEffect()
     {
         sliceEffect.Play(sRenderer);
-    }
-
-    public void SetMoveIntent(MoveIntent intent)
-    {
-        animator.SetInteger(moveIntentHash, (int)intent);
-    }
-
-    public void SetAttackTrigger()
-    {
-        animator.SetTrigger(attackTriggerHash);
     }
 
     public void MoveForward()
