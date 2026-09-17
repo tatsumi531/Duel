@@ -53,6 +53,18 @@ public abstract class CharacterStateMachine : MonoBehaviour
             ChangeState(new CharacterState_Hit(this, context));
         }
     }
+
+    public void NotifyAttackAnimationEnd()
+    {
+        context.AttackAnimationEnded = true;
+    }
+
+    public void NotifyKnockBack()
+    {
+        if (!HasHit) {
+            ChangeState(new CharacterState_KnockBack(this, context));
+        }
+    }
 }
 
 
@@ -61,6 +73,7 @@ public class CharacterContext
     public Character Character { get; }
     public MoveIntent MoveIntent { get; set; }
     public bool AttackTriggered { get; set; }
+    public bool AttackAnimationEnded { get; set; }
 
     public CharacterContext(Character character)
     {

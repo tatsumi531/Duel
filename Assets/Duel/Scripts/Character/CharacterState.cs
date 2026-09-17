@@ -1,3 +1,5 @@
+using System.Collections;
+using DG.Tweening;
 using UnityEngine;
 
 public interface ICharacterState
@@ -125,23 +127,41 @@ public class CharacterState_Back : CharacterStateBase
 
 public class CharacterState_Attack : CharacterStateBase
 {
-    const float duration = 0.5f;
-    float elapsed;
-
     public CharacterState_Attack(CharacterStateMachine machine, CharacterContext context) : base(machine, context) {}
 
     public override void OnEnter()
     {
-        elapsed = 0f;
+        Context.AttackAnimationEnded = false;
         Character.SetAttackTrigger();
     }
 
     public override void OnUpdate()
     {
-        elapsed += Time.deltaTime;
-        if (elapsed >= duration) {
+        if (Context.AttackAnimationEnded) {
             Machine.ChangeState(new CharacterState_Idle(Machine, Context));
         }
+    }
+}
+
+
+public class CharacterState_KnockBack : CharacterStateBase
+{
+    Tween knockbackTween;
+
+
+    public CharacterState_KnockBack(CharacterStateMachine machine, CharacterContext context) : base(machine, context) {}
+
+    public override void OnEnter()
+    {
+        knockbackTween = Context.Character.transform.DOLocalMoveX(-(int)Context.Character.Direction * 2f, 0.5f).SetRelative().SetEase(Ease.OutQuad);
+        knockbackTween.OnComplete(() =>{ Machine.ChangeState(new CharacterState_Idle(Machine, Context));});
+        knockbackTween.Play();
+    }
+
+    public override void OnExit()
+    {
+        knockbackTween?.Kill();
+        knockbackTween = null;
     }
 }
 

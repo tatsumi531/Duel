@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 public class Character : MonoBehaviour
@@ -32,13 +33,6 @@ public class Character : MonoBehaviour
         sliceEffect.Play(sRenderer);
     }
 
-    void OnTriggerEnter2D(Collider2D collider)
-    {
-        if (stateMachine != null && collider.TryGetComponent<Slash>(out _)) {
-            stateMachine.NotifyHit();
-        }
-    }
-
     public void SetMoveIntent(MoveIntent intent)
     {
         animator.SetInteger(moveIntentHash, (int)intent);
@@ -65,6 +59,7 @@ public class Character : MonoBehaviour
         spawnPosition.x += characterData.attackEffectOffset * (int)Direction;
         var spawned = Instantiate(slashPrefab, spawnPosition, Quaternion.identity);
         spawned.transform.localScale = new Vector3((int)Direction, 1f, 1f);
+        spawned.SetOwner(stateMachine);
     }
 
     void Move(int sign)
