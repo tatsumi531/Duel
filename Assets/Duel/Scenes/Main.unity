@@ -396,6 +396,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Player
   sRenderer: {fileID: 109446939}
   animator: {fileID: 109446943}
+  collider2d: {fileID: 109446938}
   characterData: {fileID: 11400000, guid: 4bcc3ba5e2ea859449346d609bd2f46d, type: 2}
   slashPrefab: {fileID: 8345604282044127784, guid: f9eda0464b00b6e4fb0e7ca705a68af2, type: 3}
   direction: 1
@@ -2629,6 +2630,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   sRenderer: {fileID: 121950043}
   animator: {fileID: 121950040}
+  collider2d: {fileID: 1924725129}
   characterData: {fileID: 11400000, guid: 4bcc3ba5e2ea859449346d609bd2f46d, type: 2}
   slashPrefab: {fileID: 8345604282044127784, guid: f9eda0464b00b6e4fb0e7ca705a68af2, type: 3}
   direction: -1

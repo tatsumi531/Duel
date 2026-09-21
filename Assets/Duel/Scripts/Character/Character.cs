@@ -2,9 +2,11 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
-    [SerializeField]SpriteRenderer sRenderer;
+    [SerializeField] SpriteRenderer sRenderer;
     public SpriteRenderer SpriteRenderer => sRenderer;
-    [SerializeField]Animator animator;
+    [SerializeField] Animator animator;
+    [SerializeField] Collider2D collider2d;
+    public Collider2D Collider2D => collider2d;
     [SerializeField] CharacterData characterData;
     [SerializeField] protected Slash slashPrefab;
     [SerializeField] Direction direction = Direction.Right;

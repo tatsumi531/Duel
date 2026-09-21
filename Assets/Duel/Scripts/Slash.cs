@@ -4,6 +4,8 @@ using UnityEngine;
 public class Slash : MonoBehaviour
 {
     [SerializeField] GameObject clashEffectPrefab;
+    [SerializeField] GameObject hitEffectPrefab;
+    [SerializeField] float hitEffectOffsetRange = 1.5f;
     readonly float lifeTime = 0.1f;
 
     CharacterStateMachine owner;
@@ -79,6 +81,9 @@ public class Slash : MonoBehaviour
     {
         resolved = true;
         target.NotifyHit();
+        var offset = new Vector3(Random.Range(-hitEffectOffsetRange, hitEffectOffsetRange), Random.Range(-hitEffectOffsetRange, hitEffectOffsetRange), 0f);
+        var spawned = Instantiate(hitEffectPrefab);
+        spawned.transform.position = target.transform.position + offset;
         Destroy(gameObject);
     }
 }

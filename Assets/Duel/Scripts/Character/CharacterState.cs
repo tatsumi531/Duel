@@ -35,6 +35,7 @@ public class CharacterState_Neutral : CharacterStateBase
     {
         Context.Character.SpriteRenderer.enabled = true;
         Context.Character.AnimatorController.SetEnabled(true);
+        Context.Character.Collider2D.enabled = true;
     }
 }
 
@@ -179,6 +180,7 @@ public class CharacterState_Hit : CharacterStateBase
         elapsed = 0f;
         Context.Character.PlaySliceEffect();
         Context.Character.AnimatorController.SetEnabled(false);
+        Context.Character.Collider2D.enabled = false;
     }
 
     public override void OnUpdate()
