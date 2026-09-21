@@ -3,10 +3,12 @@ using UnityEngine;
 
 public class Slash : MonoBehaviour
 {
+    [SerializeField] GameObject clashEffectPrefab;
     readonly float lifeTime = 0.1f;
 
     CharacterStateMachine owner;
     Slash touchedSlash;
+    Vector3 clashEffectPosition;
     CharacterStateMachine touchedCharacter;
     bool resolved;
 
@@ -30,6 +32,10 @@ public class Slash : MonoBehaviour
         if (collider.TryGetComponent<Slash>(out var otherSlash)) {
             if (otherSlash.owner != owner) {
                 touchedSlash = otherSlash;
+                var selfCollider = GetComponent<Collider2D>();
+                Vector2 selfPos = selfCollider.bounds.center;
+                Vector2 otherPos = collider.bounds.center;
+                clashEffectPosition = (selfPos + otherPos) * 0.5f;
             }
             return;
         }
@@ -63,6 +69,8 @@ public class Slash : MonoBehaviour
         other.resolved = true;
         owner.NotifyKnockBack();
         other.owner.NotifyKnockBack();
+        var spawned = Instantiate(clashEffectPrefab);
+        spawned.transform.position = clashEffectPosition;
         Destroy(gameObject);
         Destroy(other.gameObject);
     }

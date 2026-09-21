@@ -446,6 +446,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b84dc4e43c6a6c4cb4a130cad7802e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterAnimationEventReceiver
+  character: {fileID: 109446941}
+  stateMachine: {fileID: 109446942}
 --- !u!1 &158433189
 GameObject:
   m_ObjectHideFlags: 0
@@ -2626,6 +2628,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b84dc4e43c6a6c4cb4a130cad7802e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterAnimationEventReceiver
+  character: {fileID: 1924725131}
+  stateMachine: {fileID: 1924725133}
 --- !u!1 &2054835179
 GameObject:
   m_ObjectHideFlags: 0
