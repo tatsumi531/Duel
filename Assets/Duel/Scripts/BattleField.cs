@@ -15,6 +15,6 @@ public class BattleField
     public BattleField()
     {
         PlayerStateMachine = GameObject.FindAnyObjectByType<PlayerStateMachine>();
-        EnemyStateMachine = GameObject.FindAnyObjectByType<CharacterStateMachine>();
+        EnemyStateMachine = GameObject.FindAnyObjectByType<EnemyStateMachine>();
     }
 }

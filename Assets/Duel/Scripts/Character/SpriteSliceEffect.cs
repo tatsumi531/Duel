@@ -15,7 +15,8 @@ public class SpriteSliceEffect : MonoBehaviour
     [SerializeField] float launchDropDistance = 10f;
     [SerializeField] float spinAngle = 260f;
     [SerializeField] float duration = 1.8f;
-
+    
+    
     public void Play(SpriteRenderer source)
     {
         if (sliceShader == null) {

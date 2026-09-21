@@ -1,18 +1,10 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Character))]
-[RequireComponent(typeof(CharacterStateMachine))]
 public class CharacterAnimationEventReceiver : MonoBehaviour
 {
-    Character character;
-    CharacterStateMachine stateMachine;
+    [SerializeField] Character character;
+    [SerializeField] CharacterStateMachine stateMachine;
 
-
-    void Awake()
-    {
-        character = GetComponent<Character>();
-        stateMachine = GetComponent<CharacterStateMachine>();
-    }
 
     public void OnAttack()
     {
