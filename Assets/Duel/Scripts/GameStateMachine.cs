@@ -3,13 +3,14 @@ using UnityEngine;
 public class GameStateMachine : MonoBehaviour
 {
     [SerializeField] GameData gameData;
+    [SerializeField] EnemyRoster enemyRoster;
     GameContext context;
     IGameState current;
 
 
     void Start()
     {
-        context = new GameContext(gameData);
+        context = new GameContext(gameData, enemyRoster);
         ChangeState(new GameState_Boot(this, context));
     }
 

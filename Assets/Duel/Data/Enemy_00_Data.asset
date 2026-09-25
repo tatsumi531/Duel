@@ -10,8 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b594ad5e9355714488acf001b60e5ca6, type: 3}
-  m_Name: CharacterData
+  m_Name: Enemy_00_Data
   m_EditorClassIdentifier: Assembly-CSharp::CharacterData
+  aiProfile: {fileID: 11400000, guid: 5b50e6512a63ce4478ef725a973069cd, type: 2}
+  spriteOffsetY: 0
   moveForwardSpeed: 4
-  moveBackSpeed: 3.5
-  attackEffectOffset: 3
+  moveBackSpeed: 2.5
+  attackEffectOffset: 1.5

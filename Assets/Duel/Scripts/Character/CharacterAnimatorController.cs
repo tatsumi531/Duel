@@ -19,6 +19,13 @@ public class CharacterAnimatorController
         animator.enabled = enabled;
     }
 
+    public void SetOverrideController(AnimatorOverrideController overrideController)
+    {
+        if (overrideController != null) {
+            animator.runtimeAnimatorController = overrideController;
+        }
+    }
+
     public void SetMoveIntent(MoveIntent intent)
     {
         animator.SetInteger(moveIntentHash, (int)intent);

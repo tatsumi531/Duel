@@ -27,6 +27,15 @@ public class Character : MonoBehaviour
         }
     }
 
+    public void Initialize(CharacterData overrideData = null)
+    {
+        if (overrideData != null) {
+            characterData = overrideData;
+        }
+        sRenderer.transform.localPosition = new Vector3(0f, characterData.spriteOffsetY, 0f);
+        AnimatorController.SetOverrideController(characterData.animatorOverrideController);
+    }
+
     public void PlaySliceEffect()
     {
         sliceEffect.Play(sRenderer);

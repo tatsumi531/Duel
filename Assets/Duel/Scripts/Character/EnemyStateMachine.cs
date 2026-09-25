@@ -2,11 +2,16 @@ using UnityEngine;
 
 public class EnemyStateMachine : CharacterStateMachine
 {
-    [SerializeField] EnemyAIProfile profile;
+    [SerializeField] CharacterAIProfile profile;
 
     Player player;
     float decisionTimer;
     MoveIntent currentMoveIntent = MoveIntent.None;
+
+    public void SetProfile(CharacterAIProfile profile)
+    {
+        this.profile = profile;
+    }
 
     public override void InputAction()
     {

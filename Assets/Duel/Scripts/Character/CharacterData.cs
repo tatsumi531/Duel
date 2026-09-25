@@ -1,9 +1,17 @@
+using UnityEditor.Animations;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "CharacterData", menuName = "Scriptable Objects/CharacterData")]
 public class CharacterData : ScriptableObject
 {
-    [Header("移動速度")]
+    [Header("アニメーション")]
+    public AnimatorOverrideController animatorOverrideController;
+    public float spriteOffsetY = 0f;
+    
+    [Header("AIプロファイル")]
+    public CharacterAIProfile aiProfile;
+
+    [Header("パラメータ")]
     public float moveForwardSpeed = 4f;
     public float moveBackSpeed = 2.5f;
     [Header("攻撃エフェクト位置")]

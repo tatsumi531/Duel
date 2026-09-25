@@ -1,10 +1,10 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "EnemyAIProfile", menuName = "Scriptable Objects/Enemy AI Profile")]
-public class EnemyAIProfile : ScriptableObject
+[CreateAssetMenu(fileName = "CharacterAIProfile", menuName = "Scriptable Objects/Character AI Profile")]
+public class CharacterAIProfile : ScriptableObject
 {
     [Header("攻撃の間合い")]
-    [Tooltip("この距離以内ならプレイヤーを攻撃圏内とみなす")]
+    [Tooltip("この距離以内なら相手を攻撃圏内とみなす")]
     public float attackRange = 2f;
 
     [Header("反応速度のブレ")]

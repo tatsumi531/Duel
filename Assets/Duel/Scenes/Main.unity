@@ -2631,7 +2631,7 @@ MonoBehaviour:
   sRenderer: {fileID: 121950043}
   animator: {fileID: 121950040}
   collider2d: {fileID: 1924725129}
-  characterData: {fileID: 11400000, guid: 4bcc3ba5e2ea859449346d609bd2f46d, type: 2}
+  characterData: {fileID: 11400000, guid: debc7df8b4fb652469b0e6cca8ef5106, type: 2}
   slashPrefab: {fileID: 8345604282044127784, guid: f9eda0464b00b6e4fb0e7ca705a68af2, type: 3}
   direction: -1
 --- !u!4 &1924725132
