@@ -8,15 +8,15 @@ public class CharacterAnimatorController
     readonly int knockBackTriggerHash = Animator.StringToHash("KnockBackTrigger");
     readonly int recoveryTriggerHash = Animator.StringToHash("RecoveryTrigger");
 
-
-    public void SetEnabled(bool enabled)
-    {
-        animator.enabled = enabled;
-    }
     
     public CharacterAnimatorController(Animator animator)
     {
         this.animator = animator;
+    }
+
+    public void SetEnabled(bool enabled)
+    {
+        animator.enabled = enabled;
     }
 
     public void SetMoveIntent(MoveIntent intent)
