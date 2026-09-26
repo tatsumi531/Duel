@@ -59,6 +59,14 @@ public class Character : MonoBehaviour
         spawned.SetOwner(stateMachine);
     }
 
+    public float GetAttackRange(Character opponent)
+    {
+        BoxCollider2D slashCollider = slashPrefab.GetComponent<BoxCollider2D>();
+        float slashReach = slashCollider.offset.x + slashCollider.size.x * 0.5f;
+        float opponentHalfWidth = opponent.Collider2D.bounds.extents.x;
+        return characterData.attackEffectOffset + slashReach + opponentHalfWidth;
+    }
+
     void Move(int sign)
     {
         float speed = sign > 0 ? characterData.moveForwardSpeed : characterData.moveBackSpeed;

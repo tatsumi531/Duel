@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CharacterData
   animatorOverrideController: {fileID: 22100000, guid: 27911bf41b25995ed2da34242de907fd, type: 2}
   spriteOffsetY: 0.7
-  aiProfile: {fileID: 11400000, guid: 5b50e6512a63ce4478ef725a973069cd, type: 2}
+  aiProfile: {fileID: 11400000, guid: b8957a1b75bf46809bbb6ba0d4d713d9, type: 2}
   moveForwardSpeed: 4
   moveBackSpeed: 2.5
   attackEffectOffset: 2.3

@@ -3,10 +3,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "CharacterAIProfile", menuName = "Scriptable Objects/Character AI Profile")]
 public class CharacterAIProfile : ScriptableObject
 {
-    [Header("攻撃の間合い")]
-    [Tooltip("この距離以内なら相手を攻撃圏内とみなす")]
-    public float attackRange = 2f;
-
     [Header("反応速度のブレ")]
     [Tooltip("次の行動を選び直すまでの間隔(最短)。小さいほど反応が速い")]
     public float reactionTimeMin = 0.2f;
@@ -14,8 +10,9 @@ public class CharacterAIProfile : ScriptableObject
     public float reactionTimeMax = 0.6f;
 
     [Header("維持したい間合い")]
-    [Tooltip("攻撃圏内でないとき、この距離を保とうとする")]
-    public float preferredDistance = 3.5f;
+    [Tooltip("攻撃圏内でないとき、相手(プレイヤー)の攻撃が届く距離からさらにどれだけ離れた位置を保とうとするか。" +
+        "0に近いほど相手の攻撃範囲ギリギリまで詰める積極的な性格になり、大きいほど安全に距離を取る慎重な性格になる")]
+    public float preferredDistanceMargin = 1f;
     [Tooltip("維持したい間合いからのズレの許容幅")]
     public float distanceTolerance = 0.5f;
 
