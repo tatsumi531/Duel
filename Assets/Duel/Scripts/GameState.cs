@@ -61,6 +61,8 @@ public class GameState_Boot : GameStateBase
     protected override void OnEnter()
     {
         FadeScreen.Instance.SetColor(Color.black);
+        Context.PlayerStateMachine.OnGameBoot(Context.Enemy);
+        Context.EnemyStateMachine.OnGameBoot(Context.Player);
     }
 
     public override void OnUpdate()
@@ -123,11 +125,11 @@ public class GameState_InitializeRound : GameStateBase
         Context.RoundCounter.IncrementRound();
         FadeScreen.Instance.StartFadeOut(ExitToken);
         yield return new WaitWhile(() => FadeScreen.Instance.IsFading);
-        Context.BattleField.Player.Initialize(Context.PlayerCharacterData);
-        Context.BattleField.PlayerStateMachine.Initialize();
+        Context.Player.Initialize(Context.PlayerCharacterData);
+        Context.PlayerStateMachine.Initialize();
         CharacterData enemyData = Context.EnemyRoster.GetByRound(Context.RoundCounter.CurrentRound);
-        Context.BattleField.Enemy.Initialize(enemyData);
-        Context.BattleField.EnemyStateMachine.Initialize(enemyData.aiProfile);
+        Context.Enemy.Initialize(enemyData);
+        Context.EnemyStateMachine.Initialize(enemyData.aiProfile);
         yield return new WaitForSeconds(delaySeconds);
         FadeScreen.Instance.StartFadeIn(ExitToken);
         yield return new WaitWhile(() => FadeScreen.Instance.IsFading);
@@ -164,18 +166,18 @@ public class GameState_Round : GameStateBase
 
     protected override void OnEnter()
     {
-        Context.BattleField.PlayerStateMachine.ActivateState();
-        Context.BattleField.EnemyStateMachine.ActivateState();
+        Context.PlayerStateMachine.ActivateState();
+        Context.EnemyStateMachine.ActivateState();
     }
 
     public override void OnUpdate()
     {
         Context.RoundTimer.OnUpdate();
-        if (Context.BattleField.EnemyStateMachine.HasHit) {
+        if (Context.EnemyStateMachine.HasHit) {
             Machine.ChangeState(new GameState_Win(Machine, Context));
             return;
         }
-        if (Context.BattleField.PlayerStateMachine.HasHit) {
+        if (Context.PlayerStateMachine.HasHit) {
             Machine.ChangeState(new GameState_Lose(Machine, Context));
             return;
         }
@@ -197,7 +199,7 @@ public class GameState_Win : GameStateBase
 
     IEnumerator StateFlow()
     {
-        Context.BattleField.PlayerStateMachine.DeactivateState();
+        Context.PlayerStateMachine.DeactivateState();
         Context.UI.RoundResult.Show(ResultScreen.ShowType.Win, Context);
         yield return new WaitForSeconds(displayTime);
         Machine.ChangeState(new GameState_InitializeRound(Machine, Context));
@@ -224,7 +226,7 @@ public class GameState_Lose : GameStateBase
 
     IEnumerator StateFlow()
     {
-        Context.BattleField.EnemyStateMachine.DeactivateState();
+        Context.EnemyStateMachine.DeactivateState();
         Context.UI.RoundResult.Show(ResultScreen.ShowType.Lose, Context);
         yield return new WaitForSeconds(displayTime);
         Machine.ChangeState(new GameState_TotalResult(Machine, Context));

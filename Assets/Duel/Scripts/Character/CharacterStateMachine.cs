@@ -1,18 +1,24 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Character))]
 public class CharacterStateMachine : MonoBehaviour
 {
-    [SerializeField] Character character;
-    [SerializeField] Character opponent;
-    protected CharacterContext context;
+    CharacterContext context;
     ICharacterController controller;
     ICharacterState currentState;
-    public bool HasHit { get; private set; }
+    public bool HasHit { get { return context.HasHit;} }
 
 
-    void Awake()
+    public void OnGameBoot(Character opponent)
     {
-        context = new CharacterContext(character, opponent);
+        context = new CharacterContext(GetComponent<Character>(), opponent);
+    }
+
+    public void Initialize(CharacterAIProfile aiProfile = null)
+    {
+        controller = aiProfile == null ? new PlayerController(context) : new AIController(context, aiProfile);
+        context.HasHit = false;
+        ChangeState(new CharacterState_Neutral(this, context));
     }
 
     void Update()
@@ -29,13 +35,6 @@ public class CharacterStateMachine : MonoBehaviour
         currentState.OnEnter();
     }
 
-    public void Initialize(CharacterAIProfile aiProfile = null)
-    {
-        controller = aiProfile == null ? new PlayerController(context) : new AIController(context, aiProfile);
-        HasHit = false;
-        ChangeState(new CharacterState_Neutral(this, context));
-    }
-
     public void ActivateState()
     {
         ChangeState(new CharacterState_Idle(this, context));
@@ -48,8 +47,8 @@ public class CharacterStateMachine : MonoBehaviour
 
     public void NotifyHit()
     {
-        if (!HasHit) {
-            HasHit = true;
+        if (!context.HasHit) {
+            context.HasHit = true;
             ChangeState(new CharacterState_Hit(this, context));
         }
     }
@@ -61,7 +60,7 @@ public class CharacterStateMachine : MonoBehaviour
 
     public void NotifyKnockBack()
     {
-        if (!HasHit) {
+        if (!context.HasHit) {
             ChangeState(new CharacterState_KnockBack(this, context));
         }
     }
@@ -75,6 +74,7 @@ public class CharacterContext
     public MoveIntent MoveIntent { get; set; }
     public bool AttackTriggered { get; set; }
     public bool AttackAnimationEnded { get; set; }
+    public bool HasHit { get; set; }
 
 
     public CharacterContext(Character character, Character opponent)

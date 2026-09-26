@@ -6,18 +6,4 @@ public class BattleField
     public static readonly Vector3 RightInitialPosition = new(5f, 0f, 0f);
     public static readonly Vector3 LeftLimit = new(-8.3f, 0f, 0f);
     public static readonly Vector3 RightLimit = new(8.3f, 0f, 0f);
-
-    public Character Player { get; }
-    public Character Enemy { get; }
-    public CharacterStateMachine PlayerStateMachine { get; }
-    public CharacterStateMachine EnemyStateMachine { get; }
-
-
-    public BattleField()
-    {
-        Player = GameObject.FindAnyObjectByType<Player>();
-        Enemy = GameObject.FindAnyObjectByType<Enemy>();
-        PlayerStateMachine = Player.gameObject.GetComponent<CharacterStateMachine>();
-        EnemyStateMachine = Enemy.gameObject.GetComponent<CharacterStateMachine>();
-    }
 }
