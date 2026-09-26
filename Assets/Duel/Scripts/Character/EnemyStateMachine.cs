@@ -2,11 +2,10 @@ using UnityEngine;
 
 public class EnemyStateMachine : CharacterStateMachine
 {
-    [SerializeField] CharacterAIProfile profile;
-
-    Player player;
+    CharacterAIProfile profile;
     float decisionTimer;
     MoveIntent currentMoveIntent = MoveIntent.None;
+
 
     public void SetProfile(CharacterAIProfile profile)
     {
@@ -19,11 +18,6 @@ public class EnemyStateMachine : CharacterStateMachine
 
         if (profile == null) return;
 
-        if (player == null) {
-            player = FindAnyObjectByType<Player>();
-            if (player == null) return;
-        }
-
         decisionTimer -= Time.deltaTime;
         if (decisionTimer <= 0f) {
             MakeDecision();
@@ -35,7 +29,7 @@ public class EnemyStateMachine : CharacterStateMachine
 
     void MakeDecision()
     {
-        float distance = Mathf.Abs(player.transform.position.x - character.transform.position.x);
+        float distance = Mathf.Abs(context.Opponent.transform.position.x - context.Character.transform.position.x);
         float roll = Random.value;
 
         if (distance <= profile.attackRange) {

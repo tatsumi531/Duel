@@ -15,7 +15,7 @@ public class PlayerStateMachine : CharacterStateMachine
             if (keyboard.dKey.isPressed) worldDirection += 1;
 
             if (worldDirection != 0) {
-                context.MoveIntent = worldDirection == (int)character.Direction
+                context.MoveIntent = worldDirection == (int)context.Character.Direction
                     ? MoveIntent.Forward
                     : MoveIntent.Back;
             }

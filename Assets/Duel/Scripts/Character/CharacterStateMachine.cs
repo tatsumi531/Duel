@@ -2,7 +2,9 @@ using UnityEngine;
 
 public abstract class CharacterStateMachine : MonoBehaviour
 {
-    [SerializeField] protected Character character;
+    [SerializeField] Character character;
+    [SerializeField] Character opponent;
+
     protected CharacterContext context;
     ICharacterState currentState;
 
@@ -13,7 +15,7 @@ public abstract class CharacterStateMachine : MonoBehaviour
 
     void Awake()
     {
-        context = new CharacterContext(character);
+        context = new CharacterContext(character, opponent);
     }
 
     void Update()
@@ -72,13 +74,16 @@ public abstract class CharacterStateMachine : MonoBehaviour
 public class CharacterContext
 {
     public Character Character { get; }
+    public Character Opponent { get; }
     public MoveIntent MoveIntent { get; set; }
     public bool AttackTriggered { get; set; }
     public bool AttackAnimationEnded { get; set; }
 
-    public CharacterContext(Character character)
+
+    public CharacterContext(Character character, Character opponent)
     {
         Character = character;
+        Opponent = opponent;
     }
 }
 

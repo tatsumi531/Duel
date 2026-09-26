@@ -413,6 +413,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStateMachine
   character: {fileID: 109446941}
+  opponent: {fileID: 1924725131}
 --- !u!95 &109446943
 Animator:
   serializedVersion: 7
@@ -2664,7 +2665,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyStateMachine_Reactive
   character: {fileID: 1924725131}
-  profile: {fileID: 11400000, guid: 5b50e6512a63ce4478ef725a973069cd, type: 2}
+  opponent: {fileID: 109446941}
 --- !u!1 &2054835179
 GameObject:
   m_ObjectHideFlags: 0
