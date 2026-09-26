@@ -12,9 +12,11 @@ UnityRoomへの投稿を予定。
 
 ## 技術スタック
 
-- Unity 2D（Sprite / SpriteRenderer ベース）
-- DOTween（演出のトゥイーン処理）
-- Unity Input System
+- Unity 2D（Sprite / SpriteRenderer ベース、URP）
+- Unity Input System（キーボード / マウス入力）
+- DOTween（ノックバックやUI演出のトゥイーン処理）
+- Unity 6の `Awaitable` + `CancellationToken`（フェード処理などの非同期制御）
+- カスタムシェーダー（[SpriteSlice.shader](Assets/Duel/Shaders)）によるヒット時のスプライト切断エフェクト
 
 ## アーキテクチャ
 
@@ -29,25 +31,31 @@ UnityRoomへの投稿を予定。
 ステート遷移:
 
 ```
-Boot → TitleScreen → InitializeRound → RoundIntroduction → Round → Win/Lose → InitializeRound（ループ）
+Boot → TitleScreen → InitializeRound → RoundIntroduction → Round → Win → InitializeRound（プレイヤー勝利時、次の敵とのラウンドへループ）
+                                                                  → Lose → TotalResult → TitleScreen（プレイヤー敗北時）
 ```
+
+`Boot` で[BattleField.cs](Assets/Duel/Scripts/BattleField.cs)の初期位置・移動範囲を基準にプレイヤーと敵を紐付け、`InitializeRound` で[EnemyRoster.cs](Assets/Duel/Scripts/Character/EnemyRoster.cs)からラウンド数に応じた敵データを取得して初期化する。
 
 ### キャラクター
 
-- [Character.cs](Assets/Duel/Scripts/Character/Character.cs): 移動・攻撃エフェクト生成・被弾判定（`OnTriggerEnter2D` で `Slash` との衝突を検知）などMonoBehaviourとしての実体を担当
-- [CharacterStateMachine.cs](Assets/Duel/Scripts/Character/CharacterStateMachine.cs) / [CharacterState.cs](Assets/Duel/Scripts/Character/CharacterState.cs): Idle / Forward / Back / Attack / Hit / Dead の状態遷移を管理
-- [CharacterData.cs](Assets/Duel/Scripts/Character/CharacterData.cs): 移動速度・攻撃エフェクトのオフセットなどをScriptableObjectで外出し
-- プレイヤー（[Player.cs](Assets/Duel/Scripts/Character/Player.cs) / [PlayerStateMachine.cs](Assets/Duel/Scripts/Character/PlayerStateMachine.cs)）と敵（[Enemy.cs](Assets/Duel/Scripts/Character/Enemy.cs) / [EnemyStateMachine_Reactive.cs](Assets/Duel/Scripts/Character/EnemyStateMachine_Reactive.cs)）で共通の状態機械基盤を利用
+- [Character.cs](Assets/Duel/Scripts/Character/Character.cs): 移動・攻撃エフェクト（[Slash.cs](Assets/Duel/Scripts/Slash.cs)）の生成・攻撃レンジ計算などMonoBehaviourとしての実体を担当
+- [CharacterStateMachine.cs](Assets/Duel/Scripts/Character/CharacterStateMachine.cs) / [CharacterState.cs](Assets/Duel/Scripts/Character/CharacterState.cs): Neutral / Idle / Forward / Back / Attack / KnockBack / Hit / Dead の状態遷移を管理
+- [CharacterController.cs](Assets/Duel/Scripts/Character/CharacterController.cs): `ICharacterController` を実装した `PlayerController`（キーボード/マウス入力）と `AIController`（AIプロファイルに基づく意思決定）を切り替え可能にし、プレイヤーと敵でステートマシン本体を共用
+- [CharacterAnimatorController.cs](Assets/Duel/Scripts/Character/CharacterAnimatorController.cs): Animatorパラメータの設定をラップし、ステート側からAnimatorの詳細を隠蔽
+- [CharacterData.cs](Assets/Duel/Scripts/Character/CharacterData.cs): 移動速度・攻撃エフェクトのオフセット・アニメーターのOverrideControllerなどをScriptableObjectで外出し
+- [Slash.cs](Assets/Duel/Scripts/Slash.cs): 攻撃同士が重なった場合は相殺（KnockBack）、キャラクターに当たった場合は被弾（Hit）を判定し、[SpriteSliceEffect.cs](Assets/Duel/Scripts/Character/SpriteSliceEffect.cs)でスプライトを2分割して吹っ飛ばす演出を再生
 
 現状は体力（HP）の概念がなく、被弾1回でラウンド決着となる仕様。
 
 ### 敵AI
 
-[EnemyAIProfile.cs](Assets/Duel/Scripts/Character/EnemyAIProfile.cs) はScriptableObjectとして敵AIの行動パラメータを外出しした設計。
+[CharacterAIProfile.cs](Assets/Duel/Scripts/Character/CharacterAIProfile.cs) はScriptableObjectとして敵AIの行動パラメータを外出しした設計。[AIController](Assets/Duel/Scripts/Character/CharacterController.cs)がこのプロファイルを読み、`Character.GetAttackRange()`（攻撃エフェクトの当たり判定サイズ＋相手の当たり判定幅から動的に算出）を基準に距離帯を判定する。
 
-- 攻撃間合い（`attackRange`）と維持したい距離（`preferredDistance` / `distanceTolerance`）で距離帯を判定
 - 一定間隔（`reactionTimeMin` 〜 `reactionTimeMax` のランダム値）ごとに行動を再抽選する方式で反応速度にブレを持たせている
-- 距離帯ごとに攻撃・後退・接近の確率（`attackChance` / `retreatChance` / `approachChance`）を設定でき、プロファイルを複数用意することでAIの「性格」を差し替え可能
+- 相手の攻撃範囲＋`preferredDistanceMargin`を「維持したい間合い」とし、そこから`distanceTolerance`を超えて外れると近づく／離れるを選択
+- 間合いや攻撃範囲の内外に応じて攻撃・後退・接近の確率（`attackChance` / `retreatChance` / `approachChance`）を抽選し、プロファイルを複数用意することでAIの「性格」を差し替え可能（現在8種の敵キャラ分を用意）
+- 「詰める」と一度判断したら攻撃範囲に入るまで前進をやめない`rushing`フラグを持ち、安全な間合いと危険な間合いの間で判断がぶれて足踏みし続ける問題を回避
 
 有限ステートマシンやビヘイビアツリーではなく、距離帯判定＋確率抽選によるシンプルな意思決定モデル。パラメータ調整・プロファイル差し替えのしやすさを優先した設計。
 
@@ -55,18 +63,32 @@ Boot → TitleScreen → InitializeRound → RoundIntroduction → Round → Win
 
 ```
 Assets/Duel/
-├── Data/                 # ScriptableObjectのアセットデータ
-├── Scenes/               # Main.unity
+├── Data/                 # ScriptableObjectのアセットデータ（CharacterData, CharacterAIProfile, EnemyRoster, GameData）
+├── Prefabs/              # キャラクター・エフェクト等のプレハブ
+├── Animations/           # 各キャラクターのAnimator / AnimatorOverrideController
+├── Scenes/                # Main.unity（本編）, AnimationDemo.unity（アニメーション確認用）
+├── Shaders/               # スプライト切断エフェクト用シェーダー
 ├── Scripts/
-│   ├── Character/        # プレイヤー・敵・共通の状態機械、AIプロファイル
-│   ├── UI/               # タイトル・ラウンド導入・結果画面
-│   └── (root)/           # GameState、ラウンド進行、フェード等の全体制御
+│   ├── Character/         # キャラクター本体、ステートマシン、コントローラー、AIプロファイル
+│   ├── UI/                 # タイトル・ラウンド導入・結果画面
+│   └── (root)/              # GameState、ラウンド進行、フェード等の全体制御
 ```
+
+## 使用アセットについて
+
+キャラクター・背景スプライトおよびエフェクトの一部は、Unity Asset Storeで購入した以下のアセットを使用しています（[Assets/Store](Assets/Store)配下）。ゲームロジック・ステートマシン・AI・UI制御などのスクリプトは全て自作です。
+
+- Fantasy Martial Characters 3
+- Hero_Knight_2
+- Martial Hero
+- FREE Parallax Forest Background HQ
+- JMO Assets / Cartoon FX Remaster
 
 ## 既知の課題 / 今後の対応予定
 
 - 体力（HP）システムが無く一撃即決着。将来的にダメージ量・複数回被弾の仕組みを検討
 - 自動テストが未整備
+- プレイ可能なWebGLビルドをUnityRoomへ未投稿（予定）
 
 ## 開発ログ
 
