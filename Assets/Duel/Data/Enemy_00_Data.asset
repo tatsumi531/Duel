@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b594ad5e9355714488acf001b60e5ca6, type: 3}
   m_Name: Enemy_00_Data
   m_EditorClassIdentifier: Assembly-CSharp::CharacterData
+  animatorOverrideController: {fileID: 22100000, guid: d1ead6f1d7db66046b69c07eebc16f7a, type: 2}
+  spriteOffsetY: -0.4
   aiProfile: {fileID: 11400000, guid: 5b50e6512a63ce4478ef725a973069cd, type: 2}
-  spriteOffsetY: 0
   moveForwardSpeed: 4
   moveBackSpeed: 2.5
   attackEffectOffset: 1.5

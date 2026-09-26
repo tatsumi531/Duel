@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b594ad5e9355714488acf001b60e5ca6, type: 3}
   m_Name: Player_Data
   m_EditorClassIdentifier: Assembly-CSharp::CharacterData
+  animatorOverrideController: {fileID: 0}
+  spriteOffsetY: 0
   aiProfile: {fileID: 0}
-  spriteOffsetY: -0.4
   moveForwardSpeed: 4
   moveBackSpeed: 3.5
   attackEffectOffset: 3

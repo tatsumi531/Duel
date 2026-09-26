@@ -568,7 +568,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 4723107735738678597, guid: 174209194dbf2fb44aef1ea1ba76a2f1, type: 3}
+  m_Sprite: {fileID: 4723107735738678597, guid: 0c15ac97bbecb7e4f81704de4a185abd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1764,6 +1764,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameStateMachine
   gameData: {fileID: 11400000, guid: 0cff7a3d8ef052340813883cb123391b, type: 2}
+  enemyRoster: {fileID: 11400000, guid: d4f115e98e2b5c14985427fdaf686d5f, type: 2}
 --- !u!4 &882222508
 Transform:
   m_ObjectHideFlags: 0

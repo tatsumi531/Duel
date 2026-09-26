@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8465194eddad6f4fa9b839660f06994, type: 3}
   m_Name: EnemyRoster
   m_EditorClassIdentifier: Assembly-CSharp::EnemyRoster
-  enemies: []
+  enemies:
+  - {fileID: 11400000, guid: 3a6866594608b1c42a5251e68405c955, type: 2}
