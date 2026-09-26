@@ -13,4 +13,11 @@ MonoBehaviour:
   m_Name: EnemyRoster
   m_EditorClassIdentifier: Assembly-CSharp::EnemyRoster
   enemies:
+  - {fileID: 11400000, guid: debc7df8b4fb652469b0e6cca8ef5106, type: 2}
   - {fileID: 11400000, guid: 3a6866594608b1c42a5251e68405c955, type: 2}
+  - {fileID: 11400000, guid: a9f14ea5cea68494eb7df2abf823b82e, type: 2}
+  - {fileID: 11400000, guid: 6590e06fac75ebc4fb684a76e5a36708, type: 2}
+  - {fileID: 11400000, guid: fafeaf8f407779340ab1deb8555cb583, type: 2}
+  - {fileID: 11400000, guid: e01a05782e9079b4eb90a84d7b4f682e, type: 2}
+  - {fileID: 11400000, guid: 68d66c5afa73b4b46a8cc21435798a88, type: 2}
+  - {fileID: 11400000, guid: 9f78999f983171d4fa0e8bcecaebfa80, type: 2}
