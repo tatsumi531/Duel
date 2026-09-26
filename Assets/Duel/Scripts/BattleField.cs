@@ -10,14 +10,14 @@ public class BattleField
     public Character Player { get; }
     public Character Enemy { get; }
     public CharacterStateMachine PlayerStateMachine { get; }
-    public EnemyStateMachine EnemyStateMachine { get; }
+    public CharacterStateMachine EnemyStateMachine { get; }
 
 
     public BattleField()
     {
         Player = GameObject.FindAnyObjectByType<Player>();
         Enemy = GameObject.FindAnyObjectByType<Enemy>();
-        PlayerStateMachine = GameObject.FindAnyObjectByType<PlayerStateMachine>();
-        EnemyStateMachine = GameObject.FindAnyObjectByType<EnemyStateMachine>();
+        PlayerStateMachine = Player.gameObject.GetComponent<CharacterStateMachine>();
+        EnemyStateMachine = Enemy.gameObject.GetComponent<CharacterStateMachine>();
     }
 }

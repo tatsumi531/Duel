@@ -1,17 +1,14 @@
 using UnityEngine;
 
-public abstract class CharacterStateMachine : MonoBehaviour
+public class CharacterStateMachine : MonoBehaviour
 {
     [SerializeField] Character character;
     [SerializeField] Character opponent;
-
     protected CharacterContext context;
+    ICharacterController controller;
     ICharacterState currentState;
-
     public bool HasHit { get; private set; }
 
-
-    public abstract void InputAction();
 
     void Awake()
     {
@@ -20,7 +17,7 @@ public abstract class CharacterStateMachine : MonoBehaviour
 
     void Update()
     {
-        InputAction();
+        controller?.OnUpdate();
         currentState?.OnUpdate();
     }
 
@@ -32,8 +29,9 @@ public abstract class CharacterStateMachine : MonoBehaviour
         currentState.OnEnter();
     }
 
-    public void Initialize()
+    public void Initialize(CharacterAIProfile aiProfile = null)
     {
+        controller = aiProfile == null ? new PlayerController(context) : new AIController(context, aiProfile);
         HasHit = false;
         ChangeState(new CharacterState_Neutral(this, context));
     }

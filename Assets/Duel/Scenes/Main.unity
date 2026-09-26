@@ -221,7 +221,7 @@ GameObject:
   m_Component:
   - component: {fileID: 109446940}
   - component: {fileID: 109446941}
-  - component: {fileID: 109446942}
+  - component: {fileID: 109446945}
   - component: {fileID: 109446944}
   - component: {fileID: 109446943}
   - component: {fileID: 109446939}
@@ -399,20 +399,6 @@ MonoBehaviour:
   collider2d: {fileID: 109446938}
   slashPrefab: {fileID: 8345604282044127784, guid: f9eda0464b00b6e4fb0e7ca705a68af2, type: 3}
   direction: 1
---- !u!114 &109446942
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 109446936}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f43d325ed53418048b859532d1fd2e7c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerStateMachine
-  character: {fileID: 109446941}
-  opponent: {fileID: 1924725131}
 --- !u!95 &109446943
 Animator:
   serializedVersion: 7
@@ -448,7 +434,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharacterAnimationEventReceiver
   character: {fileID: 109446941}
-  stateMachine: {fileID: 109446942}
+  stateMachine: {fileID: 109446945}
+--- !u!114 &109446945
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 109446936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cb3a432706c3734c8f69d8a60b2f45b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterStateMachine
+  character: {fileID: 109446941}
+  opponent: {fileID: 1924725131}
 --- !u!1 &121950039
 GameObject:
   m_ObjectHideFlags: 0
@@ -2660,9 +2660,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1924725127}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c43616af837773642aba916d2a06e68b, type: 3}
+  m_Script: {fileID: 11500000, guid: 2cb3a432706c3734c8f69d8a60b2f45b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyStateMachine_Reactive
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterStateMachine
   character: {fileID: 1924725131}
   opponent: {fileID: 109446941}
 --- !u!1 &2054835179
