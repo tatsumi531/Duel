@@ -32,10 +32,9 @@ public abstract class CharacterStateMachine : MonoBehaviour
         currentState.OnEnter();
     }
 
-    public void Initialize(Vector3 initialPosition)
+    public void Initialize()
     {
         HasHit = false;
-        context.Character.transform.position = initialPosition;
         ChangeState(new CharacterState_Neutral(this, context));
     }
 

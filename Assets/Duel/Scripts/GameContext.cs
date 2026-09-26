@@ -1,6 +1,7 @@
 public class GameContext
 {
     public GameData GameData { get; }
+    public CharacterData PlayerCharacterData { get; }
     public EnemyRoster EnemyRoster { get; }
     public RoundTimer RoundTimer { get; }
     public RoundCounter RoundCounter { get; }
@@ -8,9 +9,10 @@ public class GameContext
     public BattleField BattleField { get; }
 
 
-    public GameContext(GameData gameData, EnemyRoster enemyRoster)
+    public GameContext(GameData gameData, CharacterData playerCharacterData, EnemyRoster enemyRoster)
     {
         GameData = gameData;
+        PlayerCharacterData = playerCharacterData;
         EnemyRoster = enemyRoster;
         RoundTimer = new RoundTimer();
         RoundCounter = new RoundCounter();

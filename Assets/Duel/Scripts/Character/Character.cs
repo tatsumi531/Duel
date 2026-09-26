@@ -7,12 +7,12 @@ public class Character : MonoBehaviour
     [SerializeField] Animator animator;
     [SerializeField] Collider2D collider2d;
     public Collider2D Collider2D => collider2d;
-    [SerializeField] CharacterData characterData;
     [SerializeField] protected Slash slashPrefab;
     [SerializeField] Direction direction = Direction.Right;
     public Direction Direction => direction;
 
     CharacterStateMachine stateMachine;
+    CharacterData characterData;
     SpriteSliceEffect sliceEffect;
     public CharacterAnimatorController AnimatorController { get; private set; }
 
@@ -27,13 +27,12 @@ public class Character : MonoBehaviour
         }
     }
 
-    public void Initialize(CharacterData overrideData = null)
+    public void Initialize(CharacterData characterData, Vector3 initializePosition)
     {
-        if (overrideData != null) {
-            characterData = overrideData;
-        }
+        this.characterData = characterData;
         sRenderer.transform.localPosition = new Vector3(0f, characterData.spriteOffsetY, 0f);
         AnimatorController.SetOverrideController(characterData.animatorOverrideController);
+        transform.position = initializePosition;
     }
 
     public void PlaySliceEffect()
