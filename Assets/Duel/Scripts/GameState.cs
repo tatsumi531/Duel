@@ -123,9 +123,9 @@ public class GameState_InitializeRound : GameStateBase
         Context.RoundCounter.IncrementRound();
         FadeScreen.Instance.StartFadeOut(ExitToken);
         yield return new WaitWhile(() => FadeScreen.Instance.IsFading);
-        Context.BattleField.Player.Initialize(Context.PlayerCharacterData, Context.BattleField.PlayerInitialPosition);
+        Context.BattleField.Player.Initialize(Context.PlayerCharacterData);
         CharacterData enemyData = Context.EnemyRoster.GetByRound(Context.RoundCounter.CurrentRound);
-        Context.BattleField.Enemy.Initialize(enemyData, Context.BattleField.EnemyInitialPosition);
+        Context.BattleField.Enemy.Initialize(enemyData);
         Context.BattleField.EnemyStateMachine.SetProfile(enemyData.aiProfile);
         Context.BattleField.PlayerStateMachine.Initialize();
         Context.BattleField.EnemyStateMachine.Initialize();

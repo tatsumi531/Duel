@@ -27,12 +27,12 @@ public class Character : MonoBehaviour
         }
     }
 
-    public void Initialize(CharacterData characterData, Vector3 initializePosition)
+    public void Initialize(CharacterData characterData)
     {
         this.characterData = characterData;
         sRenderer.transform.localPosition = new Vector3(0f, characterData.spriteOffsetY, 0f);
         AnimatorController.SetOverrideController(characterData.animatorOverrideController);
-        transform.position = initializePosition;
+        transform.position = direction == Direction.Right ? BattleField.LeftInitialPosition : BattleField.RightInitialPosition;
     }
 
     public void PlaySliceEffect()
@@ -71,7 +71,9 @@ public class Character : MonoBehaviour
     {
         float speed = sign > 0 ? characterData.moveForwardSpeed : characterData.moveBackSpeed;
         float deltaX = sign * (int)direction * speed * Time.deltaTime;
-        transform.Translate(deltaX, 0f, 0f);
+        Vector3 position = transform.position;
+        position.x = Mathf.Clamp(position.x + deltaX, BattleField.LeftLimit.x, BattleField.RightLimit.x);
+        transform.position = position;
     }
 }
 
