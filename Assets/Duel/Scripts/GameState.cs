@@ -198,6 +198,7 @@ public class GameState_Win : GameStateBase
 
     IEnumerator StateFlow()
     {
+        Context.BattleField.PlayerStateMachine.DeactivateState();
         Context.UI.RoundResult.Show(ResultScreen.ShowType.Win, Context);
         yield return new WaitForSeconds(displayTime);
         Machine.ChangeState(new GameState_InitializeRound(Machine, Context));

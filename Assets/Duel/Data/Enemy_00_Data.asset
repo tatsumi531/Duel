@@ -15,6 +15,6 @@ MonoBehaviour:
   animatorOverrideController: {fileID: 22100000, guid: d1ead6f1d7db66046b69c07eebc16f7a, type: 2}
   spriteOffsetY: -0.4
   aiProfile: {fileID: 11400000, guid: 5b50e6512a63ce4478ef725a973069cd, type: 2}
-  moveForwardSpeed: 4
-  moveBackSpeed: 2.5
+  moveForwardSpeed: 5
+  moveBackSpeed: 4
   attackEffectOffset: 1.5
