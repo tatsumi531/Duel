@@ -6,8 +6,8 @@ public class Slash : MonoBehaviour
     [SerializeField] GameObject clashEffectPrefab;
     [SerializeField] GameObject hitEffectPrefab;
     [SerializeField] float hitEffectOffsetRange = 1.5f;
+    [SerializeField] AudioClip hitSound;
     [SerializeField] AudioClip clashSound;
-    [SerializeField, Range(0f, 1f)] float clashSoundVolume = 1f;
     readonly float lifeTime = 0.1f;
 
     CharacterStateMachine owner;
@@ -75,7 +75,7 @@ public class Slash : MonoBehaviour
         other.owner.NotifyKnockBack();
         var spawned = Instantiate(clashEffectPrefab);
         spawned.transform.position = clashEffectPosition;
-        SoundPlayer.PlayOneShot(clashSound, clashSoundVolume);
+        SoundPlayer.PlayOneShot(clashSound);
         Destroy(gameObject);
         Destroy(other.gameObject);
     }
@@ -87,6 +87,7 @@ public class Slash : MonoBehaviour
         var offset = new Vector3(Random.Range(-hitEffectOffsetRange, hitEffectOffsetRange), Random.Range(-hitEffectOffsetRange, hitEffectOffsetRange), 0f);
         var spawned = Instantiate(hitEffectPrefab);
         spawned.transform.position = target.transform.position + offset;
+        SoundPlayer.PlayOneShot(hitSound);
         Destroy(gameObject);
     }
 }

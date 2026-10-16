@@ -446,6 +446,7 @@ MonoBehaviour:
   animator: {fileID: 109446943}
   collider2d: {fileID: 109446938}
   slashPrefab: {fileID: 8345604282044127784, guid: f9eda0464b00b6e4fb0e7ca705a68af2, type: 3}
+  swordWhip: {fileID: 8300000, guid: 8f9ac1306cc185f45af65856292f7980, type: 3}
   direction: 1
 --- !u!1 &121950039
 GameObject:
@@ -2778,6 +2779,7 @@ MonoBehaviour:
   animator: {fileID: 121950040}
   collider2d: {fileID: 1924725129}
   slashPrefab: {fileID: 8345604282044127784, guid: f9eda0464b00b6e4fb0e7ca705a68af2, type: 3}
+  swordWhip: {fileID: 8300000, guid: 8f9ac1306cc185f45af65856292f7980, type: 3}
   direction: -1
 --- !u!1 &2054835179
 GameObject:

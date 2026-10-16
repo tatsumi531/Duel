@@ -7,7 +7,8 @@ public class Character : MonoBehaviour
     [SerializeField] Animator animator;
     [SerializeField] Collider2D collider2d;
     public Collider2D Collider2D => collider2d;
-    [SerializeField] protected Slash slashPrefab;
+    [SerializeField] Slash slashPrefab;
+    [SerializeField] AudioClip swordWhip;
     [SerializeField] Direction direction = Direction.Right;
     public Direction Direction => direction;
 
@@ -57,6 +58,7 @@ public class Character : MonoBehaviour
         var spawned = Instantiate(slashPrefab, spawnPosition, Quaternion.identity);
         spawned.transform.localScale = new Vector3((int)Direction, 1f, 1f);
         spawned.SetOwner(stateMachine);
+        SoundPlayer.PlayOneShot(swordWhip);
     }
 
     public float GetAttackRange(Character opponent)
