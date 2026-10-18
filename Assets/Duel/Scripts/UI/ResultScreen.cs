@@ -28,11 +28,11 @@ public abstract class ResultScreen : MonoBehaviour
 
     protected string FormatElapsedTime(float elapsedSeconds)
     {
-        // 分と秒の境の四捨五入のズレを回避するために1/100秒単位で分解する。
-        long totalCentiseconds = (long)Mathf.Round(elapsedSeconds * 100f);
-        long minutes = totalCentiseconds / 6000;
-        float seconds = totalCentiseconds % 6000 / 100f;
+        // 分と秒の境の四捨五入のズレを回避するために1/1000秒単位で分解する。
+        long totalMilliseconds = (long)Mathf.Round(elapsedSeconds * 1000f);
+        long minutes = totalMilliseconds / 60000;
+        float seconds = totalMilliseconds % 60000 / 1000f;
 
-        return minutes > 0 ? $"{minutes}:{seconds:00.00}" + "秒" : $"{seconds:0.00}" + "秒";
+        return minutes > 0 ? $"{minutes}:{seconds:00.000}" + "秒" : $"{seconds:0.000}" + "秒";
     }
 }
