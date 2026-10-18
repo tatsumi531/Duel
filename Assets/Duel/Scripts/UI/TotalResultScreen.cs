@@ -18,12 +18,16 @@ public class TotalResultScreen : ResultScreen
 
     protected override void SetContent(ShowType showAs, GameContext gameContext)
     {
+        string displayText;
         if (gameContext.RoundCounter.CurrentRound == 1) {
-            result.text = "敗北";
+            displayText = "敗北";
         } else {
-            result.text = (gameContext.RoundCounter.CurrentRound - 1).ToString() + "人抜き";
+            displayText = (gameContext.RoundCounter.CurrentRound - 1).ToString() + "人抜き";
+            if (!gameContext.RoundCounter.ExistNextRound(gameContext.GameData)) {
+                displayText += "達成!!";
+            }
         }
-
+        result.text = displayText;
         totalElapsed.text = FormatElapsedTime(gameContext.RoundTimer.TotalElapsed);
     }
 }

@@ -449,6 +449,26 @@ MonoBehaviour:
   slashPrefab: {fileID: 8345604282044127784, guid: f9eda0464b00b6e4fb0e7ca705a68af2, type: 3}
   swordWhip: {fileID: 8300000, guid: 8f9ac1306cc185f45af65856292f7980, type: 3}
   direction: 1
+--- !u!114 &109446947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 109446936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e90371cd6751bab4e95f7baddd7fdc11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpriteSliceEffect
+  sliceMaterial: {fileID: 2100000, guid: 44a68a8a896c2ce4aa50060c935fe7e0, type: 2}
+  cutAngle: 20
+  angleJitter: 15
+  positionJitter: 0.15
+  launchSideDistance: 10
+  launchDropDistance: 10
+  spinAngle: 260
+  duration: 1.8
 --- !u!1 &121950039
 GameObject:
   m_ObjectHideFlags: 0
@@ -2783,6 +2803,26 @@ MonoBehaviour:
   slashPrefab: {fileID: 8345604282044127784, guid: f9eda0464b00b6e4fb0e7ca705a68af2, type: 3}
   swordWhip: {fileID: 8300000, guid: 8f9ac1306cc185f45af65856292f7980, type: 3}
   direction: -1
+--- !u!114 &1924725135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1924725127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e90371cd6751bab4e95f7baddd7fdc11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpriteSliceEffect
+  sliceMaterial: {fileID: 2100000, guid: 44a68a8a896c2ce4aa50060c935fe7e0, type: 2}
+  cutAngle: 20
+  angleJitter: 15
+  positionJitter: 0.15
+  launchSideDistance: 10
+  launchDropDistance: 10
+  spinAngle: 260
+  duration: 1.8
 --- !u!1 &2054835179
 GameObject:
   m_ObjectHideFlags: 0
@@ -3181,43 +3221,3 @@ SceneRoots:
   - {fileID: 1060941651}
   - {fileID: 109446940}
   - {fileID: 1924725132}
---- !u!114 &109446947
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 109446936}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e90371cd6751bab4e95f7baddd7fdc11, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SpriteSliceEffect
-  sliceMaterial: {fileID: 2100000, guid: 44a68a8a896c2ce4aa50060c935fe7e0, type: 2}
-  cutAngle: 20
-  angleJitter: 15
-  positionJitter: 0.15
-  launchSideDistance: 10
-  launchDropDistance: 10
-  spinAngle: 260
-  duration: 1.8
---- !u!114 &1924725135
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1924725127}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e90371cd6751bab4e95f7baddd7fdc11, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SpriteSliceEffect
-  sliceMaterial: {fileID: 2100000, guid: 44a68a8a896c2ce4aa50060c935fe7e0, type: 2}
-  cutAngle: 20
-  angleJitter: 15
-  positionJitter: 0.15
-  launchSideDistance: 10
-  launchDropDistance: 10
-  spinAngle: 260
-  duration: 1.8

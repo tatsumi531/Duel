@@ -202,7 +202,12 @@ public class GameState_Win : GameStateBase
         Context.PlayerStateMachine.DeactivateState();
         Context.UI.RoundResult.Show(ResultScreen.ShowType.Win, Context);
         yield return new WaitForSeconds(displayTime);
-        Machine.ChangeState(new GameState_InitializeRound(Machine, Context));
+        if (Context.RoundCounter.ExistNextRound(Context.GameData)) {
+            Machine.ChangeState(new GameState_InitializeRound(Machine, Context));
+        } else {
+            Context.RoundCounter.IncrementRound();
+            Machine.ChangeState(new GameState_TotalResult(Machine, Context));
+        }
     }
 
     protected override void OnExit()
