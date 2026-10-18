@@ -35,6 +35,7 @@ public class CharacterState_Neutral : CharacterStateBase
     {
         Context.Character.SpriteRenderer.enabled = true;
         Context.Character.AnimatorController.SetEnabled(true);
+        Context.Character.AnimatorController.SetIdleTrigger();
         Context.Character.Collider2D.enabled = true;
     }
 }

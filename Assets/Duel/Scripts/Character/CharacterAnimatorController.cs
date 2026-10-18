@@ -7,6 +7,7 @@ public class CharacterAnimatorController
     readonly int attackTriggerHash = Animator.StringToHash("AttackTrigger");
     readonly int knockBackTriggerHash = Animator.StringToHash("KnockBackTrigger");
     readonly int recoveryTriggerHash = Animator.StringToHash("RecoveryTrigger");
+    readonly int idleTriggerHash = Animator.StringToHash("IdleTrigger");
 
     
     public CharacterAnimatorController(Animator animator)
@@ -44,5 +45,10 @@ public class CharacterAnimatorController
     public void SetRecoveryTrigger()
     {
         animator.SetTrigger(recoveryTriggerHash);
+    }
+
+    public void SetIdleTrigger()
+    {
+        animator.SetTrigger(idleTriggerHash);
     }
 }
