@@ -188,19 +188,13 @@ public class CharacterState_Hit : CharacterStateBase
     {
         elapsed += Time.deltaTime;
         if (elapsed >= duration) {
-            Machine.ChangeState(new CharacterState_Dead(Machine, Context));
+            Machine.ChangeState(new CharacterState_NoneActive(Machine, Context));
         }
     }
 }
 
 
-public class CharacterState_Dead : CharacterStateBase
+public class CharacterState_NoneActive : CharacterStateBase
 {
-    public CharacterState_Dead(CharacterStateMachine machine, CharacterContext context) : base(machine, context) {}
-}
-
-
-public class CharacterState_Win : CharacterStateBase
-{
-    public CharacterState_Win(CharacterStateMachine machine, CharacterContext context) : base(machine, context) {}
+    public CharacterState_NoneActive(CharacterStateMachine machine, CharacterContext context) : base(machine, context) {}
 }
