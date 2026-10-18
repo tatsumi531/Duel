@@ -1,6 +1,7 @@
 public class RoundCounter
 {
     public int CurrentRound { get; private set; }
+    public int WinRoundCount { get; private set; }
 
 
     public void IncrementRound()
@@ -8,9 +9,15 @@ public class RoundCounter
         CurrentRound++;
     }
 
+    public void IncrementWinRound()
+    {
+        WinRoundCount++;
+    }
+
     public void ResetRound()
     {
         CurrentRound = 0;
+        WinRoundCount = 0;
     }
 
     public bool ExistNextRound(GameData gameData)
