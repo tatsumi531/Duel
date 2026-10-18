@@ -44,7 +44,9 @@ public class Slash : MonoBehaviour
             return;
         }
         if (collider.TryGetComponent<CharacterStateMachine>(out var target) && target != owner) {
-            touchedCharacter = target;
+            if (!owner.HasHit) {
+                touchedCharacter = target;
+            }
         }
     }
 
