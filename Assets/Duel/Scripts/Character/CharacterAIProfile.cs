@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "CharacterAIProfile", menuName = "Scriptable Objects/Character AI Profile")]

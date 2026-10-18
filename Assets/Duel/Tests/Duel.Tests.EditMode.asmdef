@@ -1,5 +1,5 @@
 {
-    "name": "Tests",
+    "name": "Duel.Tests.EditMode",
     "rootNamespace": "",
     "references": [
         "UnityEngine.TestRunner",

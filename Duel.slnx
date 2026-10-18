@@ -2,7 +2,7 @@
   <Project Path="Assembly-CSharp.csproj" />
   <Project Path="Duel.Core.csproj" />
   <Project Path="KinoBloom.Runtime.csproj" />
-  <Project Path="Tests.csproj" />
+  <Project Path="Duel.Tests.EditMode.csproj" />
   <Project Path="Assembly-CSharp-firstpass.csproj" />
   <Project Path="CFXRDemo.csproj" />
   <Project Path="ToonyColorsPro.Demo.Editor.csproj" />

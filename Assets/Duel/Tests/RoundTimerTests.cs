@@ -11,7 +11,7 @@ public class RoundTimerTests
     }
 
     [Test]
-    public void RoundResetでラウンド経過時間のみリセットされる()
+    public void ResetRoundでラウンド経過時間のみリセットされる()
     {
         timer.OnUpdate(5f);
         timer.ResetRound();

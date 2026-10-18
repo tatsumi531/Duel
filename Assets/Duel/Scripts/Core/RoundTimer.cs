@@ -4,10 +4,10 @@ public class RoundTimer
     public float TotalElapsed { get; private set; }
 
 
-    public void OnUpdate(float deltatime)
+    public void OnUpdate(float deltaTime)
     {
-        RoundElapsed += deltatime;
-        TotalElapsed += deltatime;
+        RoundElapsed += deltaTime;
+        TotalElapsed += deltaTime;
     }
 
     public void ResetRound()
