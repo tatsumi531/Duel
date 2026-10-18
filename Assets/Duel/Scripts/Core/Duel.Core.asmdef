@@ -1,0 +1,7 @@
+{
+	"name": "Duel.Core",
+	"rootNamespace": "",
+    "references": [],
+    "autoReferenced": true,
+    "noEngineReferences": false
+}

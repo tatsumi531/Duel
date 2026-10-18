@@ -204,7 +204,7 @@ public class GameState_Win : GameStateBase
         Context.UI.RoundResult.Show(ResultScreen.ShowType.Win, Context);
         yield return new WaitForSeconds(displayTime);
 
-        if (Context.RoundCounter.ExistNextRound(Context.GameData)) {
+        if (Context.RoundCounter.ExistNextRound(Context.GameData.maxRounds)) {
             Machine.ChangeState(new GameState_InitializeRound(Machine, Context));
         } else {
             Machine.ChangeState(new GameState_TotalResult(Machine, Context));
@@ -266,6 +266,6 @@ public class GameState_TotalResult : GameStateBase
         Context.UI.TotalResult.Hide();
         Context.RoundTimer.ResetRound();
         Context.RoundTimer.ResetTotal();
-        Context.RoundCounter.ResetRound();
+        Context.RoundCounter.ResetAll();
     }
 }

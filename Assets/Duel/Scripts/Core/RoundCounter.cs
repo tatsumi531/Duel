@@ -14,14 +14,14 @@ public class RoundCounter
         WinRoundCount++;
     }
 
-    public void ResetRound()
+    public void ResetAll()
     {
         CurrentRound = 0;
         WinRoundCount = 0;
     }
 
-    public bool ExistNextRound(GameData gameData)
+    public bool ExistNextRound(int maxRounds)
     {
-        return CurrentRound < gameData.maxRounds;
+        return CurrentRound < maxRounds;
     }
 }
