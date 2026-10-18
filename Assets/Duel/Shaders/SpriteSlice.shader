@@ -3,9 +3,9 @@ Shader "Duel/SpriteSlice"
     Properties
     {
         _MainTex ("Sprite Texture", 2D) = "white" {}
-        [PerRendererData] _CutPoint ("Cut Point (Local Space)", Vector) = (0, 0, 0, 0)
-        [PerRendererData] _CutNormal ("Cut Normal (Local Space)", Vector) = (0, 1, 0, 0)
-        [PerRendererData] _KeepSide ("Keep Side (+1 / -1)", Float) = 1
+        _CutPoint ("Cut Point (Local Space)", Vector) = (0, 0, 0, 0)
+        _CutNormal ("Cut Normal (Local Space)", Vector) = (0, 1, 0, 0)
+        _KeepSide ("Keep Side (+1 / -1)", Float) = 1
         _EdgeWidth ("Edge Width", Range(0, 0.5)) = 0.05
         _EdgeColor ("Edge Color", Color) = (1, 1, 1, 1)
     }
@@ -64,7 +64,11 @@ Shader "Duel/SpriteSlice"
                 Varyings OUT;
                 OUT.positionHCS = TransformObjectToHClip(IN.positionOS.xyz);
                 OUT.uv = IN.uv;
-                OUT.color = IN.color;
+                // SpriteRenderer.color reaches the shader either baked into the vertex
+                // color stream (dynamic sprite batching) or through unity_SpriteColor
+                // (non-batched / SRP Batcher path). Only one of them carries it, so
+                // multiplying both is what URP's own sprite shaders do.
+                OUT.color = IN.color * unity_SpriteColor;
                 OUT.localPos = IN.positionOS.xy;
                 return OUT;
             }
