@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "CharacterAIProfile", menuName = "Scriptable Objects/Character AI Profile")]
@@ -26,4 +27,16 @@ public class CharacterAIProfile : ScriptableObject
     [Range(0f, 1f)]
     [Tooltip("維持したい間合いにいるとき、詰めにいく確率")]
     public float approachChance = 0.3f;
+
+
+    public AIDecisionParameters ToParameters()
+    {
+        AIDecisionParameters param = new AIDecisionParameters();
+        param.preferredDistanceMargin = preferredDistanceMargin;
+        param.distanceTolerance = distanceTolerance;
+        param.attackChance = attackChance;
+        param.retreatChance = retreatChance;
+        param.approachChance = approachChance;
+        return param;
+    }
 }
