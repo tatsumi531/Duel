@@ -172,7 +172,7 @@ public class GameState_Round : GameStateBase
 
     public override void OnUpdate()
     {
-        Context.RoundTimer.OnUpdate();
+        Context.RoundTimer.OnUpdate(Time.deltaTime);
         if (Context.EnemyStateMachine.HasHit) {
             Machine.ChangeState(new GameState_Win(Machine, Context));
             return;

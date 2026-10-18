@@ -1,15 +1,13 @@
-using UnityEngine;
-
 public class RoundTimer
 {
     public float RoundElapsed { get; private set; }
     public float TotalElapsed { get; private set; }
 
 
-    public void OnUpdate()
+    public void OnUpdate(float deltatime)
     {
-        RoundElapsed += Time.deltaTime;
-        TotalElapsed += Time.deltaTime;
+        RoundElapsed += deltatime;
+        TotalElapsed += deltatime;
     }
 
     public void ResetRound()
