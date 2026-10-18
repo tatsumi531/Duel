@@ -198,3 +198,9 @@ public class CharacterState_Dead : CharacterStateBase
 {
     public CharacterState_Dead(CharacterStateMachine machine, CharacterContext context) : base(machine, context) {}
 }
+
+
+public class CharacterState_Win : CharacterStateBase
+{
+    public CharacterState_Win(CharacterStateMachine machine, CharacterContext context) : base(machine, context) {}
+}

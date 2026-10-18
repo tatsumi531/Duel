@@ -42,7 +42,7 @@ public class CharacterStateMachine : MonoBehaviour
 
     public void DeactivateState()
     {
-        ChangeState(new CharacterState_Neutral(this, context));
+        ChangeState(new CharacterState_Win(this, context));
     }
 
     public void NotifyHit()
