@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Threading;
 using DG.Tweening;
 using UnityEngine;

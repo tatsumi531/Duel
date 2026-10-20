@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Threading;
 using UnityEngine;
 
@@ -54,7 +53,8 @@ public abstract class GameStateBase : IGameState
             await flow(ExitToken);
         }
         catch (OperationCanceledException) {
-            
+            // ステート離脱時のキャンセルは正常系。
+            // 遷移処理の途中に割り込む形になるため何もしない。
         }
     }
 }
