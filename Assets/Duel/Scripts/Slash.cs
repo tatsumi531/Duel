@@ -22,10 +22,9 @@ public class Slash : MonoBehaviour
         this.owner = owner;
     }
 
-    IEnumerator Start()
+    void Start()
     {
-        yield return new WaitForSeconds(lifeTime);
-        Destroy(gameObject);
+        Destroy(gameObject, lifeTime);
     }
 
     void OnTriggerEnter2D(Collider2D collider)
