@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Threading;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,21 +23,22 @@ public class IntroductionScreen : MonoBehaviour
         secondText.transform.localScale = Vector3.one * 3f;
     }
 
-    public IEnumerator PlayFlow()
+    public async Awaitable PlayFlow(CancellationToken token)
     {
         float a = 1f;
+        float scale = 1f;
         float d = 0.5f;
         float d2 = 0.25f;
         Sequence seq = DOTween.Sequence();
         seq.Append(firstText.DOFade(a, d));
-        seq.Join(firstText.transform.DOScale(a, d));
+        seq.Join(firstText.transform.DOScale(scale, d));
         seq.Append(firstText.DOFade(0f, d));
         seq.AppendInterval(d);
         seq.Append(secondText.DOFade(a, d2));
-        seq.Join(secondText.transform.DOScale(a, d2));
+        seq.Join(secondText.transform.DOScale(scale, d2));
         seq.AppendInterval(d);
         seq.AppendCallback(() => secondText.color = Color.clear);
         seq.Play();
-        yield return new WaitWhile(seq.IsPlaying);
+        await seq.WaitForCompletionAsync(token);
     }
 }

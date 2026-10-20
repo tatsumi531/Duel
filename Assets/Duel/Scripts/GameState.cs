@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Threading;
 using UnityEngine;
@@ -16,7 +17,6 @@ public abstract class GameStateBase : IGameState
     protected GameContext Context { get; }
     protected CancellationToken ExitToken => exitCts.Token;
     CancellationTokenSource exitCts;
-    Coroutine runningFlow;
 
 
     protected GameStateBase(GameStateMachine machine, GameContext context)
@@ -36,10 +36,6 @@ public abstract class GameStateBase : IGameState
     {
         exitCts.Cancel();
         exitCts.Dispose();
-        if (runningFlow != null) {
-            Machine.StopCoroutine(runningFlow);
-            runningFlow = null;
-        }
         OnExit();
     }
 
@@ -47,9 +43,19 @@ public abstract class GameStateBase : IGameState
     public virtual void OnUpdate() {}
     protected virtual void OnExit() {}
 
-    protected void RunFlow(IEnumerator flow)
+    protected void RunFlow(Func<CancellationToken, Awaitable> flow)
     {
-        runningFlow = Machine.StartCoroutine(flow);
+        RunFlowAsync(flow);
+    }
+
+    async void RunFlowAsync(Func<CancellationToken, Awaitable> flow)
+    {
+        try {
+            await flow(ExitToken);
+        }
+        catch (OperationCanceledException) {
+            
+        }
     }
 }
 
@@ -81,7 +87,12 @@ public class GameState_TitleScreen : GameStateBase
         Context.UI.Title.gameObject.SetActive(true);
         Context.UI.Title.StartRequested += HandleStartRequested;
         Context.UI.Title.ExitRequested += HandleExitRequested;
-        FadeScreen.Instance.StartFadeIn(ExitToken);
+        RunFlow(StateFlow);
+    }
+
+    async Awaitable StateFlow(CancellationToken token)
+    {
+        await FadeScreen.Instance.FadeInAsync(token);
     }
 
     protected override void OnExit()
@@ -116,23 +127,21 @@ public class GameState_InitializeRound : GameStateBase
 
     protected override void OnEnter()
     {
-        RunFlow(StateFlow());
+        RunFlow(StateFlow);
     }
 
-    IEnumerator StateFlow()
+    async Awaitable StateFlow(CancellationToken token)
     {
         Context.RoundTimer.ResetRound();
         Context.RoundCounter.IncrementRound();
-        FadeScreen.Instance.StartFadeOut(ExitToken);
-        yield return new WaitWhile(() => FadeScreen.Instance.IsFading);
+        await FadeScreen.Instance.FadeOutAsync(token);
         Context.Player.Initialize(Context.PlayerCharacterData);
         Context.PlayerStateMachine.Initialize();
         CharacterData enemyData = Context.EnemyRoster.GetByRound(Context.RoundCounter.CurrentRound);
         Context.Enemy.Initialize(enemyData);
         Context.EnemyStateMachine.Initialize(enemyData.aiProfile);
-        yield return new WaitForSeconds(delaySeconds);
-        FadeScreen.Instance.StartFadeIn(ExitToken);
-        yield return new WaitWhile(() => FadeScreen.Instance.IsFading);
+        await Awaitable.WaitForSecondsAsync(delaySeconds, token);
+        await FadeScreen.Instance.FadeInAsync(token);
         Machine.ChangeState(new GameState_RoundIntroduction(Machine, Context));
     }
 }
@@ -144,12 +153,12 @@ public class GameState_RoundIntroduction : GameStateBase
 
     protected override void OnEnter()
     {
-        RunFlow(StateFlow());
+        RunFlow(StateFlow);
     }
 
-    IEnumerator StateFlow()
+    async Awaitable StateFlow(CancellationToken token)
     {
-        yield return Context.UI.Introduction.PlayFlow();
+        await Context.UI.Introduction.PlayFlow(token);
         Machine.ChangeState(new GameState_Round(Machine, Context));
     }
 
@@ -194,15 +203,15 @@ public class GameState_Win : GameStateBase
 
     protected override void OnEnter()
     {
-        RunFlow(StateFlow());
+        RunFlow(StateFlow);
     }
 
-    IEnumerator StateFlow()
+    async Awaitable StateFlow(CancellationToken token)
     {
         Context.PlayerStateMachine.DeactivateState();
         Context.RoundCounter.IncrementWinRound();
         Context.UI.RoundResult.Show(ResultScreen.ShowType.Win, Context);
-        yield return new WaitForSeconds(displayTime);
+        await Awaitable.WaitForSecondsAsync(displayTime, token);
 
         if (Context.RoundCounter.ExistNextRound(Context.GameData.maxRounds)) {
             Machine.ChangeState(new GameState_InitializeRound(Machine, Context));
@@ -227,14 +236,14 @@ public class GameState_Lose : GameStateBase
 
     protected override void OnEnter()
     {
-        RunFlow(StateFlow());
+        RunFlow(StateFlow);
     }
 
-    IEnumerator StateFlow()
+    async Awaitable StateFlow(CancellationToken token)
     {
         Context.EnemyStateMachine.DeactivateState();
         Context.UI.RoundResult.Show(ResultScreen.ShowType.Lose, Context);
-        yield return new WaitForSeconds(displayTime);
+        await Awaitable.WaitForSecondsAsync(displayTime, token);
         Machine.ChangeState(new GameState_TotalResult(Machine, Context));
     }
 
