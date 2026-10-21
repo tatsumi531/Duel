@@ -1,11 +1,13 @@
-# Duel
+# 一太刀侍（Duel）
 
-1対1の対戦アクションゲーム。ポートフォリオ用途および敵AI実装の学習用に個人開発中。
-UnityRoomへの投稿を予定。
+1対1の対戦アクションゲーム。一太刀当たれば決着する一撃必殺のルールで、間合いの読み合いに特化している。
+ポートフォリオ用途および敵AI実装の学習用に個人開発中。UnityRoomへの投稿を予定。
 
 ## 概要
 
+- タイトル: 一太刀侍
 - ジャンル: 1v1対戦アクション（2D）
+- ルール: 一太刀当たれば決着。体力（HP）の概念は持たない
 - エンジン: Unity 6000.5.5f1
 - 開発形態: 個人開発
 - 目的: 転職活動用ポートフォリオ／敵AI実装の学習
@@ -14,7 +16,7 @@ UnityRoomへの投稿を予定。
 
 - Unity 2D（Sprite / SpriteRenderer ベース、URP）
 - Unity Input System（キーボード / マウス入力）
-- DOTween（ノックバックやUI演出のトゥイーン処理）
+- DOTween（ノックバックやUI演出のTween処理）
 - Unity 6の `Awaitable` + `CancellationToken`（ゲーム進行フロー全体の非同期制御）
 - カスタムシェーダー（[SpriteSlice.shader](Assets/Duel/Shaders)）によるヒット時のスプライト切断エフェクト
 - Unity Test Framework（純粋ロジックのEditModeテスト）
@@ -29,7 +31,7 @@ UnityRoomへの投稿を予定。
 - ステート切り替え時に `CancellationTokenSource` を発行・破棄し、非同期処理の後始末を自動化
 - `RunFlow(Func<CancellationToken, Awaitable>)` で時間軸を伴う処理を「Flow」として起動し、フェード・待機・UI演出を `await` で直列に記述できるようにしている
 - 非同期の境界となる `async void` を `RunFlow` の1箇所に閉じ込め、キャンセル例外のみそこで処理する。それ以外の例外は握り潰さずConsoleへ出す方針
-- DOTweenのトゥイーンは[TweenAwaitableExtensions.cs](Assets/Duel/Scripts/TweenAwaitableExtensions.cs)で `Awaitable` に変換し、完了待ちも `await` に統一している
+- DOTweenのTweenは[TweenAwaitableExtensions.cs](Assets/Duel/Scripts/TweenAwaitableExtensions.cs)で `Awaitable` に変換し、完了待ちも `await` に統一している
 
 時間軸を伴う処理はコルーチンを使わず `Awaitable` に統一している。一方、ノックバックのように単発で完結するキャラクター演出はDOTweenのコールバックで処理しており、キャラクター側のステートマシンまで作り替える影響範囲と見合わないため、統一の対象外としている。
 
@@ -42,6 +44,17 @@ Boot → TitleScreen → InitializeRound → RoundIntroduction → Round → Win
 
 `Boot` でプレイヤーと敵のステートマシンに互いの参照を渡し、`InitializeRound` で[EnemyRoster.cs](Assets/Duel/Scripts/Character/EnemyRoster.cs)からラウンド数に応じた敵データを取得して初期化する。キャラクターの初期位置と移動可能範囲は[BattleField.cs](Assets/Duel/Scripts/BattleField.cs)が保持する値を基準にしている。
 
+### 依存の受け渡し
+
+シーン上の依存は[GameStateMachine.cs](Assets/Duel/Scripts/GameStateMachine.cs)の `[SerializeField]` に集約し、[GameContext.cs](Assets/Duel/Scripts/GameContext.cs)にまとめて各ステートへ渡している。シングルトンもシーン検索（`FindAnyObjectByType`）も使っていないため、何に依存しているかはInspectorを見れば分かり、初期化順序への暗黙の前提も持たない。
+
+- UIの参照は[UIRoot.cs](Assets/Duel/Scripts/UI/UIRoot.cs)に集約し、各ステートからは `Context.UI.Title` のように `GameContext` 経由で参照する
+- フェード演出（[FadeScreen.cs](Assets/Duel/Scripts/FadeScreen.cs)）も同じ経路で渡しており、グローバルな入口を持たない
+- `[SerializeField]` 経由のため非アクティブなUIも参照でき、`FindAnyObjectByType` のように初期状態の変更で参照が取れなくなることがない
+- 単一シーン構成（Main.unity）でシーンをまたぐ参照が不要なため、シングルトンを導入する理由がない
+
+DIコンテナやインターフェースによる抽象化は、差し替える実装が存在しないため導入していない。
+
 ### キャラクター
 
 - [Character.cs](Assets/Duel/Scripts/Character/Character.cs): 移動・攻撃エフェクト（[Slash.cs](Assets/Duel/Scripts/Slash.cs)）の生成・攻撃レンジ計算などMonoBehaviourとしての実体を担当
@@ -51,7 +64,7 @@ Boot → TitleScreen → InitializeRound → RoundIntroduction → Round → Win
 - [CharacterData.cs](Assets/Duel/Scripts/Character/CharacterData.cs): 移動速度・攻撃エフェクトのオフセット・アニメーターのOverrideControllerなどをScriptableObjectで外出し
 - [Slash.cs](Assets/Duel/Scripts/Slash.cs): 攻撃同士が重なった場合は相殺（KnockBack）、キャラクターに当たった場合は被弾（Hit）を判定し、[SpriteSliceEffect.cs](Assets/Duel/Scripts/Character/SpriteSliceEffect.cs)でスプライトを2分割して吹っ飛ばす演出を再生
 
-現状は体力（HP）の概念がなく、被弾1回でラウンド決着となる仕様。
+体力（HP）の概念は意図的に持たせていない。タイトルの「一太刀侍」が示すとおり、一太刀が当たれば決着という一撃必殺のルールが本作のコンセプトであり、`Slash` が判定するのも「相手に当たったか」「攻撃同士が相殺したか」の2通りだけである。ダメージ量や残り体力の管理が無いぶん、間合いの読み合いそのものがゲームの中心になり、後述の敵AIが距離帯の判定を軸に組まれているのもこのルールに由来する。
 
 ### 敵AI
 
@@ -95,7 +108,7 @@ Assets/Duel/
 ├── Scripts/
 │   ├── Core/              # MonoBehaviourに依存しない純粋ロジック（Duel.Coreアセンブリ）
 │   ├── Character/         # キャラクター本体、ステートマシン、コントローラー、AIプロファイル
-│   ├── UI/                # タイトル・ラウンド導入・結果画面
+│   ├── UI/                # タイトル・ラウンド導入・結果画面、UI参照の集約（UIRoot）
 │   └── (root)/            # GameState、フェード、斬撃判定等の全体制御
 └── Tests/                 # EditModeテスト（Duel.Tests.EditModeアセンブリ）
 ```
@@ -112,7 +125,6 @@ Assets/Duel/
 
 ## 既知の課題 / 今後の対応予定
 
-- 体力（HP）システムが無く一撃即決着。将来的にダメージ量・複数回被弾の仕組みを検討
 - 自動テストの対象は `Duel.Core` の純粋ロジックに限定。MonoBehaviour側は実機確認で担保している
 - プレイ可能なWebGLビルドをUnityRoomへ未投稿（予定）
 
