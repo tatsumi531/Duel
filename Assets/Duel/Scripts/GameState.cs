@@ -66,7 +66,7 @@ public class GameState_Boot : GameStateBase
 
     protected override void OnEnter()
     {
-        FadeScreen.Instance.SetColor(Color.black);
+        Context.UI.Fade.SetColor(Color.black);
         Context.PlayerStateMachine.OnGameBoot(Context.Enemy);
         Context.EnemyStateMachine.OnGameBoot(Context.Player);
     }
@@ -92,7 +92,7 @@ public class GameState_TitleScreen : GameStateBase
 
     async Awaitable StateFlow(CancellationToken token)
     {
-        await FadeScreen.Instance.FadeInAsync(token);
+        await Context.UI.Fade.FadeInAsync(token);
     }
 
     protected override void OnExit()
@@ -134,14 +134,14 @@ public class GameState_InitializeRound : GameStateBase
     {
         Context.RoundTimer.ResetRound();
         Context.RoundCounter.IncrementRound();
-        await FadeScreen.Instance.FadeOutAsync(token);
+        await Context.UI.Fade.FadeOutAsync(token);
         Context.Player.Initialize(Context.PlayerCharacterData);
         Context.PlayerStateMachine.Initialize();
         CharacterData enemyData = Context.EnemyRoster.GetByRound(Context.RoundCounter.CurrentRound);
         Context.Enemy.Initialize(enemyData);
         Context.EnemyStateMachine.Initialize(enemyData.aiProfile);
         await Awaitable.WaitForSecondsAsync(delaySeconds, token);
-        await FadeScreen.Instance.FadeInAsync(token);
+        await Context.UI.Fade.FadeInAsync(token);
         Machine.ChangeState(new GameState_RoundIntroduction(Machine, Context));
     }
 }

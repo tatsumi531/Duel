@@ -7,13 +7,14 @@ public class GameStateMachine : MonoBehaviour
     [SerializeField] EnemyRoster enemyRoster;
     [SerializeField] Character player;
     [SerializeField] Character enemy;
+    [SerializeField] UIRoot ui;
     GameContext context;
     IGameState current;
 
 
     void Start()
     {
-        context = new GameContext(gameData, playerCharacterData, enemyRoster, player, enemy);
+        context = new GameContext(gameData, playerCharacterData, enemyRoster, player, enemy, ui);
         ChangeState(new GameState_Boot(this, context));
     }
 

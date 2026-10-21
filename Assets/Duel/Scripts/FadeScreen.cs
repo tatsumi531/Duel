@@ -4,14 +4,11 @@ using UnityEngine.UI;
 
 public class FadeScreen : MonoBehaviour
 {
-    public static FadeScreen Instance { get; private set; }
-
     [SerializeField] Image fadeImage;
     [SerializeField] float duration = 0.2f;
 
     void Awake()
     {
-        Instance = this;
         fadeImage.color = Color.black;
         fadeImage.raycastTarget = true;
     }

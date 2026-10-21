@@ -9,11 +9,10 @@ public class GameContext
     public CharacterStateMachine EnemyStateMachine { get; }
     public RoundTimer RoundTimer { get; }
     public RoundCounter RoundCounter { get; }
-    public UIContext UI { get; }
-    public BattleField BattleField { get; }
+    public UIRoot UI { get; }
 
 
-    public GameContext(GameData gameData, CharacterData playerCharacterData, EnemyRoster enemyRoster, Character player, Character enemy)
+    public GameContext(GameData gameData, CharacterData playerCharacterData, EnemyRoster enemyRoster, Character player, Character enemy, UIRoot ui)
     {
         GameData = gameData;
         PlayerCharacterData = playerCharacterData;
@@ -26,7 +25,6 @@ public class GameContext
 
         RoundTimer = new RoundTimer();
         RoundCounter = new RoundCounter();
-        UI = new UIContext();
-        BattleField = new BattleField();
+        UI = ui;
     }
 }
