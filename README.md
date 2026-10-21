@@ -15,7 +15,7 @@ UnityRoomへの投稿を予定。
 - Unity 2D（Sprite / SpriteRenderer ベース、URP）
 - Unity Input System（キーボード / マウス入力）
 - DOTween（ノックバックやUI演出のトゥイーン処理）
-- Unity 6の `Awaitable` + `CancellationToken`（フェード処理などの非同期制御）
+- Unity 6の `Awaitable` + `CancellationToken`（ゲーム進行フロー全体の非同期制御）
 - カスタムシェーダー（[SpriteSlice.shader](Assets/Duel/Shaders)）によるヒット時のスプライト切断エフェクト
 - Unity Test Framework（純粋ロジックのEditModeテスト）
 
@@ -27,7 +27,11 @@ UnityRoomへの投稿を予定。
 
 [GameState.cs](Assets/Duel/Scripts/GameState.cs) の `GameStateBase` が共通処理を担う:
 - ステート切り替え時に `CancellationTokenSource` を発行・破棄し、非同期処理の後始末を自動化
-- `RunFlow(IEnumerator)` でコルーチンを起動し、フェードやラウンド初期化など時間軸を伴う演出を「Flow」として記述できるようにしている
+- `RunFlow(Func<CancellationToken, Awaitable>)` で時間軸を伴う処理を「Flow」として起動し、フェード・待機・UI演出を `await` で直列に記述できるようにしている
+- 非同期の境界となる `async void` を `RunFlow` の1箇所に閉じ込め、キャンセル例外のみそこで処理する。それ以外の例外は握り潰さずConsoleへ出す方針
+- DOTweenのトゥイーンは[TweenAwaitableExtensions.cs](Assets/Duel/Scripts/TweenAwaitableExtensions.cs)で `Awaitable` に変換し、完了待ちも `await` に統一している
+
+時間軸を伴う処理はコルーチンを使わず `Awaitable` に統一している。一方、ノックバックのように単発で完結するキャラクター演出はDOTweenのコールバックで処理しており、キャラクター側のステートマシンまで作り替える影響範囲と見合わないため、統一の対象外としている。
 
 ステート遷移:
 
@@ -110,7 +114,6 @@ Assets/Duel/
 
 - 体力（HP）システムが無く一撃即決着。将来的にダメージ量・複数回被弾の仕組みを検討
 - 自動テストの対象は `Duel.Core` の純粋ロジックに限定。MonoBehaviour側は実機確認で担保している
-- 時間軸を伴う処理の記述がコルーチン / `Awaitable` / DOTweenの`Sequence`で混在しており、`Awaitable`への統一を予定
 - プレイ可能なWebGLビルドをUnityRoomへ未投稿（予定）
 
 ## 開発ログ
