@@ -9,13 +9,12 @@ public class CharacterState_Move : CharacterStateBase
 
     public override void OnEnter()
     {
-        Context.Character.AnimatorController.SetMoveIntent(intent);
+        Character.AnimatorController.SetMoveIntent(intent);
     }
 
     public override void OnUpdate()
     {
-        if (Context.AttackTriggered) {
-            Machine.ChangeState(new CharacterState_Attack(Machine, Context));
+        if (TryTransitionToAttack()) {
             return;
         }
 
@@ -29,6 +28,6 @@ public class CharacterState_Move : CharacterStateBase
 
     public override void OnExit()
     {
-        Context.Character.AnimatorController.SetMoveIntent(MoveIntent.None);
+        Character.AnimatorController.SetMoveIntent(MoveIntent.None);
     }
 }

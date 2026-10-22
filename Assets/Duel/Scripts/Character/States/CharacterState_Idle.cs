@@ -4,8 +4,7 @@ public class CharacterState_Idle : CharacterStateBase
 
     public override void OnUpdate()
     {
-        if (Context.AttackTriggered) {
-            Machine.ChangeState(new CharacterState_Attack(Machine, Context));
+        if (TryTransitionToAttack()) {
             return;
         }
 
