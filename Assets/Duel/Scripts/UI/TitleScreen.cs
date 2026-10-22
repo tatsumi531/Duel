@@ -13,6 +13,9 @@ public class TitleScreen : MonoBehaviour
 
     void Awake()
     {
+#if UNITY_WEBGL && !UNITY_EDITOR
+        exitButton.gameObject.SetActive(false);
+#endif
         gameStartButton.onClick.AddListener(() => StartRequested?.Invoke());
         exitButton.onClick.AddListener(() => ExitRequested?.Invoke());
     }

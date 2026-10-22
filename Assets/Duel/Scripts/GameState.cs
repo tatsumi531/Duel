@@ -26,7 +26,9 @@ public abstract class GameStateBase : IGameState
 
     void IGameState.OnEnter()
     {
+#if UNITY_EDITOR
         Debug.Log("OnEnter : " + GetType());
+#endif
         exitCts = new CancellationTokenSource();
         OnEnter();
     }

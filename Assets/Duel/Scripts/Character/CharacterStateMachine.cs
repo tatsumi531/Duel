@@ -31,7 +31,9 @@ public class CharacterStateMachine : MonoBehaviour
     {
         currentState?.OnExit();
         currentState = nextState;
+#if UNITY_EDITOR
         Debug.Log(GetType() + " : OnEnter : " + nextState.GetType());
+#endif
         currentState.OnEnter();
     }
 
