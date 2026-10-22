@@ -27,7 +27,7 @@
 
 [GameStateMachine.cs](Assets/Duel/Scripts/GameStateMachine.cs) が `IGameState` を実装した各ステートを保持し、`Update()` で現在のステートに処理を委譲するだけの薄いドライバになっている。
 
-[GameState.cs](Assets/Duel/Scripts/GameState.cs) の `GameStateBase` が共通処理を担う:
+[GameStateBase.cs](Assets/Duel/Scripts/GameStates/GameStateBase.cs) が各ステート共通の処理を担う:
 - ステート切り替え時に `CancellationTokenSource` を発行・破棄し、非同期処理の後始末を自動化
 - `RunFlow(Func<CancellationToken, Awaitable>)` で時間軸を伴う処理を「Flow」として起動し、フェード・待機・UI演出を `await` で直列に記述できるようにしている
 - 非同期の境界となる `async void` を `RunFlow` の1箇所に閉じ込め、キャンセル例外のみそこで処理する。それ以外の例外は握り潰さずConsoleへ出す方針
@@ -58,8 +58,8 @@ DIコンテナやインターフェースによる抽象化は、差し替える
 ### キャラクター
 
 - [Character.cs](Assets/Duel/Scripts/Character/Character.cs): 移動・攻撃エフェクト（[Slash.cs](Assets/Duel/Scripts/Slash.cs)）の生成・攻撃レンジ計算などMonoBehaviourとしての実体を担当
-- [CharacterStateMachine.cs](Assets/Duel/Scripts/Character/CharacterStateMachine.cs) / [CharacterState.cs](Assets/Duel/Scripts/Character/CharacterState.cs): Neutral / Idle / Forward / Back / Attack / KnockBack / Hit / NoneActive の状態遷移を管理
-- [CharacterController.cs](Assets/Duel/Scripts/Character/CharacterController.cs): `ICharacterController` を実装した `PlayerController`（キーボード/マウス入力）と `AIController`（AIプロファイルに基づく意思決定）を切り替え可能にし、プレイヤーと敵でステートマシン本体を共用
+- [CharacterStateMachine.cs](Assets/Duel/Scripts/Character/CharacterStateMachine.cs) / [States/](Assets/Duel/Scripts/Character/States): Neutral / Idle / Move / Attack / KnockBack / Hit / NoneActive の状態遷移を管理。前進と後退は `MoveIntent` を引数に取る `CharacterState_Move` に統合し、攻撃入力による遷移は基底クラスの `TryTransitionToAttack()` に集約している（攻撃を受け付けるステートだけが呼ぶ）
+- [ICharacterController.cs](Assets/Duel/Scripts/Character/ICharacterController.cs): これを実装した[PlayerController.cs](Assets/Duel/Scripts/Character/PlayerController.cs)（キーボード/マウス入力）と[AIController.cs](Assets/Duel/Scripts/Character/AIController.cs)（AIプロファイルに基づく意思決定）を切り替え可能にし、プレイヤーと敵でステートマシン本体を共用
 - [CharacterAnimatorController.cs](Assets/Duel/Scripts/Character/CharacterAnimatorController.cs): Animatorパラメータの設定をラップし、ステート側からAnimatorの詳細を隠蔽
 - [CharacterData.cs](Assets/Duel/Scripts/Character/CharacterData.cs): 移動速度・攻撃エフェクトのオフセット・アニメーターのOverrideControllerなどをScriptableObjectで外出し
 - [Slash.cs](Assets/Duel/Scripts/Slash.cs): 攻撃同士が重なった場合は相殺（KnockBack）、キャラクターに当たった場合は被弾（Hit）を判定し、[SpriteSliceEffect.cs](Assets/Duel/Scripts/Character/SpriteSliceEffect.cs)でスプライトを2分割して吹っ飛ばす演出を再生
@@ -68,7 +68,7 @@ DIコンテナやインターフェースによる抽象化は、差し替える
 
 ### 敵AI
 
-[CharacterAIProfile.cs](Assets/Duel/Scripts/Character/CharacterAIProfile.cs) はScriptableObjectとして敵AIの行動パラメータを外出しした設計。[AIController](Assets/Duel/Scripts/Character/CharacterController.cs)がこのプロファイルを読み、`Character.GetAttackRange()`（攻撃エフェクトの当たり判定サイズ＋相手の当たり判定幅から動的に算出）を基準に距離帯を判定する。
+[CharacterAIProfile.cs](Assets/Duel/Scripts/Character/CharacterAIProfile.cs) はScriptableObjectとして敵AIの行動パラメータを外出しした設計。[AIController.cs](Assets/Duel/Scripts/Character/AIController.cs)がこのプロファイルを読み、`Character.GetAttackRange()`（攻撃エフェクトの当たり判定サイズ＋相手の当たり判定幅から動的に算出）を基準に距離帯を判定する。
 
 - 一定間隔（`reactionTimeMin` 〜 `reactionTimeMax` のランダム値）ごとに行動を再抽選する方式で反応速度にブレを持たせている
 - 相手の攻撃範囲＋`preferredDistanceMargin`を「維持したい間合い」とし、そこから`distanceTolerance`を超えて外れると近づく／離れるを選択
@@ -107,15 +107,17 @@ Assets/Duel/
 ├── Sounds/                # 効果音
 ├── Scripts/
 │   ├── Core/              # MonoBehaviourに依存しない純粋ロジック（Duel.Coreアセンブリ）
-│   ├── Character/         # キャラクター本体、ステートマシン、コントローラー、AIプロファイル
+│   ├── GameStates/        # ゲーム進行の各ステート（1ファイル1型）
+│   ├── Character/         # キャラクター本体、コントローラー、AIプロファイル
+│   │   └── States/        # キャラクターの各ステート（1ファイル1型）
 │   ├── UI/                # タイトル・ラウンド導入・結果画面、UI参照の集約（UIRoot）
-│   └── (root)/            # GameState、フェード、斬撃判定等の全体制御
+│   └── (root)/            # GameStateMachine、GameContext、フェード、斬撃判定等
 └── Tests/                 # EditModeテスト（Duel.Tests.EditModeアセンブリ）
 ```
 
 ## 使用アセットについて
 
-キャラクター・背景スプライトおよびエフェクトの一部は、Unity Asset Storeで購入した以下のアセットを使用しています（[Assets/Store](Assets/Store)配下）。ゲームロジック・ステートマシン・AI・UI制御などのスクリプトは全て自作です。
+キャラクター・背景スプライトおよびエフェクトの一部は、Unity Asset Storeで購入した以下のアセットを使用。（[Assets/Store](Assets/Store)配下）。ゲームロジック・ステートマシン・AI・UI制御などのスクリプトは自作。
 
 - Fantasy Martial Characters 3
 - Hero_Knight_2
