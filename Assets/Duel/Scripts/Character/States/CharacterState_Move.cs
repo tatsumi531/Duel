@@ -1,10 +1,15 @@
-public class CharacterState_Back : CharacterStateBase
+public class CharacterState_Move : CharacterStateBase
 {
-    public CharacterState_Back(CharacterStateMachine machine, CharacterContext context) : base(machine, context) {}
+    readonly MoveIntent intent;
+
+    public CharacterState_Move(CharacterStateMachine machine, CharacterContext context, MoveIntent intent) : base(machine, context)
+    {
+        this.intent = intent;
+    }
 
     public override void OnEnter()
     {
-        Context.Character.AnimatorController.SetMoveIntent(MoveIntent.Back);
+        Context.Character.AnimatorController.SetMoveIntent(intent);
     }
 
     public override void OnUpdate()
@@ -14,12 +19,12 @@ public class CharacterState_Back : CharacterStateBase
             return;
         }
 
-        if (Context.MoveIntent != MoveIntent.Back) {
+        if (Context.MoveIntent != intent) {
             Machine.ChangeState(new CharacterState_Idle(Machine, Context));
             return;
         }
 
-        Character.MoveBack();
+        Character.Move(intent);
     }
 
     public override void OnExit()

@@ -11,10 +11,10 @@ public class CharacterState_Idle : CharacterStateBase
 
         switch (Context.MoveIntent) {
             case MoveIntent.Forward:
-                Machine.ChangeState(new CharacterState_Forward(Machine, Context));
+                Machine.ChangeState(new CharacterState_Move(Machine, Context, MoveIntent.Forward));
                 break;
             case MoveIntent.Back:
-                Machine.ChangeState(new CharacterState_Back(Machine, Context));
+                Machine.ChangeState(new CharacterState_Move(Machine, Context, MoveIntent.Back));
                 break;
         }
     }

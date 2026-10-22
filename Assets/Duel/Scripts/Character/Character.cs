@@ -41,14 +41,12 @@ public class Character : MonoBehaviour
         sliceEffect.Play(sRenderer);
     }
 
-    public void MoveForward()
+    public void Move(MoveIntent intent)
     {
-        Move(1);
-    }
-
-    public void MoveBack()
-    {
-        Move(-1);
+        switch (intent) {
+            case MoveIntent.Forward: Move(1); break;
+            case MoveIntent.Back: Move(-1); break;
+        }
     }
 
     public void Attack()
