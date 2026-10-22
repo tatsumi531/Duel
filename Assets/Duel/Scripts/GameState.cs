@@ -212,7 +212,7 @@ public class GameState_Win : GameStateBase
     {
         Context.PlayerStateMachine.DeactivateState();
         Context.RoundCounter.IncrementWinRound();
-        Context.UI.RoundResult.Show(ResultScreen.ShowType.Win, Context);
+        Context.UI.RoundResult.Show(isWin: true, Context.RoundTimer.RoundElapsed);
         await Awaitable.WaitForSecondsAsync(displayTime, token);
 
         if (Context.RoundCounter.ExistNextRound(Context.GameData.maxRounds)) {
@@ -244,7 +244,7 @@ public class GameState_Lose : GameStateBase
     async Awaitable StateFlow(CancellationToken token)
     {
         Context.EnemyStateMachine.DeactivateState();
-        Context.UI.RoundResult.Show(ResultScreen.ShowType.Lose, Context);
+        Context.UI.RoundResult.Show(isWin: false, Context.RoundTimer.RoundElapsed);
         await Awaitable.WaitForSecondsAsync(displayTime, token);
         Machine.ChangeState(new GameState_TotalResult(Machine, Context));
     }
@@ -262,8 +262,8 @@ public class GameState_TotalResult : GameStateBase
     protected override void OnEnter()
     {
         Context.UI.TotalResult.OnClicked += OnClicked;
-        ResultScreen.ShowType type = Context.RoundCounter.WinRoundCount == Context.GameData.maxRounds ? ResultScreen.ShowType.Win : ResultScreen.ShowType.Lose;
-        Context.UI.TotalResult.Show(type, Context);
+        bool isAllWin = Context.RoundCounter.WinRoundCount == Context.GameData.maxRounds;
+        Context.UI.TotalResult.Show(isAllWin, Context.RoundCounter.WinRoundCount, Context.RoundTimer.TotalElapsed);
     }
 
     void OnClicked()

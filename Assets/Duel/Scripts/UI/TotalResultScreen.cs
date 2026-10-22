@@ -16,22 +16,10 @@ public class TotalResultScreen : ResultScreen
         Hide();
     }
 
-    protected override void SetContent(ShowType showAs, GameContext gameContext)
+    public void Show(bool isAllWin, int winRoundCount, float totalElapsedSeconds)
     {
-        int winRounds = gameContext.RoundCounter.WinRoundCount;
-        string displayText = "";
-        switch (showAs) {
-            case ShowType.Win:
-                displayText = winRounds.ToString() + "人抜き達成!!";
-            break;
-            case ShowType.Lose:
-                displayText = winRounds > 0 ? winRounds.ToString() + "人抜き" : "敗北";
-            break;
-            default:
-                Debug.LogError("Error ShowType");
-            break;
-        }
-        result.text = displayText;
-        totalElapsed.text = FormatElapsedTime(gameContext.RoundTimer.TotalElapsed);
+        result.text = TotalResultText.Build(isAllWin, winRoundCount);
+        totalElapsed.text = ElapsedTimeFormatter.Format(totalElapsedSeconds);
+        ShowCanvas();
     }
 }

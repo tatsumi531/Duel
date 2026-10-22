@@ -12,12 +12,10 @@ public class RoundResultScreen : ResultScreen
         Hide();
     }
 
-    protected override void SetContent(ShowType showAs, GameContext gameContext)
+    public void Show(bool isWin, float roundElapsedSeconds)
     {
-        switch (showAs) {
-            case ShowType.Win: resultText.text = "勝利"; break;
-            case ShowType.Lose: resultText.text = "敗北"; break;
-        }
-        elapsedTimeText.text = FormatElapsedTime(gameContext.RoundTimer.RoundElapsed);
+        resultText.text = isWin ? "勝利" : "敗北";
+        elapsedTimeText.text = ElapsedTimeFormatter.Format(roundElapsedSeconds);
+        ShowCanvas();
     }
 }
