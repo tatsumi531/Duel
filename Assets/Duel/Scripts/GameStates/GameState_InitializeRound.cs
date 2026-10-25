@@ -21,10 +21,10 @@ namespace Duel.GameStates
             Context.RoundTimer.ResetRound();
             Context.RoundCounter.IncrementRound();
             await Context.UI.Fade.FadeOutAsync(token);
-            Context.Player.Initialize(Context.PlayerCharacterData);
+            Context.Player.Initialize(Context.PlayerCharacterData, Context.BattleField);
             Context.PlayerStateMachine.Initialize();
             CharacterData enemyData = Context.EnemyRoster.GetByRound(Context.RoundCounter.CurrentRound);
-            Context.Enemy.Initialize(enemyData);
+            Context.Enemy.Initialize(enemyData, Context.BattleField);
             Context.EnemyStateMachine.Initialize(enemyData.aiProfile);
             await Awaitable.WaitForSecondsAsync(delaySeconds, token);
             await Context.UI.Fade.FadeInAsync(token);

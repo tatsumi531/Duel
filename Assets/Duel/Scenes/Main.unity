@@ -1877,6 +1877,7 @@ GameObject:
   - component: {fileID: 882222508}
   - component: {fileID: 882222507}
   - component: {fileID: 882222509}
+  - component: {fileID: 882222510}
   m_Layer: 0
   m_Name: GameStateMachine
   m_TagString: Untagged
@@ -1902,6 +1903,7 @@ MonoBehaviour:
   player: {fileID: 109446946}
   enemy: {fileID: 1924725134}
   ui: {fileID: 882222509}
+  battleField: {fileID: 882222510}
 --- !u!4 &882222508
 Transform:
   m_ObjectHideFlags: 0
@@ -1934,6 +1936,20 @@ MonoBehaviour:
   roundResult: {fileID: 4439144178501122829}
   totalResult: {fileID: 622520753}
   fade: {fileID: 676223445}
+--- !u!114 &882222510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 882222506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9831a6331a169274abf0d96deeb5de6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Duel.BattleField
+  initialDistance: 5
+  moveableHalfWidth: 7.3
 --- !u!1 &944643189
 GameObject:
   m_ObjectHideFlags: 0

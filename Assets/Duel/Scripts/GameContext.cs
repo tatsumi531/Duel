@@ -16,9 +16,10 @@ namespace Duel
         public RoundTimer RoundTimer { get; }
         public RoundCounter RoundCounter { get; }
         public UIRoot UI { get; }
+        public BattleField BattleField { get; }
 
 
-        public GameContext(GameData gameData, CharacterData playerCharacterData, EnemyRoster enemyRoster, Character player, Character enemy, UIRoot ui)
+        public GameContext(GameData gameData, CharacterData playerCharacterData, EnemyRoster enemyRoster, Character player, Character enemy, UIRoot ui, BattleField battleField)
         {
             GameData = gameData;
             PlayerCharacterData = playerCharacterData;
@@ -32,6 +33,7 @@ namespace Duel
             RoundTimer = new RoundTimer();
             RoundCounter = new RoundCounter();
             UI = ui;
+            BattleField = battleField;
         }
     }
 }

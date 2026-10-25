@@ -14,6 +14,7 @@ namespace Duel.Characters
         [SerializeField] AudioClip swordWhip;
         [SerializeField] Direction direction = Direction.Right;
         public Direction Direction => direction;
+        BattleField battleField;
 
         CharacterStateMachine stateMachine;
         CharacterData characterData;
@@ -31,12 +32,13 @@ namespace Duel.Characters
             }
         }
 
-        public void Initialize(CharacterData characterData)
+        public void Initialize(CharacterData characterData, BattleField battleField)
         {
             this.characterData = characterData;
+            this.battleField = battleField;
             sRenderer.transform.localPosition = new Vector3(0f, characterData.spriteOffsetY, 0f);
             AnimatorController.SetOverrideController(characterData.animatorOverrideController);
-            transform.position = direction == Direction.Right ? BattleField.LeftInitialPosition : BattleField.RightInitialPosition;
+            transform.position = direction == Direction.Right ? battleField.LeftInitialPosition : battleField.RightInitialPosition;
         }
 
         public void PlaySliceEffect()
@@ -75,7 +77,7 @@ namespace Duel.Characters
             float speed = sign > 0 ? characterData.moveForwardSpeed : characterData.moveBackSpeed;
             float deltaX = sign * (int)direction * speed * Time.deltaTime;
             Vector3 position = transform.position;
-            position.x = Mathf.Clamp(position.x + deltaX, BattleField.LeftLimit.x, BattleField.RightLimit.x);
+            position.x = Mathf.Clamp(position.x + deltaX, battleField.LeftLimit, battleField.RightLimit);
             transform.position = position;
         }
     }
