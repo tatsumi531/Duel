@@ -15,7 +15,7 @@ namespace Duel.Characters.States
         {
             Character.AnimatorController.SetKnockBackTrigger();
             float targetX = Character.ClampX(Character.transform.position.x - (int)Character.Direction * knockBackDistance);
-            knockbackTween = Context.Character.transform.DOMoveX(targetX, knockBackDuration).SetRelative().SetEase(Ease.OutQuad);
+            knockbackTween = Character.transform.DOMoveX(targetX, knockBackDuration).SetEase(Ease.OutQuad);
             knockbackTween.OnComplete(() =>{ Machine.ChangeState(new CharacterState_Idle(Machine, Context));});
             knockbackTween.Play();
         }
