@@ -1,3 +1,5 @@
+using unityroom.Api;
+
 namespace Duel.GameStates
 {
     public class GameState_TotalResult : GameStateBase
@@ -9,6 +11,9 @@ namespace Duel.GameStates
             Context.UI.TotalResult.OnClicked += OnClicked;
             bool isAllWin = Context.RoundCounter.WinRoundCount == Context.GameData.maxRounds;
             Context.UI.TotalResult.Show(isAllWin, Context.RoundCounter.WinRoundCount, Context.RoundTimer.TotalElapsed);
+            if (isAllWin) {
+                UnityroomApiClient.Instance.SendScore(1, Context.RoundTimer.TotalElapsed, ScoreboardWriteMode.HighScoreDesc);
+            }
         }
 
         void OnClicked()
