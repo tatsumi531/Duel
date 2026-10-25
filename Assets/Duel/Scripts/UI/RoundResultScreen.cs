@@ -1,21 +1,25 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Duel.Core;
 
-public class RoundResultScreen : ResultScreen
+namespace Duel.UI
 {
-    [SerializeField] Text resultText;
-    [SerializeField] Text elapsedTimeText;
-
-
-    void Start()
+    public class RoundResultScreen : ResultScreen
     {
-        Hide();
-    }
+        [SerializeField] Text resultText;
+        [SerializeField] Text elapsedTimeText;
 
-    public void Show(bool isWin, float roundElapsedSeconds)
-    {
-        resultText.text = isWin ? "勝利" : "敗北";
-        elapsedTimeText.text = ElapsedTimeFormatter.Format(roundElapsedSeconds);
-        ShowCanvas();
+
+        void Start()
+        {
+            Hide();
+        }
+
+        public void Show(bool isWin, float roundElapsedSeconds)
+        {
+            resultText.text = isWin ? "勝利" : "敗北";
+            elapsedTimeText.text = ElapsedTimeFormatter.Format(roundElapsedSeconds);
+            ShowCanvas();
+        }
     }
 }

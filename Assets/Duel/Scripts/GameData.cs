@@ -1,7 +1,10 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "GameData", menuName = "Scriptable Objects/GameData")]
-public class GameData : ScriptableObject
+namespace Duel
 {
-    public int maxRounds = 8;
+    [CreateAssetMenu(fileName = "GameData", menuName = "Scriptable Objects/GameData")]
+    public class GameData : ScriptableObject
+    {
+        public int maxRounds = 8;
+    }
 }

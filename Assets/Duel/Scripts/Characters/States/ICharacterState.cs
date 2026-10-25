@@ -1,6 +1,9 @@
-public interface ICharacterState
+namespace Duel.Characters.States
 {
-    void OnEnter();
-    void OnUpdate();
-    void OnExit();
+    public interface ICharacterState
+    {
+        void OnEnter();
+        void OnUpdate();
+        void OnExit();
+    }
 }

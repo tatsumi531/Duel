@@ -1,32 +1,38 @@
 using UnityEngine;
+using Duel.Characters;
+using Duel.GameStates;
+using Duel.UI;
 
-public class GameStateMachine : MonoBehaviour
+namespace Duel
 {
-    [SerializeField] GameData gameData;
-    [SerializeField] CharacterData playerCharacterData;
-    [SerializeField] EnemyRoster enemyRoster;
-    [SerializeField] Character player;
-    [SerializeField] Character enemy;
-    [SerializeField] UIRoot ui;
-    GameContext context;
-    IGameState current;
-
-
-    void Start()
+    public class GameStateMachine : MonoBehaviour
     {
-        context = new GameContext(gameData, playerCharacterData, enemyRoster, player, enemy, ui);
-        ChangeState(new GameState_Boot(this, context));
-    }
+        [SerializeField] GameData gameData;
+        [SerializeField] CharacterData playerCharacterData;
+        [SerializeField] EnemyRoster enemyRoster;
+        [SerializeField] Character player;
+        [SerializeField] Character enemy;
+        [SerializeField] UIRoot ui;
+        GameContext context;
+        IGameState current;
 
-    void Update()
-    {
-        current?.OnUpdate();
-    }
 
-    public void ChangeState(IGameState nextState)
-    {
-        current?.OnExit();
-        current = nextState;
-        current.OnEnter();
+        void Start()
+        {
+            context = new GameContext(gameData, playerCharacterData, enemyRoster, player, enemy, ui);
+            ChangeState(new GameState_Boot(this, context));
+        }
+
+        void Update()
+        {
+            current?.OnUpdate();
+        }
+
+        public void ChangeState(IGameState nextState)
+        {
+            current?.OnExit();
+            current = nextState;
+            current.OnEnter();
+        }
     }
 }

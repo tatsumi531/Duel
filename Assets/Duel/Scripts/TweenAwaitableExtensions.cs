@@ -3,18 +3,21 @@ using System.Threading;
 using DG.Tweening;
 using UnityEngine;
 
-public static class TweenAwaitableExtensions
+namespace Duel
 {
-    public static async Awaitable WaitForCompletionAsync(this Tween tween, CancellationToken token)
+    public static class TweenAwaitableExtensions
     {
-        try {
-            while (tween.IsActive() && !tween.IsComplete()) {
-                await Awaitable.NextFrameAsync(token);
+        public static async Awaitable WaitForCompletionAsync(this Tween tween, CancellationToken token)
+        {
+            try {
+                while (tween.IsActive() && !tween.IsComplete()) {
+                    await Awaitable.NextFrameAsync(token);
+                }
             }
-        }
-        catch (OperationCanceledException) {
-            tween.Kill();
-            throw;
+            catch (OperationCanceledException) {
+                tween.Kill();
+                throw;
+            }
         }
     }
 }

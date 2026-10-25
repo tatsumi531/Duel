@@ -1,25 +1,29 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using Duel.Core;
 
-public class TotalResultScreen : ResultScreen
+namespace Duel.UI
 {
-    [SerializeField]Text result;
-    [SerializeField]Text totalElapsed;
-    [SerializeField]Button returnButton;
-    public event Action OnClicked;
-
-
-    void Start()
+    public class TotalResultScreen : ResultScreen
     {
-        returnButton.onClick.AddListener(() => OnClicked?.Invoke());
-        Hide();
-    }
+        [SerializeField]Text result;
+        [SerializeField]Text totalElapsed;
+        [SerializeField]Button returnButton;
+        public event Action OnClicked;
 
-    public void Show(bool isAllWin, int winRoundCount, float totalElapsedSeconds)
-    {
-        result.text = TotalResultText.Build(isAllWin, winRoundCount);
-        totalElapsed.text = ElapsedTimeFormatter.Format(totalElapsedSeconds);
-        ShowCanvas();
+
+        void Start()
+        {
+            returnButton.onClick.AddListener(() => OnClicked?.Invoke());
+            Hide();
+        }
+
+        public void Show(bool isAllWin, int winRoundCount, float totalElapsedSeconds)
+        {
+            result.text = TotalResultText.Build(isAllWin, winRoundCount);
+            totalElapsed.text = ElapsedTimeFormatter.Format(totalElapsedSeconds);
+            ShowCanvas();
+        }
     }
 }

@@ -1,6 +1,9 @@
-public interface IGameState
+namespace Duel.GameStates
 {
-    void OnEnter();
-    void OnUpdate();
-    void OnExit();
+    public interface IGameState
+    {
+        void OnEnter();
+        void OnUpdate();
+        void OnExit();
+    }
 }

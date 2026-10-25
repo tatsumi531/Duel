@@ -1,4 +1,7 @@
-public class CharacterState_NoneActive : CharacterStateBase
+namespace Duel.Characters.States
 {
-    public CharacterState_NoneActive(CharacterStateMachine machine, CharacterContext context) : base(machine, context) {}
+    public class CharacterState_NoneActive : CharacterStateBase
+    {
+        public CharacterState_NoneActive(CharacterStateMachine machine, CharacterContext context) : base(machine, context) {}
+    }
 }

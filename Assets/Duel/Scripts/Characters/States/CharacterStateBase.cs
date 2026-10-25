@@ -1,25 +1,28 @@
-public abstract class CharacterStateBase : ICharacterState
+namespace Duel.Characters.States
 {
-    protected CharacterStateMachine Machine { get; }
-    protected CharacterContext Context { get; }
-    protected Character Character => Context.Character;
-
-    protected CharacterStateBase(CharacterStateMachine machine, CharacterContext context)
+    public abstract class CharacterStateBase : ICharacterState
     {
-        Machine = machine;
-        Context = context;
-    }
+        protected CharacterStateMachine Machine { get; }
+        protected CharacterContext Context { get; }
+        protected Character Character => Context.Character;
 
-    public virtual void OnEnter() {}
-    public virtual void OnUpdate() {}
-    public virtual void OnExit() {}
-
-    protected bool TryTransitionToAttack()
-    {
-        if (!Context.AttackTriggered) {
-            return false;
+        protected CharacterStateBase(CharacterStateMachine machine, CharacterContext context)
+        {
+            Machine = machine;
+            Context = context;
         }
-        Machine.ChangeState(new CharacterState_Attack(Machine, Context));
-        return true;
+
+        public virtual void OnEnter() {}
+        public virtual void OnUpdate() {}
+        public virtual void OnExit() {}
+
+        protected bool TryTransitionToAttack()
+        {
+            if (!Context.AttackTriggered) {
+                return false;
+            }
+            Machine.ChangeState(new CharacterState_Attack(Machine, Context));
+            return true;
+        }
     }
 }

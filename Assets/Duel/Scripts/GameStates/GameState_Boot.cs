@@ -1,18 +1,21 @@
 using UnityEngine;
 
-public class GameState_Boot : GameStateBase
+namespace Duel.GameStates
 {
-    public GameState_Boot(GameStateMachine machine, GameContext context) : base(machine, context) {}
-
-    protected override void OnEnter()
+    public class GameState_Boot : GameStateBase
     {
-        Context.UI.Fade.SetColor(Color.black);
-        Context.PlayerStateMachine.OnGameBoot(Context.Enemy);
-        Context.EnemyStateMachine.OnGameBoot(Context.Player);
-    }
+        public GameState_Boot(GameStateMachine machine, GameContext context) : base(machine, context) {}
 
-    public override void OnUpdate()
-    {
-        Machine.ChangeState(new GameState_TitleScreen(Machine, Context));
+        protected override void OnEnter()
+        {
+            Context.UI.Fade.SetColor(Color.black);
+            Context.PlayerStateMachine.OnGameBoot(Context.Enemy);
+            Context.EnemyStateMachine.OnGameBoot(Context.Player);
+        }
+
+        public override void OnUpdate()
+        {
+            Machine.ChangeState(new GameState_TitleScreen(Machine, Context));
+        }
     }
 }

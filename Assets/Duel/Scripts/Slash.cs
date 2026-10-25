@@ -1,93 +1,97 @@
 using UnityEngine;
+using Duel.Characters;
 
-public class Slash : MonoBehaviour
+namespace Duel
 {
-    [SerializeField] GameObject clashEffectPrefab;
-    [SerializeField] GameObject hitEffectPrefab;
-    [SerializeField] float hitEffectOffsetRange = 1.5f;
-    [SerializeField] AudioClip hitSound;
-    [SerializeField] AudioClip clashSound;
-    readonly float lifeTime = 0.1f;
-
-    CharacterStateMachine owner;
-    Slash touchedSlash;
-    Vector3 clashEffectPosition;
-    CharacterStateMachine touchedCharacter;
-    bool resolved;
-
-
-    public void SetOwner(CharacterStateMachine owner)
+    public class Slash : MonoBehaviour
     {
-        this.owner = owner;
-    }
+        [SerializeField] GameObject clashEffectPrefab;
+        [SerializeField] GameObject hitEffectPrefab;
+        [SerializeField] float hitEffectOffsetRange = 1.5f;
+        [SerializeField] AudioClip hitSound;
+        [SerializeField] AudioClip clashSound;
+        readonly float lifeTime = 0.1f;
 
-    void Start()
-    {
-        Destroy(gameObject, lifeTime);
-    }
+        CharacterStateMachine owner;
+        Slash touchedSlash;
+        Vector3 clashEffectPosition;
+        CharacterStateMachine touchedCharacter;
+        bool resolved;
 
-    void OnTriggerEnter2D(Collider2D collider)
-    {
-        if (resolved) {
-            return;
+
+        public void SetOwner(CharacterStateMachine owner)
+        {
+            this.owner = owner;
         }
-        if (collider.TryGetComponent<Slash>(out var otherSlash)) {
-            if (otherSlash.owner != owner) {
-                touchedSlash = otherSlash;
-                var selfCollider = GetComponent<Collider2D>();
-                Vector2 selfPos = selfCollider.bounds.center;
-                Vector2 otherPos = collider.bounds.center;
-                clashEffectPosition = (selfPos + otherPos) * 0.5f;
+
+        void Start()
+        {
+            Destroy(gameObject, lifeTime);
+        }
+
+        void OnTriggerEnter2D(Collider2D collider)
+        {
+            if (resolved) {
+                return;
             }
-            return;
-        }
-        if (collider.TryGetComponent<CharacterStateMachine>(out var target) && target != owner) {
-            if (!owner.HasHit) {
-                touchedCharacter = target;
+            if (collider.TryGetComponent<Slash>(out var otherSlash)) {
+                if (otherSlash.owner != owner) {
+                    touchedSlash = otherSlash;
+                    var selfCollider = GetComponent<Collider2D>();
+                    Vector2 selfPos = selfCollider.bounds.center;
+                    Vector2 otherPos = collider.bounds.center;
+                    clashEffectPosition = (selfPos + otherPos) * 0.5f;
+                }
+                return;
+            }
+            if (collider.TryGetComponent<CharacterStateMachine>(out var target) && target != owner) {
+                if (!owner.HasHit) {
+                    touchedCharacter = target;
+                }
             }
         }
-    }
 
-    void LateUpdate()
-    {
-        if (resolved) {
-            return;
-        }
-        // 相手のSlashにも触れていた場合は、キャラクターへの命中よりも斬撃の相殺(KnockBack)を優先する
-        if (touchedSlash != null) {
-            ResolveClash(touchedSlash);
-            return;
+        void LateUpdate()
+        {
+            if (resolved) {
+                return;
+            }
+            // 相手のSlashにも触れていた場合は、キャラクターへの命中よりも斬撃の相殺(KnockBack)を優先する
+            if (touchedSlash != null) {
+                ResolveClash(touchedSlash);
+                return;
+            }
+
+            if (touchedCharacter != null) {
+                ResolveHit(touchedCharacter);
+            }
         }
 
-        if (touchedCharacter != null) {
-            ResolveHit(touchedCharacter);
+        void ResolveClash(Slash other)
+        {
+            if (other.resolved) {
+                return;
+            }
+            resolved = true;
+            other.resolved = true;
+            owner.NotifyKnockBack();
+            other.owner.NotifyKnockBack();
+            var spawned = Instantiate(clashEffectPrefab);
+            spawned.transform.position = clashEffectPosition;
+            SoundPlayer.PlayOneShot(clashSound);
+            Destroy(gameObject);
+            Destroy(other.gameObject);
         }
-    }
 
-    void ResolveClash(Slash other)
-    {
-        if (other.resolved) {
-            return;
+        void ResolveHit(CharacterStateMachine target)
+        {
+            resolved = true;
+            target.NotifyHit();
+            var offset = new Vector3(Random.Range(-hitEffectOffsetRange, hitEffectOffsetRange), Random.Range(-hitEffectOffsetRange, hitEffectOffsetRange), 0f);
+            var spawned = Instantiate(hitEffectPrefab);
+            spawned.transform.position = target.transform.position + offset;
+            SoundPlayer.PlayOneShot(hitSound);
+            Destroy(gameObject);
         }
-        resolved = true;
-        other.resolved = true;
-        owner.NotifyKnockBack();
-        other.owner.NotifyKnockBack();
-        var spawned = Instantiate(clashEffectPrefab);
-        spawned.transform.position = clashEffectPosition;
-        SoundPlayer.PlayOneShot(clashSound);
-        Destroy(gameObject);
-        Destroy(other.gameObject);
-    }
-
-    void ResolveHit(CharacterStateMachine target)
-    {
-        resolved = true;
-        target.NotifyHit();
-        var offset = new Vector3(Random.Range(-hitEffectOffsetRange, hitEffectOffsetRange), Random.Range(-hitEffectOffsetRange, hitEffectOffsetRange), 0f);
-        var spawned = Instantiate(hitEffectPrefab);
-        spawned.transform.position = target.transform.position + offset;
-        SoundPlayer.PlayOneShot(hitSound);
-        Destroy(gameObject);
     }
 }

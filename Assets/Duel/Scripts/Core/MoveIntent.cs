@@ -1,7 +1,10 @@
-public enum MoveIntent
+namespace Duel.Core
 {
-    None = 0,
-    Forward = 1,
-    Back = 2
-    // Animatorのパラメータと連動
+    public enum MoveIntent
+    {
+        None = 0,
+        Forward = 1,
+        Back = 2
+        // Animatorのパラメータと連動
+    }
 }

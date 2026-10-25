@@ -1,20 +1,25 @@
-public class CharacterState_Idle : CharacterStateBase
+using Duel.Core;
+
+namespace Duel.Characters.States
 {
-    public CharacterState_Idle(CharacterStateMachine machine, CharacterContext context) : base(machine, context) {}
-
-    public override void OnUpdate()
+    public class CharacterState_Idle : CharacterStateBase
     {
-        if (TryTransitionToAttack()) {
-            return;
-        }
+        public CharacterState_Idle(CharacterStateMachine machine, CharacterContext context) : base(machine, context) {}
 
-        switch (Context.MoveIntent) {
-            case MoveIntent.Forward:
-                Machine.ChangeState(new CharacterState_Move(Machine, Context, MoveIntent.Forward));
-                break;
-            case MoveIntent.Back:
-                Machine.ChangeState(new CharacterState_Move(Machine, Context, MoveIntent.Back));
-                break;
+        public override void OnUpdate()
+        {
+            if (TryTransitionToAttack()) {
+                return;
+            }
+
+            switch (Context.MoveIntent) {
+                case MoveIntent.Forward:
+                    Machine.ChangeState(new CharacterState_Move(Machine, Context, MoveIntent.Forward));
+                    break;
+                case MoveIntent.Back:
+                    Machine.ChangeState(new CharacterState_Move(Machine, Context, MoveIntent.Back));
+                    break;
+            }
         }
     }
 }

@@ -1,18 +1,21 @@
 using UnityEngine;
 
-public class CharacterAnimationEventReceiver : MonoBehaviour
+namespace Duel.Characters
 {
-    [SerializeField] Character character;
-    [SerializeField] CharacterStateMachine stateMachine;
-
-
-    public void OnAttack()
+    public class CharacterAnimationEventReceiver : MonoBehaviour
     {
-        character.Attack();
-    }
+        [SerializeField] Character character;
+        [SerializeField] CharacterStateMachine stateMachine;
 
-    public void OnAttackEnd()
-    {
-        stateMachine.NotifyAttackAnimationEnd();
+
+        public void OnAttack()
+        {
+            character.Attack();
+        }
+
+        public void OnAttackEnd()
+        {
+            stateMachine.NotifyAttackAnimationEnd();
+        }
     }
 }

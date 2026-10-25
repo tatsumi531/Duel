@@ -1,54 +1,58 @@
 using UnityEngine;
+using Duel.Core;
 
-public class CharacterAnimatorController
+namespace Duel.Characters
 {
-    readonly Animator animator;
-    readonly int moveIntentHash = Animator.StringToHash("MoveIntent");
-    readonly int attackTriggerHash = Animator.StringToHash("AttackTrigger");
-    readonly int knockBackTriggerHash = Animator.StringToHash("KnockBackTrigger");
-    readonly int recoveryTriggerHash = Animator.StringToHash("RecoveryTrigger");
-    readonly int idleTriggerHash = Animator.StringToHash("IdleTrigger");
-
-    
-    public CharacterAnimatorController(Animator animator)
+    public class CharacterAnimatorController
     {
-        this.animator = animator;
-    }
+        readonly Animator animator;
+        readonly int moveIntentHash = Animator.StringToHash("MoveIntent");
+        readonly int attackTriggerHash = Animator.StringToHash("AttackTrigger");
+        readonly int knockBackTriggerHash = Animator.StringToHash("KnockBackTrigger");
+        readonly int recoveryTriggerHash = Animator.StringToHash("RecoveryTrigger");
+        readonly int idleTriggerHash = Animator.StringToHash("IdleTrigger");
 
-    public void SetEnabled(bool enabled)
-    {
-        animator.enabled = enabled;
-    }
-
-    public void SetOverrideController(AnimatorOverrideController overrideController)
-    {
-        if (overrideController != null) {
-            animator.runtimeAnimatorController = overrideController;
+        
+        public CharacterAnimatorController(Animator animator)
+        {
+            this.animator = animator;
         }
-    }
 
-    public void SetMoveIntent(MoveIntent intent)
-    {
-        animator.SetInteger(moveIntentHash, (int)intent);
-    }
+        public void SetEnabled(bool enabled)
+        {
+            animator.enabled = enabled;
+        }
 
-    public void SetAttackTrigger()
-    {
-        animator.SetTrigger(attackTriggerHash);
-    }
+        public void SetOverrideController(AnimatorOverrideController overrideController)
+        {
+            if (overrideController != null) {
+                animator.runtimeAnimatorController = overrideController;
+            }
+        }
 
-    public void SetKnockBackTrigger()
-    {
-        animator.SetTrigger(knockBackTriggerHash);
-    }
+        public void SetMoveIntent(MoveIntent intent)
+        {
+            animator.SetInteger(moveIntentHash, (int)intent);
+        }
 
-    public void SetRecoveryTrigger()
-    {
-        animator.SetTrigger(recoveryTriggerHash);
-    }
+        public void SetAttackTrigger()
+        {
+            animator.SetTrigger(attackTriggerHash);
+        }
 
-    public void SetIdleTrigger()
-    {
-        animator.SetTrigger(idleTriggerHash);
+        public void SetKnockBackTrigger()
+        {
+            animator.SetTrigger(knockBackTriggerHash);
+        }
+
+        public void SetRecoveryTrigger()
+        {
+            animator.SetTrigger(recoveryTriggerHash);
+        }
+
+        public void SetIdleTrigger()
+        {
+            animator.SetTrigger(idleTriggerHash);
+        }
     }
 }

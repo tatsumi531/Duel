@@ -1,12 +1,15 @@
-public class CharacterState_Neutral : CharacterStateBase
+namespace Duel.Characters.States
 {
-    public CharacterState_Neutral(CharacterStateMachine machine, CharacterContext context) : base(machine, context) {}
-
-    public override void OnEnter()
+    public class CharacterState_Neutral : CharacterStateBase
     {
-        Context.Character.SpriteRenderer.enabled = true;
-        Context.Character.AnimatorController.SetEnabled(true);
-        Context.Character.AnimatorController.SetIdleTrigger();
-        Context.Character.Collider2D.enabled = true;
+        public CharacterState_Neutral(CharacterStateMachine machine, CharacterContext context) : base(machine, context) {}
+
+        public override void OnEnter()
+        {
+            Context.Character.SpriteRenderer.enabled = true;
+            Context.Character.AnimatorController.SetEnabled(true);
+            Context.Character.AnimatorController.SetIdleTrigger();
+            Context.Character.Collider2D.enabled = true;
+        }
     }
 }

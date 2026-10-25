@@ -1,17 +1,20 @@
-public class CharacterState_Attack : CharacterStateBase
+namespace Duel.Characters.States
 {
-    public CharacterState_Attack(CharacterStateMachine machine, CharacterContext context) : base(machine, context) {}
-
-    public override void OnEnter()
+    public class CharacterState_Attack : CharacterStateBase
     {
-        Context.AttackAnimationEnded = false;
-        Character.AnimatorController.SetAttackTrigger();
-    }
+        public CharacterState_Attack(CharacterStateMachine machine, CharacterContext context) : base(machine, context) {}
 
-    public override void OnUpdate()
-    {
-        if (Context.AttackAnimationEnded) {
-            Machine.ChangeState(new CharacterState_Idle(Machine, Context));
+        public override void OnEnter()
+        {
+            Context.AttackAnimationEnded = false;
+            Character.AnimatorController.SetAttackTrigger();
+        }
+
+        public override void OnUpdate()
+        {
+            if (Context.AttackAnimationEnded) {
+                Machine.ChangeState(new CharacterState_Idle(Machine, Context));
+            }
         }
     }
 }

@@ -1,33 +1,38 @@
-public class CharacterState_Move : CharacterStateBase
+using Duel.Core;
+
+namespace Duel.Characters.States
 {
-    readonly MoveIntent intent;
-
-    public CharacterState_Move(CharacterStateMachine machine, CharacterContext context, MoveIntent intent) : base(machine, context)
+    public class CharacterState_Move : CharacterStateBase
     {
-        this.intent = intent;
-    }
+        readonly MoveIntent intent;
 
-    public override void OnEnter()
-    {
-        Character.AnimatorController.SetMoveIntent(intent);
-    }
-
-    public override void OnUpdate()
-    {
-        if (TryTransitionToAttack()) {
-            return;
+        public CharacterState_Move(CharacterStateMachine machine, CharacterContext context, MoveIntent intent) : base(machine, context)
+        {
+            this.intent = intent;
         }
 
-        if (Context.MoveIntent != intent) {
-            Machine.ChangeState(new CharacterState_Idle(Machine, Context));
-            return;
+        public override void OnEnter()
+        {
+            Character.AnimatorController.SetMoveIntent(intent);
         }
 
-        Character.Move(intent);
-    }
+        public override void OnUpdate()
+        {
+            if (TryTransitionToAttack()) {
+                return;
+            }
 
-    public override void OnExit()
-    {
-        Character.AnimatorController.SetMoveIntent(MoveIntent.None);
+            if (Context.MoveIntent != intent) {
+                Machine.ChangeState(new CharacterState_Idle(Machine, Context));
+                return;
+            }
+
+            Character.Move(intent);
+        }
+
+        public override void OnExit()
+        {
+            Character.AnimatorController.SetMoveIntent(MoveIntent.None);
+        }
     }
 }

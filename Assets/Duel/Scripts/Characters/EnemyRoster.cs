@@ -1,13 +1,16 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "EnemyRoster", menuName = "Scriptable Objects/Enemy Roster")]
-public class EnemyRoster : ScriptableObject
+namespace Duel.Characters
 {
-    public CharacterData[] enemies;
-
-    public CharacterData GetByRound(int round)
+    [CreateAssetMenu(fileName = "EnemyRoster", menuName = "Scriptable Objects/Enemy Roster")]
+    public class EnemyRoster : ScriptableObject
     {
-        int index = Mathf.Clamp(round - 1, 0, enemies.Length - 1);
-        return enemies[index];
+        public CharacterData[] enemies;
+
+        public CharacterData GetByRound(int round)
+        {
+            int index = Mathf.Clamp(round - 1, 0, enemies.Length - 1);
+            return enemies[index];
+        }
     }
 }

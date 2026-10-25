@@ -1,4 +1,7 @@
-public interface ICharacterController
+namespace Duel.Characters
 {
-    void OnUpdate();
+    public interface ICharacterController
+    {
+        void OnUpdate();
+    }
 }

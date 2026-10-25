@@ -1,5 +1,8 @@
-public enum Direction
+namespace Duel.Characters
 {
-    Left = -1,
-    Right = 1
+    public enum Direction
+    {
+        Left = -1,
+        Right = 1
+    }
 }

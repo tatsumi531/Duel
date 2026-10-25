@@ -1,25 +1,28 @@
 using UnityEngine;
 
-public class GameState_Round : GameStateBase
+namespace Duel.GameStates
 {
-    public GameState_Round(GameStateMachine machine, GameContext context) : base(machine, context) {}
-
-    protected override void OnEnter()
+    public class GameState_Round : GameStateBase
     {
-        Context.PlayerStateMachine.ActivateState();
-        Context.EnemyStateMachine.ActivateState();
-    }
+        public GameState_Round(GameStateMachine machine, GameContext context) : base(machine, context) {}
 
-    public override void OnUpdate()
-    {
-        Context.RoundTimer.OnUpdate(Time.deltaTime);
-        if (Context.EnemyStateMachine.HasHit) {
-            Machine.ChangeState(new GameState_Win(Machine, Context));
-            return;
+        protected override void OnEnter()
+        {
+            Context.PlayerStateMachine.ActivateState();
+            Context.EnemyStateMachine.ActivateState();
         }
-        if (Context.PlayerStateMachine.HasHit) {
-            Machine.ChangeState(new GameState_Lose(Machine, Context));
-            return;
+
+        public override void OnUpdate()
+        {
+            Context.RoundTimer.OnUpdate(Time.deltaTime);
+            if (Context.EnemyStateMachine.HasHit) {
+                Machine.ChangeState(new GameState_Win(Machine, Context));
+                return;
+            }
+            if (Context.PlayerStateMachine.HasHit) {
+                Machine.ChangeState(new GameState_Lose(Machine, Context));
+                return;
+            }
         }
     }
 }

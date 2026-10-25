@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using Duel.Core;
 
 public class RoundTimerTests
 {
