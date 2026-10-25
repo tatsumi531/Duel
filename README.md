@@ -42,7 +42,7 @@ Boot → TitleScreen → InitializeRound → RoundIntroduction → Round → Win
                                                                   → Lose → TotalResult → TitleScreen（プレイヤー敗北時）
 ```
 
-`Boot` でプレイヤーと敵のステートマシンに互いの参照を渡し、`InitializeRound` で[EnemyRoster.cs](Assets/Duel/Scripts/Character/EnemyRoster.cs)からラウンド数に応じた敵データを取得して初期化する。キャラクターの初期位置と移動可能範囲は[BattleField.cs](Assets/Duel/Scripts/BattleField.cs)が保持する値を基準にしている。
+`Boot` でプレイヤーと敵のステートマシンに互いの参照を渡し、`InitializeRound` で[EnemyRoster.cs](Assets/Duel/Scripts/Characters/EnemyRoster.cs)からラウンド数に応じた敵データを取得して初期化する。キャラクターの初期位置と移動可能範囲は[BattleField.cs](Assets/Duel/Scripts/BattleField.cs)が保持する値を基準にしている。
 
 ### 依存の受け渡し
 
@@ -57,18 +57,18 @@ DIコンテナやインターフェースによる抽象化は、差し替える
 
 ### キャラクター
 
-- [Character.cs](Assets/Duel/Scripts/Character/Character.cs): 移動・攻撃エフェクト（[Slash.cs](Assets/Duel/Scripts/Slash.cs)）の生成・攻撃レンジ計算などMonoBehaviourとしての実体を担当
-- [CharacterStateMachine.cs](Assets/Duel/Scripts/Character/CharacterStateMachine.cs) / [States/](Assets/Duel/Scripts/Character/States): Neutral / Idle / Move / Attack / KnockBack / Hit / NoneActive の状態遷移を管理。前進と後退は `MoveIntent` を引数に取る `CharacterState_Move` に統合し、攻撃入力による遷移は基底クラスの `TryTransitionToAttack()` に集約している（攻撃を受け付けるステートだけが呼ぶ）
-- [ICharacterController.cs](Assets/Duel/Scripts/Character/ICharacterController.cs): これを実装した[PlayerController.cs](Assets/Duel/Scripts/Character/PlayerController.cs)（キーボード/マウス入力）と[AIController.cs](Assets/Duel/Scripts/Character/AIController.cs)（AIプロファイルに基づく意思決定）を切り替え可能にし、プレイヤーと敵でステートマシン本体を共用
-- [CharacterAnimatorController.cs](Assets/Duel/Scripts/Character/CharacterAnimatorController.cs): Animatorパラメータの設定をラップし、ステート側からAnimatorの詳細を隠蔽
-- [CharacterData.cs](Assets/Duel/Scripts/Character/CharacterData.cs): 移動速度・攻撃エフェクトのオフセット・アニメーターのOverrideControllerなどをScriptableObjectで外出し
-- [Slash.cs](Assets/Duel/Scripts/Slash.cs): 攻撃同士が重なった場合は相殺（KnockBack）、キャラクターに当たった場合は被弾（Hit）を判定し、[SpriteSliceEffect.cs](Assets/Duel/Scripts/Character/SpriteSliceEffect.cs)でスプライトを2分割して吹っ飛ばす演出を再生
+- [Character.cs](Assets/Duel/Scripts/Characters/Character.cs): 移動・攻撃エフェクト（[Slash.cs](Assets/Duel/Scripts/Slash.cs)）の生成・攻撃レンジ計算などMonoBehaviourとしての実体を担当
+- [CharacterStateMachine.cs](Assets/Duel/Scripts/Characters/CharacterStateMachine.cs) / [States/](Assets/Duel/Scripts/Characters/States): Neutral / Idle / Move / Attack / KnockBack / Hit / NoneActive の状態遷移を管理。前進と後退は `MoveIntent` を引数に取る `CharacterState_Move` に統合し、攻撃入力による遷移は基底クラスの `TryTransitionToAttack()` に集約している（攻撃を受け付けるステートだけが呼ぶ）
+- [ICharacterController.cs](Assets/Duel/Scripts/Characters/ICharacterController.cs): これを実装した[PlayerController.cs](Assets/Duel/Scripts/Characters/PlayerController.cs)（キーボード/マウス入力）と[AIController.cs](Assets/Duel/Scripts/Characters/AIController.cs)（AIプロファイルに基づく意思決定）を切り替え可能にし、プレイヤーと敵でステートマシン本体を共用
+- [CharacterAnimatorController.cs](Assets/Duel/Scripts/Characters/CharacterAnimatorController.cs): Animatorパラメータの設定をラップし、ステート側からAnimatorの詳細を隠蔽
+- [CharacterData.cs](Assets/Duel/Scripts/Characters/CharacterData.cs): 移動速度・攻撃エフェクトのオフセット・アニメーターのOverrideControllerなどをScriptableObjectで外出し
+- [Slash.cs](Assets/Duel/Scripts/Slash.cs): 攻撃同士が重なった場合は相殺（KnockBack）、キャラクターに当たった場合は被弾（Hit）を判定し、[SpriteSliceEffect.cs](Assets/Duel/Scripts/Characters/SpriteSliceEffect.cs)でスプライトを2分割して吹っ飛ばす演出を再生
 
-体力（HP）の概念は意図的に持たせていない。タイトルの「一太刀侍」が示すとおり、一太刀が当たれば決着という一撃必殺のルールが本作のコンセプトであり、`Slash` が判定するのも「相手に当たったか」「攻撃同士が相殺したか」の2通りだけである。ダメージ量や残り体力の管理が無いぶん、間合いの読み合いそのものがゲームの中心になり、後述の敵AIが距離帯の判定を軸に組まれているのもこのルールに由来する。
+体力（HP）の概念は意図的に持たせていない。タイトルの「一太刀侍」が示すとおり、一太刀が当たれば決着という一撃必殺のルールが本作のコンセプトであり、`Slash` が判定するのも「相手に当たったか」「攻撃同士が相殺したか」の2通りだけ。ダメージ量や残り体力の管理が無いぶん、間合いの読み合いそのものがゲームの中心になり、後述の敵AIが距離帯の判定を軸に組まれているのもこのルールに由来する。
 
 ### 敵AI
 
-[CharacterAIProfile.cs](Assets/Duel/Scripts/Character/CharacterAIProfile.cs) はScriptableObjectとして敵AIの行動パラメータを外出しした設計。[AIController.cs](Assets/Duel/Scripts/Character/AIController.cs)がこのプロファイルを読み、`Character.GetAttackRange()`（攻撃エフェクトの当たり判定サイズ＋相手の当たり判定幅から動的に算出）を基準に距離帯を判定する。
+[CharacterAIProfile.cs](Assets/Duel/Scripts/Characters/CharacterAIProfile.cs) はScriptableObjectとして敵AIの行動パラメータを外出しした設計。[AIController.cs](Assets/Duel/Scripts/Characters/AIController.cs)がこのプロファイルを読み、`Character.GetAttackRange()`（攻撃エフェクトの当たり判定サイズ＋相手の当たり判定幅から動的に算出）を基準に距離帯を判定する。
 
 - 一定間隔（`reactionTimeMin` 〜 `reactionTimeMax` のランダム値）ごとに行動を再抽選する方式で反応速度にブレを持たせている
 - 相手の攻撃範囲＋`preferredDistanceMargin`を「維持したい間合い」とし、そこから`distanceTolerance`を超えて外れると近づく／離れるを選択
@@ -108,12 +108,14 @@ Assets/Duel/
 ├── Scripts/
 │   ├── Core/              # MonoBehaviourに依存しない純粋ロジック（Duel.Coreアセンブリ）
 │   ├── GameStates/        # ゲーム進行の各ステート（1ファイル1型）
-│   ├── Character/         # キャラクター本体、コントローラー、AIプロファイル
+│   ├── Characters/        # キャラクター本体、コントローラー、AIプロファイル
 │   │   └── States/        # キャラクターの各ステート（1ファイル1型）
 │   ├── UI/                # タイトル・ラウンド導入・結果画面、UI参照の集約（UIRoot）
 │   └── (root)/            # GameStateMachine、GameContext、フェード、斬撃判定等
 └── Tests/                 # EditModeテスト（Duel.Tests.EditModeアセンブリ）
 ```
+
+名前空間はフォルダ構成と対応させている（`Scripts/Characters/States/` → `Duel.Characters.States`）。自作コードはすべて `Duel` 配下にあり、グローバル名前空間のままの[ストアアセット](Assets/Store)と型名が衝突しない。
 
 ## 使用アセットについて
 
