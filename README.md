@@ -42,7 +42,9 @@ Boot → TitleScreen → InitializeRound → RoundIntroduction → Round → Win
                                                                   → Lose → TotalResult → TitleScreen（プレイヤー敗北時）
 ```
 
-`Boot` でプレイヤーと敵のステートマシンに互いの参照を渡し、`InitializeRound` で[EnemyRoster.cs](Assets/Duel/Scripts/Characters/EnemyRoster.cs)からラウンド数に応じた敵データを取得して初期化する。キャラクターの初期位置と移動可能範囲は[BattleField.cs](Assets/Duel/Scripts/BattleField.cs)が保持する値を基準にしている。
+`Boot` でプレイヤーと敵のステートマシンに互いの参照を渡し、`InitializeRound` で[EnemyRoster.cs](Assets/Duel/Scripts/Characters/EnemyRoster.cs)からラウンド数に応じた敵データを取得して初期化する。キャラクターの初期位置と移動可能範囲は[BattleField.cs](Assets/Duel/Scripts/BattleField.cs)がシーン上のコンポーネントとして保持し、Inspectorから調整できる。移動限界と初期位置はGizmoでシーンビューに描画しているため、カメラの表示範囲に収まっているかを目視で確認できる。
+
+移動範囲はアスペクト比に追従させず固定値にしている。背景スプライトが 19.2 × 10.8 しかないため広い画面向けには拡張できず、狭い画面でカメラを引けば背景の端が露出する。加えて間合いの読み合いが中心のゲームでプレイ環境ごとに移動範囲が変われば難易度そのものが変わってしまうため、固定値をInspectorで調整する方針とした。
 
 ### 依存の受け渡し
 
@@ -50,6 +52,7 @@ Boot → TitleScreen → InitializeRound → RoundIntroduction → Round → Win
 
 - UIの参照は[UIRoot.cs](Assets/Duel/Scripts/UI/UIRoot.cs)に集約し、各ステートからは `Context.UI.Title` のように `GameContext` 経由で参照する
 - フェード演出（[FadeScreen.cs](Assets/Duel/Scripts/FadeScreen.cs)）も同じ経路で渡しており、グローバルな入口を持たない
+- 戦場の寸法（キャラクターの初期位置・移動限界）は[BattleField.cs](Assets/Duel/Scripts/BattleField.cs)がシーン上のコンポーネントとして保持し、`GameContext` 経由で `Character` に渡す
 - `[SerializeField]` 経由のため非アクティブなUIも参照でき、`FindAnyObjectByType` のように初期状態の変更で参照が取れなくなることがない
 - 単一シーン構成（Main.unity）でシーンをまたぐ参照が不要なため、シングルトンを導入する理由がない
 
