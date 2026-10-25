@@ -16,6 +16,8 @@ namespace Duel
         public Vector3 RightInitialPosition => new(initialDistance, 0f, 0f);
         public float LeftLimit => -movableHalfWidth;
         public float RightLimit => movableHalfWidth;
+        
+        public float ClampX(float x) => Mathf.Clamp(x, LeftLimit, RightLimit);
 
 #if UNITY_EDITOR
         void OnDrawGizmos()

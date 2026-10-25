@@ -21,6 +21,8 @@ namespace Duel.Characters
         SpriteSliceEffect sliceEffect;
         public CharacterAnimatorController AnimatorController { get; private set; }
 
+        public float ClampX(float x) => battleField.ClampX(x);
+
 
         void Awake()
         {
@@ -77,7 +79,7 @@ namespace Duel.Characters
             float speed = sign > 0 ? characterData.moveForwardSpeed : characterData.moveBackSpeed;
             float deltaX = sign * (int)direction * speed * Time.deltaTime;
             Vector3 position = transform.position;
-            position.x = Mathf.Clamp(position.x + deltaX, battleField.LeftLimit, battleField.RightLimit);
+            position.x = battleField.ClampX(position.x + deltaX);
             transform.position = position;
         }
     }

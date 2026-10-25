@@ -5,14 +5,17 @@ namespace Duel.Characters.States
     public class CharacterState_KnockBack : CharacterStateBase
     {
         Tween knockbackTween;
+        const float knockBackDistance = 2f;
+        const float knockBackDuration = 0.5f;
 
 
         public CharacterState_KnockBack(CharacterStateMachine machine, CharacterContext context) : base(machine, context) {}
 
         public override void OnEnter()
         {
-            Context.Character.AnimatorController.SetKnockBackTrigger();
-            knockbackTween = Context.Character.transform.DOLocalMoveX(-(int)Context.Character.Direction * 2f, 0.5f).SetRelative().SetEase(Ease.OutQuad);
+            Character.AnimatorController.SetKnockBackTrigger();
+            float targetX = Character.ClampX(Character.transform.position.x - (int)Character.Direction * knockBackDistance);
+            knockbackTween = Context.Character.transform.DOMoveX(targetX, knockBackDuration).SetRelative().SetEase(Ease.OutQuad);
             knockbackTween.OnComplete(() =>{ Machine.ChangeState(new CharacterState_Idle(Machine, Context));});
             knockbackTween.Play();
         }
